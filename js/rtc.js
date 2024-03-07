@@ -53,7 +53,7 @@ class RtcBase {
 
     getSdpUrl = "https://www.noel-friedrich.de/multigolf2/api/get_sdp.php"
     sendSdpUrl = "https://www.noel-friedrich.de/multigolf2/api/send_sdp.php"
-    clientUrl = "https://noel-friedrich.de/multigolf2/client/index.html"
+    clientUrl = "https://multi.golf/client/index.html"
 
     // period of time to wait after receiving a new
     // ICE candidate to wait for a new one generating
