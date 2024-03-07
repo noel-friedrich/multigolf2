@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" style="overscroll-behavior: contain;">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <title>Impressum | Multigolf</title>
+        <link rel="stylesheet" href="../style.css?t">
+        <link rel="icon" type="image/svg" href="../assets/logo.svg" />
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
+    </head>
+
+    <body>
+        <header>
+            <img src="../assets/logo.svg" class="logo"></img>
+            <a href="../index.html">Multigolf</a>
+        </header>
+        
+        <main>
+            <h1>Impressum & Contact</h1>
+            <h2>Website Information</h2>
+            <p>
+                This website is hosted and built as a personal
+                project by Noel Friedrich.<br>
+                If you have a question regarding this project, please feel free to contact
+                me at the given Email.
+            </p>
+            <h3>Website Author</h3>
+            <p>
+                Noel Friedrich<br>
+                Horstweg 19<br>
+                31226 Peine<br>
+                Niedersachsen<br>
+                Germany
+            </p>
+            <h3>Data Privacy</h3>
+            <p>
+                You may see our data privacy policy
+                <a href="../data-privacy/">here</a>.
+            </p>
+            <h2>Contact</h2>
+            <ul>
+                <li>By email at <a id="email-out"></a></li>
+                <li>By the <a href="https://noel-friedrich.de">contact form on my personal website</a>.</li>
+            </ul>
+        </main>
+
+        <script>
+            // my lazy attempt at preventing *simple* scrapers from getting my email
+            const email = "ed.kooltuo@hcirdeirf.leon".split("").reverse().join("")
+            document.querySelector("#email-out").textContent = email
+            document.querySelector("#email-out").href = "mailto:" + email
+        </script>
+
+        <footer>
+            Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
+            <a href="../impressum/">Impressum / Contact</a>.
+            <a href="../data-privacy/">Data Privacy</a>.
+        </footer>
+
+        <div class="background"></div>
+    </body>
+
+</html>

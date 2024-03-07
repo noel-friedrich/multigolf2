@@ -1,4 +1,4 @@
-# Multigolf 2
+# Multigolf
 > An online minigolf game where courses are made up of many connected phone screens
 
 ![Photo of a Multigolf game](assets/pics/multigolf-in-action.jpg)

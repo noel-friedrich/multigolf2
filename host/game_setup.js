@@ -41,7 +41,7 @@ async function shareScoreboard() {
     const file = new File([blob], 'multigolf2-scoreboard.png', {type: blob.type})
 
     navigator.share({
-        title: "Multigolf 2 Scoreboard!",
+        title: "Multigolf Scoreboard!",
         text: "Look! Scores! We played Multigolf! You should too!",
         files: [file],
     })

@@ -96,6 +96,10 @@ main h4, main h5, main h6 {
     margin: 0;
 }
 
+main h1 {
+    text-align: center;
+}
+
 main ol,
 main ul {
     margin: 0;

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Multigolf 2</title>
+        <title>Multigolf</title>
         <link rel="icon" type="image/svg" href="./assets/logo.svg" />
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
@@ -13,60 +13,41 @@
     <body>
         <header> 
             <img src="assets/logo.svg" class="logo"></img>
-            <a href="./index.html">Multigolf 2</a>
+            <a href="./index.html">Multigolf</a>
         </header>
         
         <main>
+            <h1>Welcome to Multigolf!</h1>
             <a href="./host/index.html" class="linkbutton">Create a Game</a>
             <p>
-                Welcome to Multigolf 2! Here you can play Minigolf games
-                across a board made up of multiple phones! To play,
-                you'll need at least 2 (the more the better!) phones.
-                You won't need to install anything anywhere, this all just
-                runs in your browser! After starting the game, everyone will
-                have to simply scan a QR code and start designing the
-                perfect multigolf course! 
+                Multigolf is a cross-device Minigolf game. Build courses out of 
+                multiple phones, then battle your friends in the available
+                gamemodes. Grab your friends, steal their phones and begin
+                building complex minigolf courses on any tabletop anywhere. 
+                It's extremely simple to setup and doesn't require any
+                download, everyone will simply scan a QR code and begin playing.
+                Sounds good? Then try it out!
             </p>
             <h2>How does it work?</h2>
             <p>
-                When you start the game, your phone will become the host.
-                All phones will connect to your phone by scanning a QR
-                code. From then, you will be asked to construct a minigolf
-                course by physically arranging your phones. Naturally,
-                you'll also be able to spice your course up with fun
-                obstacles to make increase the difficulty (and fun).
-                And then you'll play! You'll take turns golfing your
-                balls into the hole while this phone will serve as
-                an info screen to keep track of scores and will 
-                enable you to configure things. Once round 1 is finished,
-                the next player will be asked to build their course,
-                such that at the end, every player will have been the
-                course constructor once. Finally, a winner will be chosen
-                and deemed king/queen of Multigolf. Doesn't that sound
-                just a little fun?
-            </p>
-            <h2>Okay, but how does it work technologically?</h2>
-            <p>
-                Well. Thanks for asking! When you start the game,
-                this phone will create a QR code with which others
-                will join and form connections via WebRTC. From then on,
-                the host will manage the Multigolf game, deciding which
-                ball flies where in which second. Participating phones
-                send updates to the host phone which will react accordingly 
-                and potentially send updates to all connected clients,
-                connecting the phones and making balls fly through
-                phone screens seemlessly. Of course, theres a custom
-                physics engine distributed on all phones that makes
-                sure that everything happens smoothly. And at the end,
-                balls just phase from phone screen to screen without
-                much lag. It's kinda satisfying to watch. You
-                should try it.
+                By creating a game, your device will become the server. This server
+                will not be able to show the course, but will rather function as a
+                control center and will show you what to do. After configuring
+                the game (choosing gamemode, entering names of
+                everybody...) you'll begin designing your course! You'll have
+                to tell the phones how they are arranged physically by drawing
+                lines along the connected edges. Once set up, the game is afoot!
+                Some gamemodes require multiple people to design their own
+                unique courses, so make sure to be creative with your course 
+                design!
             </p>
             <img src="assets/pics/multigolf-in-action.jpg" class="round-edges">
         </main>
 
         <footer>
-            Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>. 
+            Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
+            <a href="./impressum">Impressum / Contact</a>.
+            <a href="./data-privacy">Data Privacy</a>.
         </footer>
 
         <div class="background"></div>
