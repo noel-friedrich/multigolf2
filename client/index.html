@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" style="overscroll-behavior: contain;">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <title>Client | Multigolf 2</title>
+        <link rel="stylesheet" href="../style.css?t">
+        <link rel="icon" type="image/svg" href="../assets/logo.svg" />
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
+    </head>
+
+    <body>
+        <header>
+            <img src="../assets/logo.svg" class="logo"></img>
+            <a href="../index.html">Multigolf 2</a>
+        </header>
+        
+        <main>
+            <h2 id="loading-indicator">
+                Loading...
+            </h2>
+
+            <h2 id="status-title">Connecting to Host...</h2>
+            <p>
+                Welcome to the Game! Please keep this Tab open and don't 
+                close the page until the game is over. While the game
+                is being setup, you don't need to do anything on this
+                device, except keeping it awake. Don't let it fall 
+                asleep, or the connection will probably fail!
+            </p>
+            <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left;"></p>
+        </main>
+
+        <canvas style="display: none;" id="fullscreen-canvas"></canvas>
+
+        <script            src="../js/sprite.js?t9"></script>
+        <script           src="../js/nosleep.js?t9"></script>
+        <script         src="../js/mathutils.js?t9"></script>
+        <script src="../js/phone_coordinates.js?t9"></script>
+        <script             src="../js/board.js?t9"></script>
+        <script         src="../js/gamestate.js?t9"></script>
+        <script          src="../js/renderer.js?t9"></script>
+        <script               src="../js/rtc.js?t9"></script>
+        <script   src="connection_management.js?t9"></script>
+        <script         src="game_management.js?t9"></script>
+
+        <div class="background"></div>
+
+        <style>
+            html {
+                overflow: hidden;
+            }
+        </style>
+    </body>
+
+</html>

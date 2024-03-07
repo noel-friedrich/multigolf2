@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Host | Multigolf 2</title>
+        <link rel="stylesheet" href="../style.css">
+        <link rel="icon" type="image/svg" href="../assets/logo.svg" />
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
+    </head>
+
+    <body>
+        <header>
+            <img src="../assets/logo.svg" class="logo"></img>
+            <a href="../index.html">Multigolf 2</a>
+        </header>
+        
+        <main>
+            <h2 id="loading-indicator">
+                Loading...
+            </h2>
+
+            <fieldset style="gap: .2em; display: none;" id="player-list-fieldset">
+                <legend>Connected Players</legend>
+                <div id="player-list-container" style="margin-top: -.5em">
+                    No players added yet.
+                    To add a new player, click the button below. A QR code will
+                    be generated to be scanned by the player and that player only.
+                </div>
+            </fieldset>
+
+            <section data-phase="hello">
+                <h2>Welcome to Multigolf 2!</h2>
+                <p>
+                    Good morning! You're the host of this fantastic
+                    new session of Multigolf 2! Gather your friends,
+                    steal peoples phones and have a good time!
+                </p>
+                <h3>You need</h3>
+                <ol>
+                    <li>At least 2 phones (including this one)</li>
+                    <ul>
+                        <li>The more, the better.</li>
+                    </ul>
+                    <li>1 to 8 Players depending on the game mode you choose soon</li>
+                    <ul>
+                        <li>Available game modes: Tournament, Duell, Sandbox</li>
+                    </ul>
+                    <li>A good mood</li>
+                </ol>
+                <p>
+                    <span style="color: red">Warning!</span>
+                    Do not close this page while the game is
+                    running or being configured. While other
+                    phones may be reconnected, this phone (the host)
+                    cannot. Closing this page will lose
+                    the entire game state; you will have to 
+                    restart from Scratch.
+                </p>
+                <p>
+                    If you're ready, click the button below
+                    to start your Multigolf adventure.
+                </p>
+                <button onclick="changeGamePhase(gamePhase.ModeChoice)">
+                    Start the Game
+                </button>
+            </section>
+
+            <section data-phase="mode-choice">
+                <h2>Choose your Gamemode</h2>
+                <p>
+                    To start, choose a Gamemode. The number of players
+                    does not have to match the number of phones. You can
+                    play a Tournament with only one more phone
+                    (maybe not a very interesting one). You can only
+                    choose one mode, which cannot be changed without
+                    restarting the game.
+                </p>
+                <h3>🏆 Tournament (1-8 Players)</h3>
+                <p>
+                    Introducing Tournament mode - the ultimate party-friendly
+                    showdown! In this classic mode, each player takes turns
+                    crafting a course for all to play. The game tracks scores
+                    across all boards, culminating in the crowning of the
+                    Multigolf Queen! Will you rise to the challenge and
+                    claim the title?
+                </p>
+                <button onclick="chooseGamemode(gameMode.Tournament)">
+                    Begin the Tournament
+                </button>
+                <h3>🔫 Duell (2 Players)</h3>
+                <p>
+                    In Duell mode, both players collaborate
+                    to build a course and place their opponent's hole. Using
+                    the same ball, players take turns hitting it in their
+                    chosen direction, aiming to reach their opponent's hole.
+                    It's a game of skill and strategy where each shot counts,
+                    and the player who sinks their opponent's hole first claims
+                    victory. Are you ready to tee off against your friend using
+                    the same ball?
+                </p>
+                <p>
+                    <span style="color: red">Warning!</span>
+                    This mode is best with more phones, as courses get
+                    much more insteresting. With only one other phone,
+                    the game will likely end in a single hit.
+                </p>
+                <button onclick="chooseGamemode(gameMode.Duell)">
+                    Initiate the Duell
+                </button>
+                <h3>🐔 Sandbox mode (1+ Players)</h3>
+                <p>
+                    Last but <span style="text-decoration: line-through;">not</span>
+                    least: Sandbox mode. This mode isn't as competitive and great
+                    for testing the concept or really anything you like. Spawn
+                    as many balls as you want and let the chaos arrive.
+                    There is no player limit, as there are no scores that
+                    are tracked automatically.
+                </p>
+                <button onclick="chooseGamemode(gameMode.Sandbox)">
+                    Dive into the Sandbox
+                </button>
+            </section>
+
+            <section data-phase="player-setup-duell">
+                <h2>Player Registration!</h2>
+                <p>
+                    I need to know the name of the two duellists.
+                </p>
+                <fieldset style="gap: .2em">
+                    <legend>Player Names</legend>
+                    <input type="text" placeholder="Name 1" data-game-mode="duell" data-name-index="0">
+                    <input type="text" placeholder="Name 2" data-game-mode="duell" data-name-index="1">
+                </fieldset>
+                <button onclick="registerPlayers()">
+                    I'm finished!
+                </button>
+            </section>
+
+            <section data-phase="player-setup-tournament">
+                <h2>Player Registration!</h2>
+                <p>
+                    I need the participants names! Leave the names empty to
+                    play with less than 8 players.
+                </p>
+                <fieldset style="gap: .2em">
+                    <legend>Player Names</legend>
+                    <input type="text" placeholder="Name 1" data-game-mode="tournament" data-name-index="0">
+                    <input type="text" placeholder="Name 2" data-game-mode="tournament" data-name-index="1">
+                    <input type="text" placeholder="Name 3" data-game-mode="tournament" data-name-index="2">
+                    <input type="text" placeholder="Name 4" data-game-mode="tournament" data-name-index="3">
+                    <input type="text" placeholder="Name 5" data-game-mode="tournament" data-name-index="4">
+                    <input type="text" placeholder="Name 6" data-game-mode="tournament" data-name-index="5">
+                    <input type="text" placeholder="Name 7" data-game-mode="tournament" data-name-index="6">
+                    <input type="text" placeholder="Name 8" data-game-mode="tournament" data-name-index="7">
+                </fieldset>
+                <button onclick="registerPlayers()">
+                    I'm finished!
+                </button>
+            </section>
+
+            <section data-phase="loading">
+                <h2>Loading...</h2>
+                <p>
+                    I'm currently loading all connected devices. This won't
+                    take long. I promise.
+                </p>
+            </section>
+
+            <section data-phase="connecting">
+                <h2>Device Connections</h2>
+                <p>
+                    Welcome to the device connection centre! You're the host, so you're
+                    responsible for managing this process. Every player
+                    will have to scan a different QR code that will be
+                    generated on this phone. Make sure that every QR code
+                    is scanned only once by one device!
+                </p>
+                <p>
+                    The devices will try to connect directly via a peer-to-peer
+                    connection, similar to how videocalls work. Your game data isn't
+                    sent to any server.
+                </p>
+                <p>
+                    If you have network problems and your devices won't connect,
+                    try connecting them to the same network (e.g. a WiFi or a hotspot).
+                    This also helps will reducing latency between devices.
+                </p>
+
+                <img style="display: none;" id="qr-img">
+                <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left; display: none;"></p>
+
+                <button id="add-player-button" onclick="addPlayer()">Add a new Device</button>
+                <button id="abort-player-button" onclick="abortPlayer()" style="display: none;">Cancel new Device</button>
+                <button id="finish-players-button" onclick="finishPlayers()" style="display: none;">
+                    I've connected all Devices!
+                </button>
+            </section>
+        
+            <section data-phase="tournament-explanation">
+                <h2>Let the games begin!</h2>
+                <p>
+                    <span data-fill="tournament-builder-name">NAME</span>
+                    is the course constructor now. Click on the button
+                    below to start layouting the phones to your liking.
+                    It would probably benefit everyone if you made a course
+                    that's actually possible. Have fun!
+                </p>
+                <p>
+                    After having constructed your course, everyone 
+                    (including <span data-fill="tournament-builder-name">NAME</span>)
+                    will play the course. Once everyone is finished, the next
+                    person will construct a course. Once everyone has been
+                    constructor, the game will end and the Multigolf Queen will be chosen!
+                </p>
+                <button onclick="startGame()">Begin Constructing</button>
+            </section>
+
+            <section data-phase="duell-explanation">
+                <h2>Let the Duell begin!</h2>
+                <p>
+                    Welcome to the Duell! You will now have to construct your course.
+                    You both need to do this together. You also both decide the end
+                    position together, however you will have to place your 
+                    opponents hole (as there are two holes in this mode!).
+                </p>
+                <button onclick="startGame()">Begin Constructing</button>
+            </section>
+
+            <section data-phase="construction">
+                <h2>Course Construction</h2>
+                <p>
+                    It's time to construct the Multigolf course. Each phone should show 
+                    a number. You have to connect phone #1 to #2, #2 to #3 and so on.
+                    To connect two phones, draw a line on each phone screen at the same time.
+                    You can redraw existing connections.
+                </p>
+                <img src="../assets/building.gif">
+                <button onclick="finishConstruction()">I'm finished</button>
+            </section>
+
+            <section data-phase="place-start">
+                <h2>Place the Start</h2>
+                <p>
+                    Click somewhere on your course (not on this phone!)
+                    to place the start point of this course.
+                </p>
+                <img src="../assets/place-start.gif">
+                <button onclick="finishStartPlacing()">I have placed the Start</button>
+            </section>
+
+            <section data-phase="place-duell-ends">
+                <h2>Place <span data-fill="duell-active-name">NAME</span>s Goal</h2>
+                <p>
+                    Click somewhere on your course (not on this phone!)
+                    to place the goal point for <span data-fill="duell-active-name">NAME</span>.
+                    Note: this Goal should NOT be placed by 
+                    <span data-fill="duell-active-name">NAME</span> and should instead be placed by
+                    <span data-fill="duell-inactive-name">NAME</span>.
+                </p>
+                <p>
+                    Tip: you want to place your opponents hole in a hard to reach spot
+                    to maximise your chances of winning.
+                </p>
+                <button onclick="finishDuelEndsPlacing()">We're finished!</button>
+            </section>
+
+            <section data-phase="place-end">
+                <h2>Place the End</h2>
+                <p>
+                    Click somewhere on your course (not on this phone!)
+                    to place the end point (the hole) of this course.
+                </p>
+                <img src="../assets/place-end.gif">
+                <button onclick="finishEndPlacing()">I have placed the End</button>
+            </section>
+
+            <section data-phase="playing-tournament">
+                <h2><span data-fill="tournament-active-name">NAME</span>s Turn</h2>
+                <p>
+                    You're currently playing the course built by
+                    <span data-fill="tournament-builder-name">NAME</span>.
+                    Currently, it's <span data-fill="tournament-active-name">NAME</span>s
+                    turn to kick the ball. Make your move!
+                </p>
+            </section>
+
+            <section data-phase="playing-duell">
+                <h2>Duell</h2>
+                <p>
+                    Take turns kicking the ball. <span data-fill="duell-active-name"></span>
+                    starts. Once the ball reaches a hole, the winner will be chosen!
+                </p>
+            </section>
+
+            <section data-phase="playing-sandbox">
+                <h2>Sandbox Options</h2>
+                <button onclick="gameState.board.spawnBall()">Spawn a new Ball</button>
+                <hr>
+                <button onclick="playNewGame()">Play a new Gamemode</button>
+            </section>
+
+            <section data-phase="showing-results-of-tournament">
+                <h2>Tournament Results</h2>
+                <p>
+                    You can see the results below.
+                </p>
+                <img class="scoreboard">
+                <button onclick="shareScoreboard()">🎈 Share Scores</button>
+                <p>
+                    Thank you very much for playing. If you want to
+                    share these results with your friends, make sure
+                    to click the share button above. 
+                </p>
+                <p>
+                    To play another game (perhaps a new gamemode?),
+                    press the button below. 
+                </p>
+                <button onclick="playNewGame()">Play a new Game</button>
+            </section>
+
+            <section data-phase="showing-results-of-duell">
+                <h2><span data-fill="duell-winner-name"></span> won the Duell!</h2>
+                <p>
+                    Well. The duel is over and the winner was determined! You can play
+                    another game mode or another Duell by clicking the button below.
+                    Thank you for playing!
+                </p>
+                <button onclick="playNewGame()">Play a new Game</button>
+            </section>
+
+            <fieldset id="board-canvas-fieldset" style="display: none;">
+                <legend>Multigolf Board</legend>
+                <canvas id="board-canvas" style="display: none;"></canvas>
+            </fieldset>
+        </main>
+        
+        <script src="../js/sprite.js"></script>
+        <script src="../js/nosleep.js"></script>
+        <script src="../js/mathutils.js"></script>
+        <script src="../js/phone_coordinates.js"></script>
+        <script src="../js/board.js"></script>
+        <script src="../js/gamestate.js"></script>
+        <script src="../js/boardrenderer.js"></script>
+        <script src="../js/rtc.js"></script>
+        <script src="../js/scoreboardmaker.js"></script>
+        <script src="game_setup.js"></script>
+        <script src="game_management.js"></script>
+        <script src="player_management.js"></script>
+        <script src="main.js"></script>
+
+        <div class="background"></div>
+    </body>
+
+</html>
