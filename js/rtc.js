@@ -86,6 +86,7 @@ class RtcBase {
         this.onDataMessage = onDataMessage
         this.onClientUrlAvailable = onClientUrlAvailable
         
+        this.processedSignalIds = new Set()
         this.dataChannelOpen = false
         this.signalingUid = null
         this.index = index
@@ -144,12 +145,15 @@ class RtcBase {
             const response = await fetch(apiUrl)
             let rows = await response.json()
 
+            rows = rows.filter(r => !this.processedSignalIds.has(r.id))
+
             if (type !== undefined) {
                 rows = rows.filter(r => r.type == type)
             }
 
             for (let row of rows) {
                 row.data = JSON.parse(row.data)
+                this.processedSignalIds.add(row.id)
             }
 
             return rows
@@ -271,19 +275,24 @@ class RtcHost extends RtcBase {
 
         await this.checkForUpdates(
             () => this.dataChannelOpen,
-            async (signal) => {
+            async (signal, abort) => {
                 if (signal.type == rtcDataType.AnswerCandidate) {
                     const candidate = new RTCIceCandidate(signal.data.candidate)
                     this.peerConnection.addIceCandidate(candidate)
                 }
 
                 if (signal.type == rtcDataType.Answer) {
+                    if (this.peerConnection.signalingState != "have-local-offer") {
+                        return
+                    }
+
                     const description = new RTCSessionDescription(signal.data.sdp)
                     await this.peerConnection.setRemoteDescription(description)
 
                     if (signal.data.sdp.type == "offer") {
                         const answer = await this.peerConnection.createAnswer()
                         await this.peerConnection.setLocalDescription(answer)
+
                         // client needs to realise that this answer is coming from the 
                         // server and not himself, so mask it to be an "rtcDataType.Offer"
                         this.uploadToServer(rtcDataType.Offer, {
