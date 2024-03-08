@@ -59,9 +59,10 @@ async function main() {
 
     if (!new URLSearchParams(location.search).has("nofullscreen"))
     fullscreenCanvas.onclick = () => {
-
         if (document.fullscreenElement != fullscreenCanvas) {
-            fullscreenCanvas.requestFullscreen()
+            if (fullscreenCanvas.requestFullscreen) {
+                fullscreenCanvas.requestFullscreen()
+            }
         }
     }
 

@@ -39,27 +39,26 @@ class DataMessage {
 
 }
 
+const rtcDataType = {
+    Offer: "offer",
+    Answer: "answer",
+    HostCandidate: "host-candidate",
+    AnswerCandidate: "answer-candidate",
+}
+
 class RtcBase {
 
     // ms between pings to host to make sure that connection
     // is still active. Used by both host & clients
     static pingPeriod = 3000
 
-    // period before host device gives up
-    static offerGracePeriod = 120000
-
-    // period before client device gives up
-    static answerGracePeriod = 20000
-
-    getSdpUrl = "https://www.noel-friedrich.de/multigolf2/api/get_sdp.php"
-    sendSdpUrl = "https://www.noel-friedrich.de/multigolf2/api/send_sdp.php"
+    getSignalsApi = "https://www.noel-friedrich.de/multigolf2/api/get_signals.php"
+    sendSignalApi = "https://www.noel-friedrich.de/multigolf2/api/send_signal.php"
     clientUrl = "https://multi.golf/client/index.html"
 
-    // period of time to wait after receiving a new
-    // ICE candidate to wait for a new one generating
-    candidateMaxInterval = 2000
-
-    checkForAnswerInterval = 2000
+    static checkForSignalsInterval = 1000
+    static clientTimeoutPeriod = 20 * 1000
+    static hostTimeoutPeriod = 2 * 60 * 1000
     
     initDatachannelListeners() {
         this.dataChannel.onopen = (e) => {
@@ -93,7 +92,10 @@ class RtcBase {
 
         // list of free STUN servers: https://gist.github.com/zziuni/3741933
         this.peerConnection = new RTCPeerConnection({
-            iceServers: [{urls: "stun:stun.l.google.com:19302"}]})
+            iceServers: [
+                {"urls": "stun:stun.stunprotocol.org:3478"},
+                {"urls": "stun:stun.l.google.com:19302"},
+            ]})
         
         this.dataChannel = this.peerConnection.createDataChannel("chat", {
             negotiated: true, id: 0})
@@ -113,6 +115,88 @@ class RtcBase {
             return false
         }
     }
+
+    async uploadToServer(type, data, objectName) {
+        try {
+            let apiUrl = this.sendSignalApi
+            apiUrl += `?type=${encodeURIComponent(type)}`
+            apiUrl += `&uid=${encodeURIComponent(this.signalingUid)}`
+            apiUrl += `&data=${encodeURIComponent(JSON.stringify(data))}`
+            const response = await fetch(apiUrl)
+            const textResponse = await response.text()
+    
+            if (textResponse == "worked like a charm") {
+                this.logFunction(`✅ ${objectName} successfully sent.`)
+                return true
+            } else {
+                throw new Error(`Unknown Server Response: ${textResponse}`)
+            }
+        } catch (err) {
+            this.logFunction(`⚠️ Couldn't upload ${objectName}: ${err.message}`)
+            throw err
+        }
+    }
+
+    async getFromServer(type) {
+        try {
+            let apiUrl = this.getSignalsApi
+            apiUrl += `?uid=${encodeURIComponent(this.signalingUid)}`
+            const response = await fetch(apiUrl)
+            let rows = await response.json()
+
+            if (type !== undefined) {
+                rows = rows.filter(r => r.type == type)
+            }
+
+            for (let row of rows) {
+                row.data = JSON.parse(row.data)
+            }
+
+            return rows
+        } catch (err) {
+            this.logFunction(`❌ Couldn't fetch Server: ${err.message}`)
+            throw err
+        }
+    }
+
+    async waitUntil(func, name, {
+        timeout = 60000,
+        checkIntervalMs = 100,
+    }={}) {
+        const startWaitTime = Date.now()
+        while (true) {
+            const timeElapsed = Date.now() - startWaitTime
+            if (timeElapsed > timeout) {
+                throw new Error(`❌ Timeout while waiting for ${name}`)
+            }
+
+            if (func()) {
+                return
+            }
+
+            await new Promise(resolve => setTimeout(resolve, checkIntervalMs))
+        }
+    }
+
+    async checkForUpdates(untilFunc, handleUpdate, objectName, {
+        checkInterval = RtcBase.checkForSignalsInterval,
+        timeoutPeriod = RtcBase.hostTimeoutPeriod,
+    }) {
+        const startTime = Date.now()
+        while (!untilFunc()) {
+            const updates = await this.getFromServer()
+            for (let update of updates) {
+                handleUpdate(update)
+            }
+
+            const timeElapsed = Date.now() - startTime
+            if (timeElapsed > timeoutPeriod) {
+                throw new Error(`❌ Timeout while waiting for ${objectName}`)
+            }
+
+            await new Promise(resolve => setTimeout(resolve, checkInterval))
+        }
+    }   
 
 }
 
@@ -153,131 +237,64 @@ class RtcHost extends RtcBase {
     }
 
     async start() {
-        this.peerConnection.onicecandidate = ({candidate}) => {
-            this.lastCandidateTime = Date.now()
-            this.offerSdp = this.peerConnection.localDescription.sdp
-        }
-
         this.logFunction("Starting Connection Process...")
 
         this.signalingUid = this.generateSignalingUid()
-        this.offerSdp = null
-        this.answerSdp = null
-        this.lastCandidateTime = null
-        this.sentOffer = false
 
         this.lastDataMessage = null
         this.lastDataMessageTime = null
 
         this.dataChannel.addEventListener("message", (e) => {
-            this.lastDataMessageTime = Date.now()
             this.lastDataMessage = DataMessage.fromString(e.data)
+            this.lastDataMessageTime = Date.now()
         })
 
         this.onClientUrlAvailable(this.makeClientUrl())
+        this.logFunction("✅ Created QR Code Target")
 
-        await this.createOffer()
-        await this.uploadOffer()
+        this.peerConnection.addEventListener("icecandidateerror", event => {
+            this.logFunction(`⚠️ ICE candidate error: ${event.errorText}`)
+        })
 
-        await this.waitForAnswer()
-        await this.processAnswer()
-        this.logFunction("Initiating Datachannel...")
+        this.peerConnection.addEventListener("icecandidate", event => {
+            if (event.candidate == null) return
+            this.uploadToServer(rtcDataType.HostCandidate, {
+                candidate: event.candidate
+            }, "Ice Candidate")
+        })
 
-        await this.waitForDatachannelToOpen()
-    }
-
-    async updateAnswerSdp() {
-        try {
-            let apiUrl = this.getSdpUrl
-            apiUrl += `?uid=${encodeURIComponent(this.signalingUid)}`
-            const response = await fetch(apiUrl)
-            let answers = await response.json()
-
-            answers = answers.filter(a => a.type == "answer")
-    
-            if (answers.length >= 1) {
-                this.logFunction("✅ Connection Answer received.")
-                this.answerSdp = answers[0].sdp // if there are more than
-                // one answer, ignore the rest and handle first
-
-                return true
-            } else {
-                return false
-            }
-        } catch (err) {
-            this.logFunction("⚠️ Couldn't fetch Answer Server")
-            throw err
-        }
-    }
-
-    async waitForAnswer() {
-        this.logFunction("Waiting for Connection Answer...")
-
-        let startTime = Date.now()
-        while (!await this.updateAnswerSdp()) {
-            await new Promise(resolve => setTimeout(resolve, this.checkForAnswerInterval))
-
-            if (Date.now() - startTime > RtcBase.offerGracePeriod) {
-                throw new Error("Timeout. Couldn't establish a connection. Please try again.")
-            }
-        }
-    }
-
-    async waitForDatachannelToOpen() {
-        this.logFunction("Waiting for Datachannel to open...")
-        
-        let startTime = Date.now()
-        while (!this.dataChannelOpen) {
-            await new Promise(resolve => setTimeout(resolve, 100))
-
-            if (Date.now() - startTime > RtcBase.answerGracePeriod) {
-                throw new Error("Timeout. Couldn't connect with device. Try again in a bit?")
-            }
-        }
-    }
-
-    async uploadOffer() {
-        this.logFunction("Uploading Connection Offer...")
-
-        try {
-            let apiUrl = this.sendSdpUrl + "?type=offer"
-            apiUrl += `&uid=${encodeURIComponent(this.signalingUid)}`
-            apiUrl += `&sdp=${encodeURIComponent(this.offerSdp)}`
-            const response = await fetch(apiUrl)
-            const textResponse = await response.text()
-    
-            if (textResponse == "worked like a charm") {
-                this.logFunction("✅ Connection Offer successfully sent.")
-                return true
-            } else {
-                throw new Error(`Unknown Answer: ${textResponse}`)
-            }
-        } catch (err) {
-            this.logFunction("⚠️ Couldn't upload Connection Offer.")
-            throw err
-        }
-    }
-
-    async createOffer() {
-        this.logFunction("Creating Offer...")
         const offer = await this.peerConnection.createOffer()
         await this.peerConnection.setLocalDescription(offer)
+        this.uploadToServer(rtcDataType.Offer, {
+            sdp: this.peerConnection.localDescription
+        }, "Connection Offer")
 
-        while (this.lastCandidateTime == null || Date.now() - this.lastCandidateTime < this.candidateMaxInterval) {
-            await new Promise(resolve => setTimeout(resolve, 100))
-        }
-        this.logFunction("✅ Offer successfully created.")
-    }
+        await this.checkForUpdates(
+            () => this.dataChannelOpen,
+            async (signal) => {
+                if (signal.type == rtcDataType.AnswerCandidate) {
+                    const candidate = new RTCIceCandidate(signal.data.candidate)
+                    this.peerConnection.addIceCandidate(candidate)
+                }
 
-    async processAnswer() {
-        if (this.peerConnection.signalingState != "have-local-offer") {
-            return
-        }
-    
-        this.peerConnection.setRemoteDescription({
-            type: "answer",
-            sdp: this.answerSdp
-        })
+                if (signal.type == rtcDataType.Answer) {
+                    const description = new RTCSessionDescription(signal.data.sdp)
+                    await this.peerConnection.setRemoteDescription(description)
+
+                    if (signal.data.sdp.type == "offer") {
+                        const answer = await this.peerConnection.createAnswer()
+                        await this.peerConnection.setLocalDescription(answer)
+                        // client needs to realise that this answer is coming from the 
+                        // server and not himself, so mask it to be an "rtcDataType.Offer"
+                        this.uploadToServer(rtcDataType.Offer, {
+                            sdp: this.peerConnection.localDescription
+                        }, "Connection Answer")
+                    }
+                }
+            },
+            "RTC Answer",
+            {timeoutPeriod: RtcBase.hostTimeoutPeriod}
+        )
     }
 
 }
@@ -285,108 +302,47 @@ class RtcHost extends RtcBase {
 class RtcClient extends RtcBase {
 
     async start(signalingUid) {
-        this.peerConnection.onicecandidate = ({candidate}) => {
-            this.lastCandidateTime = Date.now()
-            this.answerSdp = this.peerConnection.localDescription.sdp
-        }
+        this.logFunction("Starting Connection Process...")
 
         this.answerSdp = null
         this.offerSdp = null
         this.signalingUid = signalingUid
 
-        await this.waitForOffer()
-        await this.processOffer()
-        await this.uploadAnswer()
-        await this.waitForDatachannelToOpen()
-    }
-
-    async updateOfferSdp() {
-        try {
-            let apiUrl = this.getSdpUrl
-            apiUrl += `?uid=${encodeURIComponent(this.signalingUid)}`
-            const response = await fetch(apiUrl)
-            let answers = await response.json()
-
-            answers = answers.filter(a => a.type == "offer")
-    
-            if (answers.length >= 1) {
-                this.logFunction("✅ Connection Offer received.")
-                this.offerSdp = answers[0].sdp // if there are more than
-                // one answer, ignore the rest and handle first
-
-                return true
-            } else {
-                return false
-            }
-        } catch (err) {
-            this.logFunction("⚠️ Couldn't fetch Offer Server")
-            throw err
-        }
-    }
-
-    async uploadAnswer() {
-        this.logFunction("Uploading Connection Answer...")
-
-        try {
-            let apiUrl = this.sendSdpUrl + "?type=answer"
-            apiUrl += `&uid=${encodeURIComponent(this.signalingUid)}`
-            apiUrl += `&sdp=${encodeURIComponent(this.answerSdp)}`
-            const response = await fetch(apiUrl)
-            const textResponse = await response.text()
-    
-            if (textResponse == "worked like a charm") {
-                this.logFunction("✅ Connection Answer successfully sent.")
-                return true
-            } else {
-                throw new Error(`Unknown Answer: ${textResponse}`)
-            }
-        } catch (err) {
-            this.logFunction("⚠️ Couldn't upload Connection Answer.")
-            throw err
-        }
-    }
-
-    async processOffer() {
-        await this.peerConnection.setRemoteDescription({
-            type: "offer",
-            sdp: this.offerSdp
+        this.peerConnection.addEventListener("icecandidateerror", event => {
+            this.logFunction(`⚠️ ICE candidate error: ${event.errorText}`)
         })
-    
-        this.logFunction("Creating Answer...")
-        const answer = await this.peerConnection.createAnswer()
-        await this.peerConnection.setLocalDescription(answer)
 
-        while (this.lastCandidateTime == null || Date.now() - this.lastCandidateTime < this.candidateMaxInterval) {
-            await new Promise(resolve => setTimeout(resolve, 100))
-        }
-        this.logFunction("✅ Answer successfully created.")
-    }
+        this.peerConnection.addEventListener("icecandidate", event => {
+            if (event.candidate == null) return
+            this.uploadToServer(rtcDataType.AnswerCandidate, {
+                candidate: event.candidate
+            }, "Ice Candidate")
+        })
 
-    async waitForOffer() {
-        this.logFunction("Waiting for Connection Offer...")
+        await this.checkForUpdates(
+            () => this.dataChannelOpen,
+            async (signal) => {
+                if (signal.type == rtcDataType.HostCandidate) {
+                    const candidate = new RTCIceCandidate(signal.data.candidate)
+                    this.peerConnection.addIceCandidate(candidate)
+                }
 
-        let startTime = Date.now()
-        while (!await this.updateOfferSdp()) {
-            await new Promise(resolve => setTimeout(resolve, this.checkForAnswerInterval))
+                if (signal.type == rtcDataType.Offer) {
+                    const description = new RTCSessionDescription(signal.data.sdp)
+                    await this.peerConnection.setRemoteDescription(description)
 
-            if (Date.now() - startTime > RtcBase.answerGracePeriod) {
-                throw new Error("Timeout. Couldn't connect: try generating a new QR code and rescanning.")
-            }
-        }
-    }
-
-    async waitForDatachannelToOpen() {
-        if (this.dataChannelOpen) return
-        this.logFunction("Waiting for Datachannel to open...")
-        
-        let startTime = Date.now()
-        while (!this.dataChannelOpen) {
-            await new Promise(resolve => setTimeout(resolve, 100))
-
-            if (Date.now() - startTime > RtcBase.answerGracePeriod) {
-                throw new Error("Timeout. Couldn't connect: try generating a new QR code and rescanning.")
-            }
-        }
+                    if (signal.data.sdp.type == "offer") {
+                        const answer = await this.peerConnection.createAnswer()
+                        await this.peerConnection.setLocalDescription(answer)
+                        this.uploadToServer(rtcDataType.Answer, {
+                            sdp: this.peerConnection.localDescription
+                        }, "Connection Answer")
+                    }
+                }
+            },
+            "RTC Offer",
+            {timeoutPeriod: RtcBase.clientTimeoutPeriod}
+        )
     }
 
 }
