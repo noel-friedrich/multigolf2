@@ -171,7 +171,7 @@ class RtcBase {
         while (true) {
             const timeElapsed = Date.now() - startWaitTime
             if (timeElapsed > timeout) {
-                throw new Error(`❌ Timeout while waiting for ${name}`)
+                throw new Error(`Timeout while waiting for ${name}`)
             }
 
             if (func()) {
@@ -195,7 +195,7 @@ class RtcBase {
 
             const timeElapsed = Date.now() - startTime
             if (timeElapsed > timeoutPeriod) {
-                throw new Error(`❌ Timeout while waiting for ${objectName}`)
+                throw new Error(`Timeout while waiting for ${objectName}`)
             }
 
             await new Promise(resolve => setTimeout(resolve, checkInterval))

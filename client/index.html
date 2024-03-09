@@ -30,6 +30,18 @@
                 asleep, or the connection will probably fail!
             </p>
             <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left;"></p>
+            <fieldset>
+                <legend>Page Sizing</legend>
+                <div class="checkbox-container">
+                    <input name="fullscreen-check" id="fullscreen-checkbox" type="checkbox" checked>
+                    <label for="fullscreen-check">Request fullscreen when clicking on the Multigolf course</label>
+                </div>
+                <p>
+                    On some phones and especially IPads (depending on browser and version), it makes
+                    sense to disable this fullscreen mode as the browser will force gestures like
+                    pulling a ball to be interpreted as exiting fullscreen mode.
+                </p>
+            </fieldset>
         </main>
 
         <canvas style="display: none;" id="fullscreen-canvas"></canvas>

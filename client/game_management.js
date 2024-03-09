@@ -74,7 +74,7 @@ async function onKickBallTouchEvent(touchInfo) {
         return
     }
 
-    const strength = touchInfo.lastDownPos.distance(touchInfo.lastUpPos) * 0.3 * gameState.scalingFactor
+    const strength = Math.min(touchInfo.lastDownPos.distance(touchInfo.lastUpPos) * 0.3 * gameState.scalingFactor, 70)
     const touchUpBoardPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
     const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
     rtc.sendMessage(new DataMessage(dataMessageType.KICK_BALL,

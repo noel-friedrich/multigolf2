@@ -7,6 +7,18 @@ const logOutput = document.querySelector("#log-output")
 const fullscreenCanvas = document.querySelector("#fullscreen-canvas")
 const context = fullscreenCanvas.getContext("2d")
 const statusTitle = document.querySelector("#status-title")
+const fullscreenCheckbox = document.querySelector("#fullscreen-checkbox")
+
+let requestFullscreenOnCanvasClick = true
+if (new URLSearchParams(location.search).has("nofullscreen")) {
+    requestFullscreenOnCanvasClick = false
+}
+
+fullscreenCheckbox.checked = requestFullscreenOnCanvasClick
+fullscreenCheckbox.addEventListener("click", () => {
+    requestFullscreenOnCanvasClick = !requestFullscreenOnCanvasClick
+    fullscreenCheckbox.checked = requestFullscreenOnCanvasClick
+})
 
 function logToUser(message) {
     if (logOutput.textContent.length > 0) {
@@ -57,14 +69,17 @@ async function main() {
         throw err
     }
 
-    if (!new URLSearchParams(location.search).has("nofullscreen"))
-    fullscreenCanvas.onclick = () => {
+    fullscreenCanvas.addEventListener("click", () => {
+        if (!requestFullscreenOnCanvasClick) {
+            return
+        }
+
         if (document.fullscreenElement != fullscreenCanvas) {
             if (fullscreenCanvas.requestFullscreen) {
                 fullscreenCanvas.requestFullscreen()
             }
         }
-    }
+    })
 
     document.addEventListener("click", function enableNoSleep() {
         document.removeEventListener("click", enableNoSleep, false)

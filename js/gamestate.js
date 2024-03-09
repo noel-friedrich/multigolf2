@@ -205,6 +205,7 @@ class GameState {
 
         this.board.balls.forEach(b => b.active = false)
         this.tournamentBall.active = true
+        generateScoreboard()
     }
 
     endTournament() {

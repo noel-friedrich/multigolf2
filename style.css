@@ -91,6 +91,12 @@ main p {
     margin: 0;
 }
 
+main .checkbox-container {
+    display: grid;
+    grid-template-columns: 2em 1fr;
+    gap: 1em;
+}
+
 main h1, main h2, main h3,
 main h4, main h5, main h6 {
     margin: 0;
