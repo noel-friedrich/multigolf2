@@ -174,7 +174,10 @@ async function addPlayer(playerIndex) {
         if (!abortPlayerFlag) {
             qrImg.style.display = "none"
             abortPlayerButton.style.display = "none"
-            logToConnectionLog("\n❌ Connection Failed. You may try again in 10 seconds.")
+            logToConnectionLog(`\n❌ Connection Failed. You may try again in 10 seconds.`)
+            if (err.message) {
+                logToConnectionLog(`Error-Message: ${err.message}`)
+            }
             await new Promise(resolve => setTimeout(resolve, 10000))
         }
     }
