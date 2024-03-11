@@ -74,6 +74,10 @@ async function onKickBallTouchEvent(touchInfo) {
         return
     }
 
+    if (touchInfo.lastDownPos.distance(touchInfo.lastUpPos) < 30) {
+        return
+    }
+
     const strength = Math.min(touchInfo.lastDownPos.distance(touchInfo.lastUpPos) * 0.3 * gameState.scalingFactor, 70)
     const touchUpBoardPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
     const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
@@ -99,7 +103,7 @@ async function onBallDown(touchInfo) {
         }
     }
 
-    if (smallestDistance < 40) {
+    if (smallestDistance < 100) {
         touchInfo.focusedBall = closestBall
     }
 }
