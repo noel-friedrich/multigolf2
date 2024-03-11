@@ -85,7 +85,7 @@ class Renderer {
     static renderBoard(gameState, context, touchInfo) {
         context.canvas.style.display = "block"
         context.canvas.style.display = "block"
-        const backgroundSizePercent = Math.round(70 * gameState.scalingFactor)
+        const backgroundSizePercent = Math.max(Math.round(20 * gameState.scalingFactor), 5)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
 
         if (gameState.board.startPos) {
