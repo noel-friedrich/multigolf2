@@ -1,21 +1,19 @@
 const Sprite = {
 
-    BallBlue: "../assets/objects/balls/blue.svg",
-    BallCyan: "../assets/objects/balls/cyan.svg",
-    BallLightblue: "../assets/objects/balls/light_blue.svg",
-    BallOrange: "../assets/objects/balls/orange.svg",
-    BallPink: "../assets/objects/balls/pink.svg",
-    BallRed: "../assets/objects/balls/red.svg",
-    BallViolet: "../assets/objects/balls/violet.svg",
-    BallWhite: "../assets/objects/balls/white.svg",
-    BallYellow: "../assets/objects/balls/yellow.svg",
-
-    Grid: "../assets/objects/grid.svg",
-    Hole: "../assets/objects/hole.svg",
-    Start: "../assets/objects/start.svg",
-
-    DuellHole1: "../assets/objects/duellHole1.svg",
-    DuellHole2: "../assets/objects/duellHole2.svg",
+    BallBlue:      "../assets/compressed/objects/balls/blue.png",
+    BallCyan:      "../assets/compressed/objects/balls/cyan.png",
+    BallLightblue: "../assets/compressed/objects/balls/light_blue.png",
+    BallOrange:    "../assets/compressed/objects/balls/orange.png",
+    BallPink:      "../assets/compressed/objects/balls/pink.png",
+    BallRed:       "../assets/compressed/objects/balls/red.png",
+    BallViolet:    "../assets/compressed/objects/balls/violet.png",
+    BallWhite:     "../assets/compressed/objects/balls/white.png",
+    BallYellow:    "../assets/compressed/objects/balls/yellow.png",
+    Grid:          "../assets/compressed/objects/grid.png",
+    Hole:          "../assets/compressed/objects/hole.png",
+    Start:         "../assets/compressed/objects/start.png",
+    DuellHole1:    "../assets/compressed/objects/duellHole1.png",
+    DuellHole2:    "../assets/compressed/objects/duellHole2.png",
 
 }
 
