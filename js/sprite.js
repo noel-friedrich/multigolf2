@@ -19,12 +19,12 @@ const Sprite = {
 
 Sprite.AllBalls = [
     Sprite.BallBlue,
-    Sprite.BallCyan,
-    Sprite.BallLightblue,
-    Sprite.BallOrange,
-    Sprite.BallPink,
     Sprite.BallRed,
-    Sprite.BallViolet,
-    Sprite.BallWhite,
     Sprite.BallYellow,
+    Sprite.BallPink,
+    Sprite.BallOrange,
+    Sprite.BallCyan,
+    Sprite.BallViolet,
+    Sprite.BallLightblue,
+    Sprite.BallWhite,
 ]

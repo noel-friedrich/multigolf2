@@ -34,7 +34,7 @@ class Renderer {
         if (!img) {
             throw new Error(`Unknown Sprite: ${sprite}`)
         }
-
+        context.imageSmoothingEnabled = false // as some sprites may be very small in size
         context.drawImage(img, centerPos.x - size.x / 2, centerPos.y - size.y / 2,
             size.x, size.y)
     }
