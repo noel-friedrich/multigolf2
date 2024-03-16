@@ -145,6 +145,7 @@ class Renderer {
 
     static render(gameState, context, touchInfo) {
         this.updateCanvasSize(context)
+        document.body.style.overflow = "hidden"
         switch (gameState.phase) {
             case gamePhase.Construction:
                 return this.renderConstruction(gameState, context, touchInfo)
@@ -156,6 +157,7 @@ class Renderer {
                 this.renderBoard(gameState, context, touchInfo)
                 return this.renderBallInteractions(gameState, context, touchInfo)
             default:
+                document.body.style.overflow = "visible"
                 return this.renderNothing(gameState, context, touchInfo)
         }
     }
