@@ -340,7 +340,9 @@ class RtcClient extends RtcBase {
         this.signalingUid = signalingUid
 
         this.peerConnection.addEventListener("icecandidateerror", event => {
-            this.logFunction(`⚠️ ICE candidate error: ${event.errorText}`)
+            if (new URLSearchParams(location.search).has("debug")) {
+                console.log(`[DEBUG] ICE candidate error: ${event.errorText}`)
+            }
         })
 
         this.peerConnection.addEventListener("icecandidate", event => {
