@@ -55,6 +55,7 @@ class RtcBase {
 
     getSignalsApi = "https://www.noel-friedrich.de/multigolf2/api/get_signals.php"
     sendSignalApi = "https://www.noel-friedrich.de/multigolf2/api/send_signal.php"
+    getIceServersApi = "https://multigolf2.metered.live/api/v1/turn/credentials?apiKey=17135e6b2d8ea014e96ceffe0543a04c49af"
     clientUrl = "https://multi.golf/client/index.html"
 
     static checkForSignalsInterval = 1000
@@ -77,6 +78,31 @@ class RtcBase {
         }
     }
 
+    async init() {
+        if (this.hasInitted) {
+            return
+        }
+
+        this.logFunction("🫂 Initializing Peer-To-Peer...")
+        this.hasInitted = true
+
+        const response = await fetch(this.getIceServersApi)
+        const iceServers = await response.json()
+
+        if (new URLSearchParams(location.search).has("debug")) {
+            console.log("[DEBUG] received ice servers from api", iceServers)
+        }
+
+        iceServers.push({urls: "stun:stun.l.google.com:19302"})
+
+        this.peerConnection = new RTCPeerConnection({iceServers: iceServers})
+        
+        this.dataChannel = this.peerConnection.createDataChannel("chat", {
+            negotiated: true, id: 0})
+
+        this.initDatachannelListeners()
+    }
+
     constructor({
         logFunction = () => {},
         onDataMessage = () => {},
@@ -91,37 +117,7 @@ class RtcBase {
         this.dataChannelOpen = false
         this.signalingUid = null
         this.index = index
-
-        this.peerConnection = new RTCPeerConnection({
-            iceServers: [
-                {urls: "stun:stun.l.google.com:19302"},
-                {urls: "stun:stun.relay.metered.ca:80"},
-                {
-                    urls: "turn:global.relay.metered.ca:80",
-                    username: "c92fdb038761ee07a0175193",
-                    credential: "MSt53B2+OIlenwNK",
-                },
-                {
-                    urls: "turn:global.relay.metered.ca:80?transport=tcp",
-                    username: "c92fdb038761ee07a0175193",
-                    credential: "MSt53B2+OIlenwNK",
-                },
-                {
-                    urls: "turn:global.relay.metered.ca:443",
-                    username: "c92fdb038761ee07a0175193",
-                    credential: "MSt53B2+OIlenwNK",
-                },
-                {
-                    urls: "turns:global.relay.metered.ca:443?transport=tcp",
-                    username: "c92fdb038761ee07a0175193",
-                    credential: "MSt53B2+OIlenwNK",
-                },
-            ]})
-        
-        this.dataChannel = this.peerConnection.createDataChannel("chat", {
-            negotiated: true, id: 0})
-
-        this.initDatachannelListeners()
+        this.hasInitted = false
     }
 
     sendMessage(message) {
@@ -263,6 +259,7 @@ class RtcHost extends RtcBase {
     }
 
     async start() {
+        await this.init()
         this.logFunction("Starting Connection Process...")
 
         this.signalingUid = this.generateSignalingUid()
@@ -279,7 +276,9 @@ class RtcHost extends RtcBase {
         this.logFunction("✅ Created QR Code Target")
 
         this.peerConnection.addEventListener("icecandidateerror", event => {
-            this.logFunction(`⚠️ ICE candidate error: ${event.errorText}`)
+            if (new URLSearchParams(location.search).has("debug")) {
+                console.log(`[DEBUG] ICE candidate error: ${event.errorText}`)
+            }
         })
 
         this.peerConnection.addEventListener("icecandidate", event => {
@@ -333,6 +332,7 @@ class RtcHost extends RtcBase {
 class RtcClient extends RtcBase {
 
     async start(signalingUid) {
+        await this.init()
         this.logFunction("Starting Connection Process...")
 
         this.answerSdp = null
