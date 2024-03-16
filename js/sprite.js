@@ -1,5 +1,4 @@
 const Sprite = {
-
     BallBlue:      "../assets/compressed/objects/balls/blue.png",
     BallCyan:      "../assets/compressed/objects/balls/cyan.png",
     BallLightblue: "../assets/compressed/objects/balls/light_blue.png",
@@ -14,7 +13,8 @@ const Sprite = {
     Start:         "../assets/compressed/objects/start.png",
     DuellHole1:    "../assets/compressed/objects/duellHole1.png",
     DuellHole2:    "../assets/compressed/objects/duellHole2.png",
-
+    Lava:          "../assets/compressed/objects/lava.png",
+    Eraser:        "../assets/objects/eraser.svg"
 }
 
 Sprite.AllBalls = [

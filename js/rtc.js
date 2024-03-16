@@ -2,8 +2,9 @@ const dataMessageType = {
     PING: "ping",
     GAMESTATE: "gamestate",
     CONSTRUCTION_LINE: "construction_line",
-    PLACE_START: "place_start",
-    PLACE_END: "place_end",
+    PLACE_OBJECT: "place_object",
+    CHANGE_OBJECT: "change_object",
+    REMOVE_OBJECT: "remove_object",
     REQUEST_DIMENSIONS: "request_dimensions",
     SEND_DIMENSIONS: "send_dimensions",
     KICK_BALL: "kick_ball"
@@ -91,11 +92,30 @@ class RtcBase {
         this.signalingUid = null
         this.index = index
 
-        // list of free STUN servers: https://gist.github.com/zziuni/3741933
         this.peerConnection = new RTCPeerConnection({
             iceServers: [
-                {"urls": "stun:stun.stunprotocol.org:3478"},
-                {"urls": "stun:stun.l.google.com:19302"},
+                {urls: "stun:stun.l.google.com:19302"},
+                {urls: "stun:stun.relay.metered.ca:80"},
+                {
+                    urls: "turn:global.relay.metered.ca:80",
+                    username: "c92fdb038761ee07a0175193",
+                    credential: "MSt53B2+OIlenwNK",
+                },
+                {
+                    urls: "turn:global.relay.metered.ca:80?transport=tcp",
+                    username: "c92fdb038761ee07a0175193",
+                    credential: "MSt53B2+OIlenwNK",
+                },
+                {
+                    urls: "turn:global.relay.metered.ca:443",
+                    username: "c92fdb038761ee07a0175193",
+                    credential: "MSt53B2+OIlenwNK",
+                },
+                {
+                    urls: "turns:global.relay.metered.ca:443?transport=tcp",
+                    username: "c92fdb038761ee07a0175193",
+                    credential: "MSt53B2+OIlenwNK",
+                },
             ]})
         
         this.dataChannel = this.peerConnection.createDataChannel("chat", {

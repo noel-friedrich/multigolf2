@@ -33,6 +33,8 @@ fullscreenCanvas.addEventListener("touchmove", event => {
 
     if (gameState.phase == gamePhase.Construction) {
         touchInfo.currPos = clampToEdges(touchInfo.currPos)
+    } else if (gameState.phase == gamePhase.Placing) {
+        onPlaceTouchMove(touchInfo)
     }
 })
 
@@ -45,11 +47,8 @@ fullscreenCanvas.addEventListener("touchend", event => {
     if (gameState.phase == gamePhase.Construction) {
         touchInfo.lastUpPos = clampToEdges(touchInfo.lastUpPos)
         onConstructionTouchEvent(touchInfo)
-    } else if (gameState.phase == gamePhase.PlaceStart) {
-        onPlaceStartTouchEvent(touchInfo)
-    } else if (gameState.phase == gamePhase.PlaceEnd
-        || gameState.phase == gamePhase.PlaceDuellEnds) {
-        onPlaceEndTouchEvent(touchInfo)
+    } else if (gameState.phase == gamePhase.Placing) {
+        onPlaceTouchEvent(touchInfo)
     } else if (gamePhase.isPlaying(gameState.phase)) {
         onKickBallTouchEvent(touchInfo)
     }
@@ -108,24 +107,36 @@ async function onBallDown(touchInfo) {
     }
 }
 
-async function onPlaceStartTouchEvent(touchInfo) {
-    if (!touchInfo.lastUpPos || !touchInfo.lastDownPos
-        || touchInfo.lastDownPos.distance(touchInfo.lastUpPos) > 10) {
-        return
-    }
+async function onPlaceTouchMove(touchInfo) {
+    if (gameState.placingObjectType == golfObjectType.Eraser) {
+        const eraserPos = gameState.screenPosToBoardPos(touchInfo.currPos)
+        const closestObject = gameState.board.getClosestObject(eraserPos)
 
-    rtc.sendMessage(new DataMessage(dataMessageType.PLACE_START,
-        {pos: gameState.screenPosToBoardPos(touchInfo.lastDownPos)}))
+        if (!closestObject || closestObject.pos.distance(eraserPos) > 30) {
+            return
+        }
+
+        // optimistic change
+        gameState.board.objects = gameState.board.objects.filter(o => o.uid != closestObject.uid)
+        rtc.sendMessage(new DataMessage(dataMessageType.REMOVE_OBJECT, {uid: closestObject.uid}))
+    }
 }
 
-async function onPlaceEndTouchEvent(touchInfo) {
+async function onPlaceTouchEvent(touchInfo) {
     if (!touchInfo.lastUpPos || !touchInfo.lastDownPos
         || touchInfo.lastDownPos.distance(touchInfo.lastUpPos) > 10) {
         return
     }
 
-    rtc.sendMessage(new DataMessage(dataMessageType.PLACE_END,
-        {pos: gameState.screenPosToBoardPos(touchInfo.lastDownPos)}))
+    if (gameState.placingObjectType == golfObjectType.Eraser) {
+        return
+    }
+
+    const placedObject = new GolfObject(gameState.placingObjectType,
+        gameState.screenPosToBoardPos(touchInfo.lastDownPos))
+
+    rtc.sendMessage(new DataMessage(dataMessageType.PLACE_OBJECT,
+        {object: placedObject.toObject()}))
 }
 
 async function onConstructionTouchEvent(touchInfo) {

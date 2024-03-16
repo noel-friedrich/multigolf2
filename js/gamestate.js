@@ -9,18 +9,16 @@ const gamePhase = {
     DuellExplanation: 6,
     Construction: 7,
     Loading: 8,
-    PlaceStart: 9,
-    PlaceEnd: 10,
-    PlaceDuellEnds: 11,
-    PlayingDuell: 12,
-    PlayingSandbox: 13,
-    PlayingTournament: 14,
-    ShowingResultsOfTournament: 15,
-    ShowingResultsOfDuell: 16,
+    Placing: 9,
+    PlayingDuell: 10,
+    PlayingSandbox: 11,
+    PlayingTournament: 12,
+    ShowingResultsOfTournament: 13,
+    ShowingResultsOfDuell: 14,
 
-    __LOWEST_PLAYING: 12,
-    __LOWEST_SHOWING_RESULTS: 15,
-    __MAX_VALUE: 17,
+    __LOWEST_PLAYING: 10,
+    __LOWEST_SHOWING_RESULTS: 13,
+    __MAX_VALUE: 15,
 
     isPlaying(phase) {
         return (
@@ -42,14 +40,12 @@ const gamePhaseNames = {
     [gamePhase.DuellExplanation]: "duell-explanation",
     [gamePhase.Construction]: "construction",
     [gamePhase.Loading]: "loading",
-    [gamePhase.PlaceStart]: "place-start",
-    [gamePhase.PlaceEnd]: "place-end",
+    [gamePhase.Placing]: "placing",
     [gamePhase.PlayingDuell]: "playing-duell",
     [gamePhase.PlayingTournament]: "playing-tournament",
     [gamePhase.PlayingSandbox]: "playing-sandbox",
     [gamePhase.ShowingResultsOfTournament]: "showing-results-of-tournament",
     [gamePhase.ShowingResultsOfDuell]: "showing-results-of-duell",
-    [gamePhase.PlaceDuellEnds]: "place-duell-ends"
 }
 
 const gameMode = {
@@ -94,6 +90,7 @@ class Player {
 class GameState {
 
     constructor(phase, mode, board, players=[], deviceIndex=null,
+        placingObjectType=golfObjectType.Start,
         tournamentBuilderIndex=0, tournamentBallIndex=0,
         duellActivePlayerIndex=0, duellWinnerIndex=null) {
         this.phase = phase
@@ -101,6 +98,8 @@ class GameState {
         this.board = board
         this.players = players
         this.deviceIndex = deviceIndex
+        
+        this.placingObjectType = placingObjectType
 
         // tournament related
         this.tournamentBuilderIndex = tournamentBuilderIndex
@@ -160,6 +159,7 @@ class GameState {
             board: this.board.toObject(),
             players: this.players.map(p => p.toObject()),
             index: deviceIndex ?? this.deviceIndex,
+            placingObjectType: this.placingObjectType,
             tournamentBuilderIndex: this.tournamentBuilderIndex,
             tournamentBallIndex: this.tournamentBallIndex,
             duellActivePlayerIndex: this.duellActivePlayerIndex,
@@ -173,6 +173,7 @@ class GameState {
             Board.fromObject(obj.board),
             obj.players.map(p => Player.fromObject(p)),
             obj.index,
+            obj.placingObjectType,
             obj.tournamentBuilderIndex,
             obj.tournamentBallIndex,
             obj.duellActivePlayerIndex,
@@ -228,8 +229,7 @@ class GameState {
             this.endTournament()
         }
 
-        this.board.startPos = null
-        this.board.endPositions = []
+        this.board.objects = []
     }
 
     updateTournament() {

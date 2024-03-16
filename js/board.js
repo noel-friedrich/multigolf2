@@ -1,16 +1,18 @@
 class Ball {
 
-    constructor(pos, vel, inHole, radius, spriteUrl, kicks, active, uid) {
+    constructor(pos, vel, inHole, radius, spriteUrl, kicks, active, uid, rotationAngle) {
         this.pos = pos
         this.vel = vel ?? new Vector2d(0, 0)
 
         this.inHole = inHole ?? false
         this.radius = radius ?? 18
         this.spriteUrl = spriteUrl ?? Sprite.BallWhite
+
         
         this.kicks = kicks ?? 0
         this.active = active ?? true
         this.uid = uid
+        this.rotationAngle = rotationAngle ?? 0
     }
 
     toObject() {
@@ -23,6 +25,7 @@ class Ball {
             kicks: this.kicks,
             active: this.active,
             uid: this.uid,
+            rotationAngle: this.rotationAngle,
         }
     }
 
@@ -35,7 +38,8 @@ class Ball {
             obj.spriteUrl,
             obj.kicks,
             obj.active,
-            obj.uid
+            obj.uid,
+            obj.rotationAngle
         )
     }
 
@@ -120,8 +124,8 @@ class Ball {
         const endPos = this._getClosestEndPos(this.pos, board)
         if (endPos && !this.inHole) {
             const distance = endPos.distance(this.pos)
-            // you may ask why 1.35? But please don't
-            if (distance <= this.radius * 1.35) {
+            // you may ask why 1.35 and 40? But please don't
+            if (distance <= this.radius * 1.35 && this.vel.length < 40) {
                 this.inHole = true
             }
         }
@@ -129,6 +133,9 @@ class Ball {
         if (this.inHole) {
             this.radius = Math.max(0, this.radius - 0.1)
             this.pos = this.pos.lerp(endPos, 0.1)
+            this.rotationAngle += 0.4
+        } else {
+            this.rotationAngle += this.vel.length / 40
         }
     }
 
@@ -138,10 +145,9 @@ class Board {
 
     static physicsTimestep = 30
 
-    constructor(course, startPos, endPositions, balls, physicsTime) {
+    constructor(course, objects, balls, physicsTime) {
         this.course = course ?? new Course()
-        this.startPos = startPos
-        this.endPositions = endPositions ?? []
+        this.objects = objects ?? []
         this.balls = balls ?? []
         this.physicsTime = physicsTime ?? Date.now()
 
@@ -150,6 +156,32 @@ class Board {
         // (as they are only useful for host)
         this.constructionLineBuffer = []
         this.courseHistory = [this.course.copy()]
+    }
+
+    getClosestObject(pos) {
+        let smallestDistance = Infinity
+        let closestObject = null
+        for (let object of this.objects) {
+            const distance = pos.distance(object.pos)
+            if (distance < smallestDistance) {
+                smallestDistance = distance
+                closestObject = object
+            }
+        }
+        return closestObject
+    }
+
+    get startPos() {
+        const startObject = this.objects.find(o => o.type = golfObjectType.Start)
+        if (startObject) {
+            return startObject.pos
+        } else {
+            return undefined
+        }
+    }
+
+    get endPositions() {
+        return this.objects.filter(o => o.type == golfObjectType.Hole).map(o => o.pos)
     }
 
     physicsStep() {
@@ -176,8 +208,8 @@ class Board {
 
         this.balls.push(new Ball(
             this.startPos.copy(), new Vector2d(0, 0),
-            false, 18, spriteUrl,
-            0, true, Math.random().toString().slice(2)
+            false, 18, spriteUrl, 0, true,
+            Math.random().toString().slice(2), 0
         ))
     }
 
@@ -191,8 +223,7 @@ class Board {
     toObject() {
         return {
             course: this.course.toObject(),
-            startPos: this.startPos ? this.startPos.toObject() : null,
-            endPositions: this.endPositions.map(p => p.toObject()),
+            objects: this.objects.map(o => o.toObject()),
             balls: this.balls.map(b => b.toObject()),
             physicsTime: this.physicsTime,
         }
@@ -201,10 +232,10 @@ class Board {
     static fromObject(obj) {
         return new Board(
             Course.fromObject(obj.course),
-            Vector2d.fromObject(obj.startPos),
-            obj.endPositions.map(e => Vector2d.fromObject(e)),
+            obj.objects.map(o => GolfObject.fromObject(o)),
             obj.balls.map(b => Ball.fromObject(b)),
-            obj.physicsTime)
+            obj.physicsTime
+        )
     }
 
     get currPhoneIndex() {

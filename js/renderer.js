@@ -19,6 +19,7 @@ class Renderer {
         this.spriteImgMap[Sprite.Start] = await this.loadImg(Sprite.Start)
         this.spriteImgMap[Sprite.DuellHole1] = await this.loadImg(Sprite.DuellHole1)
         this.spriteImgMap[Sprite.DuellHole2] = await this.loadImg(Sprite.DuellHole2)
+        this.spriteImgMap[Sprite.Lava] = await this.loadImg(Sprite.Lava)
     }
 
     static startSize = new Vector2d(40, 40)
@@ -77,7 +78,7 @@ class Renderer {
             }
 
             context.fillStyle = "blue"
-            this.drawCircle(context, touchInfo.currPos, this.screenUnit)
+            this.drawCircle(context, touchInfo.currPos, Math.min(this.screenUnit, 100))
             context.fill()
         }
     }
@@ -88,9 +89,9 @@ class Renderer {
         const backgroundSizePercent = Math.max(Math.round(20 * gameState.scalingFactor), 5)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
 
-        if (gameState.board.startPos) {
-            const screenPos = gameState.boardPosToScreenPos(gameState.board.startPos)
-            this.drawSprite(context, screenPos, this.startSize.scale(gameState.scalingFactor), Sprite.Start)
+        for (const object of gameState.board.objects) {
+            const screenPos = gameState.boardPosToScreenPos(object.pos)
+            this.drawSprite(context, screenPos, object.size.scale(gameState.scalingFactor), object.sprite)
         }
 
         if (gameState.mode == gameMode.Duell && gameState.board.endPositions.length == 2) {
@@ -99,11 +100,6 @@ class Renderer {
 
             const screenPos2 = gameState.boardPosToScreenPos(gameState.board.endPositions[1])
             this.drawSprite(context, screenPos2, this.startSize.scale(gameState.scalingFactor), Sprite.DuellHole2)
-        } else {
-            for (let endPos of gameState.board.endPositions) {
-                const screenPos = gameState.boardPosToScreenPos(endPos)
-                this.drawSprite(context, screenPos, this.startSize.scale(gameState.scalingFactor), Sprite.Hole)
-            }
         }
         
         // shallow copy to sort them into correct rendering order
@@ -120,8 +116,15 @@ class Renderer {
             if (!ball.active && !ball.isMoving()) {
                 context.globalAlpha = 0.5
             }
-            this.drawSprite(context, screenPos, size, ball.spriteUrl)
+
+            // rotate context to rotate ball
+            context.save()
+            context.translate(screenPos.x, screenPos.y)
+            context.rotate(ball.rotationAngle)
+
+            this.drawSprite(context, new Vector2d(0, 0), size, ball.spriteUrl)
             context.globalAlpha = 1.0
+            context.restore()
         }
     }
 
@@ -145,9 +148,7 @@ class Renderer {
         switch (gameState.phase) {
             case gamePhase.Construction:
                 return this.renderConstruction(gameState, context, touchInfo)
-            case gamePhase.PlaceStart:
-            case gamePhase.PlaceEnd:
-            case gamePhase.PlaceDuellEnds:
+            case gamePhase.Placing:
                 return this.renderBoard(gameState, context, touchInfo)
             case gamePhase.PlayingDuell:
             case gamePhase.PlayingSandbox:

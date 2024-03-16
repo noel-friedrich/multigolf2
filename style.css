@@ -255,3 +255,66 @@ main #board-canvas {
 h2#loading-indicator {
     animation: loading-text 3s infinite;
 }
+
+main .object-selection-container {
+    display: grid;
+    gap: 1em;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+main .object-selection-container .object {
+    border: 1px solid #a1a1a1;
+    --object-padding: .6rem;
+    --object-border-radius: .5rem;
+    padding: var(--object-padding);
+    border-radius: var(--object-border-radius);
+    position: relative;
+}
+
+main .object-selection-container .object.selected {
+    outline: 3px solid blue;
+}
+
+main .object-selection-container .object:not(.selected) {
+    cursor: pointer;
+}
+
+main .object-selection-container .head-img {
+    display: flex;
+    justify-content: center;
+    padding: 1em;
+    margin-top: calc(-1 * var(--object-padding));
+    margin-left: calc(-1 * var(--object-padding));
+    margin-right: calc(-1 * var(--object-padding));
+    margin-bottom: var(--object-padding);
+    border-radius: var(--object-border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 1px solid #a1a1a1;
+    background-image: url("assets/objects/grid.svg");
+    background-size: 50%;
+}
+
+main .object-selection-container .head-img > img {
+    height: 4em;
+    width: auto;
+    image-rendering: pixelated;
+}
+
+main .object-selection-container .title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: .5rem;
+    font-weight: bold;
+    background-color: white;
+    border-top-left-radius: var(--object-border-radius);
+    border-bottom-right-radius: var(--object-border-radius);
+    font-family: var(--header-font);
+    border-bottom: 1px solid #a1a1a1;
+    border-right: 1px solid #a1a1a1;
+}
+
+main .object-selection-container .description {
+    font-family: var(--general-font);
+}

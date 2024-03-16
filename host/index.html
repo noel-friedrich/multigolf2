@@ -30,6 +30,18 @@
                 </div>
             </fieldset>
 
+            <section data-phase="placing">
+                <h2>Placing Items</h2>
+                <p>
+                    Select an object below and click anywhere on the course to place it.
+                    Every course must have at least a start and a hole. You can move
+                    existing items around by dragging and pinching. Remove items using
+                    the eraser.
+                </p>
+                <div class="object-selection-container"></div>
+                <button onclick="finishPlacing()">I'm finished.</button>
+            </section>
+
             <section data-phase="hello">
                 <h2>Welcome to Multigolf!</h2>
                 <p>
@@ -241,16 +253,6 @@
                 <button onclick="finishConstruction()">I'm finished</button>
             </section>
 
-            <section data-phase="place-start">
-                <h2>Place the Start</h2>
-                <p>
-                    Click somewhere on your course (not on this phone!)
-                    to place the start point of this course.
-                </p>
-                <img src="../assets/gifs/place-start.gif">
-                <button onclick="finishStartPlacing()">I have placed the Start</button>
-            </section>
-
             <section data-phase="place-duell-ends">
                 <h2>Place <span data-fill="duell-active-name">NAME</span>s Goal</h2>
                 <p>
@@ -265,16 +267,6 @@
                     to maximise your chances of winning.
                 </p>
                 <button onclick="finishDuelEndsPlacing()">We're finished!</button>
-            </section>
-
-            <section data-phase="place-end">
-                <h2>Place the End</h2>
-                <p>
-                    Click somewhere on your course (not on this phone!)
-                    to place the end point (the hole) of this course.
-                </p>
-                <img src="../assets/gifs/place-end.gif">
-                <button onclick="finishEndPlacing()">I have placed the End</button>
             </section>
 
             <section data-phase="playing-tournament">
@@ -346,6 +338,7 @@
         <script src="../js/gamestate.js"></script>
         <script src="../js/boardrenderer.js"></script>
         <script src="../js/rtc.js"></script>
+        <script src="../js/objects.js"></script>
         <script src="../js/scoreboardmaker.js"></script>
         <script src="game_setup.js"></script>
         <script src="game_management.js"></script>

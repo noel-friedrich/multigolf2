@@ -47,17 +47,37 @@ function onDataMessage(dataMessage, rtc) {
         finishConstruction()
 
     } else if (
-        gameState.phase == gamePhase.PlaceStart &&
-        dataMessage.type == dataMessageType.PLACE_START
+        gameState.phase == gamePhase.Placing &&
+        dataMessage.type == dataMessageType.PLACE_OBJECT
     ) {
-        gameState.board.startPos = Vector2d.fromObject(dataMessage.data.pos)
+        const object = GolfObject.fromObject(dataMessage.data.object)
+
+        // remove existing starts
+        if (object.type == golfObjectType.Start) {
+            gameState.board.objects = gameState.board.objects.filter(o => o.type != golfObjectType.Start)
+        }
+
+        gameState.board.objects.push(object)
         syncGamestate()
 
     } else if (
-        gameState.phase == gamePhase.PlaceEnd &&
-        dataMessage.type == dataMessageType.PLACE_END
+        gameState.phase == gamePhase.Placing &&
+        dataMessage.type == dataMessageType.REMOVE_OBJECT
     ) {
-        gameState.board.endPositions = [Vector2d.fromObject(dataMessage.data.pos)]
+        gameState.board.objects = gameState.board.objects.filter(o => o.uid != dataMessage.data.uid)
+        syncGamestate()
+
+    } else if (
+        gameState.phase == gamePhase.Placing &&
+        dataMessage.type == dataMessageType.CHANGE_OBJECT
+    ) {
+        for (let i = 0; i < gameState.board.objects.length; i++) {
+            if (gameState.board.objects[i].uid == dataMessage.data.uid) {
+                gameState.board.objects[i] = GolfObject.fromObject(dataMessage.data.object)
+                break
+            }
+        }
+
         syncGamestate()
 
     } else if (
@@ -162,12 +182,58 @@ function finishConstruction() {
         return
     }
 
-    changeGamePhase(gamePhase.PlaceStart)
+    changeGamePhase(gamePhase.Placing)
+    preparePlacing()
     syncGamestate()
 }
 
-function finishStartPlacing() {
-    if (gameState.phase != gamePhase.PlaceStart) {
+function preparePlacing() {
+    for (const container of document.querySelectorAll(".object-selection-container")) {
+        container.innerHTML = ""
+        const allObjectContainers = []
+        for (const obj of allGolfObjects) {
+            const object = document.createElement("div")
+            const title = document.createElement("div")
+            const headImg = document.createElement("div")
+            const objectImg = document.createElement("img")
+            const description = document.createElement("div")
+
+            object.classList.add("object")
+            title.classList.add("title")
+            headImg.classList.add("head-img")
+            description.classList.add("description")
+
+            title.textContent = obj.type
+            objectImg.src = new GolfObject(obj.type).sprite
+            description.textContent = obj.description
+
+            headImg.appendChild(objectImg)
+
+            object.appendChild(title)
+            object.appendChild(headImg)
+            object.appendChild(description)
+
+            if (gameState.placingObjectType == obj.type) {
+                object.classList.add("selected")
+            }
+
+            object.addEventListener("click", () => {
+                for (let element of allObjectContainers) {
+                    element.classList.remove("selected")
+                }
+                object.classList.add("selected")
+                gameState.placingObjectType = obj.type
+                syncGamestate()
+            })
+
+            container.appendChild(object)
+            allObjectContainers.push(object)
+        }
+    }
+}
+
+function finishPlacing() {
+    if (gameState.phase != gamePhase.Placing) {
         return
     }
 
@@ -176,13 +242,17 @@ function finishStartPlacing() {
         return
     }
 
-    if (gameState.mode == gameMode.Duell) {
-        changeGamePhase(gamePhase.PlaceDuellEnds)
-    } else {
-        changeGamePhase(gamePhase.PlaceEnd)
+    if (gameState.board.endPositions.length == 0) {
+        alert("You haven't placed a hole yet. Place one and try again.")
+        return
     }
 
-    syncGamestate()
+    if (gameState.mode == gameMode.Duell) {
+        changeGamePhase(gamePhase.PlaceDuellEnds)
+        syncGamestate()
+    } else {
+        startPlaying()
+    }
 }
 
 function finishDuelEndsPlacing() {
@@ -192,19 +262,6 @@ function finishDuelEndsPlacing() {
 
     if (gameState.board.endPositions.length != 2) {
         alert("You haven't placed two holes yet. Place both and try again.")
-        return
-    }
-
-    startPlaying()
-}
-
-function finishEndPlacing() {
-    if (gameState.phase != gamePhase.PlaceEnd) {
-        return
-    }
-
-    if (gameState.board.endPositions.length == 0) {
-        alert("You haven't placed a hole yet. Place one and try again.")
         return
     }
 
