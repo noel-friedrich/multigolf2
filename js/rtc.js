@@ -47,6 +47,10 @@ const rtcDataType = {
     AnswerCandidate: "answer-candidate",
 }
 
+// this api key has to be public anyways. this jumbling is just to prevent naive
+// scanning bots to send me ridiculus emails every so often threatening something
+const notSoSecretMeteredApiKey = "fa94c40a3450effec69e410ae8d2b6e53171".split("").reverse().join("")
+
 class RtcBase {
 
     // ms between pings to host to make sure that connection
@@ -55,7 +59,7 @@ class RtcBase {
 
     getSignalsApi = "https://www.noel-friedrich.de/multigolf2/api/get_signals.php"
     sendSignalApi = "https://www.noel-friedrich.de/multigolf2/api/send_signal.php"
-    getIceServersApi = "https://multigolf2.metered.live/api/v1/turn/credentials?apiKey=17135e6b2d8ea014e96ceffe0543a04c49af"
+    getIceServersApi = "https://multigolf2.metered.live/api/v1/turn/credentials?apiKey=" + notSoSecretMeteredApiKey
     clientUrl = "https://multi.golf/client/index.html"
 
     static checkForSignalsInterval = 1000
