@@ -31,7 +31,7 @@ class GolfObject {
     }
 
     get topLeftPos() {
-        return this.pos.sub(this.size.scale(0.5))
+        return this.pos.sub(this.size.scale(0.5).rotate(this.angle))
     }
 
     get relativeCorners() {
