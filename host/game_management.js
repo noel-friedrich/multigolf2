@@ -77,33 +77,6 @@ function onDataMessage(dataMessage, rtc) {
         syncGamestate()
 
     } else if (
-        gameState.phase == gamePhase.PlaceDuellEnds &&
-        dataMessage.type == dataMessageType.PLACE_END
-    ) {
-        const endPos = Vector2d.fromObject(dataMessage.data.pos)
-
-        if (gameState.board.endPositions.length == 0) {
-            gameState.duellActivePlayerIndex++
-            gameState.board.endPositions.push(endPos)
-
-        } else if (gameState.board.endPositions.length == 1) {
-            gameState.duellActivePlayerIndex++
-            gameState.board.endPositions.push(endPos)
-
-        } else if (gameState.board.endPositions.length == 2) {
-            gameState.board.endPositions[gameState.duellActivePlayerIndex % gameState.players.length] = endPos
-            gameState.duellActivePlayerIndex++
-
-        } else {
-            return
-        }
-
-        if (!currAddingPlayerUid) {
-            updateHtmlSection(gameState.phase)
-        }
-        syncGamestate()
-
-    } else if (
         gamePhase.isPlaying(gameState.phase) &&
         dataMessage.type == dataMessageType.KICK_BALL
     ) {
@@ -188,6 +161,10 @@ function preparePlacing() {
         container.innerHTML = ""
         const allObjectContainers = []
         for (const obj of placableObjects) {
+            if (!obj.visibility(gameState)) {
+                continue
+            }
+
             const object = document.createElement("div")
             const title = document.createElement("div")
             const headImg = document.createElement("div")
@@ -201,7 +178,7 @@ function preparePlacing() {
 
             title.textContent = obj.type
             objectImg.src = obj.sprite
-            description.textContent = obj.description
+            description.textContent = gameState.replaceText(obj.description)
 
             headImg.appendChild(objectImg)
 
@@ -244,21 +221,15 @@ function finishPlacing() {
     }
 
     if (gameState.mode == gameMode.Duell) {
-        changeGamePhase(gamePhase.PlaceDuellEnds)
-        syncGamestate()
-    } else {
-        startPlaying()
-    }
-}
+        if (!gameState.board.objects.find(o => o.type == golfObjectType.DuellHole1)) {
+            alert(gameState.replaceText("You haven't placed a hole for <duell-player-1> yet."))
+            return
+        }
 
-function finishDuelEndsPlacing() {
-    if (gameState.phase != gamePhase.PlaceDuellEnds) {
-        return
-    }
-
-    if (gameState.board.endPositions.length != 2) {
-        alert("You haven't placed two holes yet. Place both and try again.")
-        return
+        if (!gameState.board.objects.find(o => o.type == golfObjectType.DuellHole2)) {
+            alert(gameState.replaceText("You haven't placed a hole for <duell-player-2> yet."))
+            return
+        }
     }
 
     startPlaying()

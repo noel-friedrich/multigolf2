@@ -126,7 +126,7 @@ class Renderer {
         for (const object of gameState.board.objects) {
             const screenPos = gameState.boardPosToScreenPos(object.pos)
             this.drawSprite(context, screenPos, object.size.scale(1 / gameState.scalingFactor),
-                object.sprite, {angle: object.angle})
+                object.sprite, {angle: gameState.boardAngleToScreenAngle(object.angle)})
 
             if (drawSelection) {
                 if (touchInfo.focusedObject && object.uid == touchInfo.focusedObject.uid) {
@@ -165,7 +165,7 @@ class Renderer {
             // rotate context to rotate ball
             context.save()
             context.translate(screenPos.x, screenPos.y)
-            context.rotate(ball.rotationAngle)
+            context.rotate(gameState.boardAngleToScreenAngle(ball.rotationAngle))
 
             this.drawSprite(context, new Vector2d(0, 0), size, ball.spriteUrl)
             context.restore()

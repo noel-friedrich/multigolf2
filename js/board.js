@@ -202,7 +202,11 @@ class Board {
     }
 
     get endPositions() {
-        return this.objects.filter(o => o.type == golfObjectType.Hole).map(o => o.pos)
+        return this.objects.filter(o => (
+            o.type == golfObjectType.Hole
+            || o.type == golfObjectType.DuellHole1
+            || o.type == golfObjectType.DuellHole2
+            )).map(o => o.pos)
     }
 
     physicsStep() {

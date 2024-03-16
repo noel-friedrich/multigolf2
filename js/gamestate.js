@@ -107,6 +107,15 @@ class GameState {
         this.duellActivePlayerIndex = duellActivePlayerIndex
         this.duellWinnerIndex = duellWinnerIndex
     }
+
+    replaceText(txt) {
+        if (this.mode == gameMode.Duell && this.players.length >= 2) {
+            txt = txt.replaceAll("<duell-player-1>", this.players[0].name)
+            txt = txt.replaceAll("<duell-player-2>", this.players[1].name)
+        }
+
+        return txt
+    }
     
     get duellActivePlayer() {
         return this.players[this.duellActivePlayerIndex % this.players.length]
@@ -146,6 +155,14 @@ class GameState {
 
     boardPosToScreenPos(pos) {
         return this.board.course.phones[this.deviceIndex - 1].boardPosToScreenPos(pos)
+    }
+
+    screenAngleToBoardAngle(angle) {
+        return angle - this.board.course.phones[this.deviceIndex - 1].angle
+    }
+
+    boardAngleToScreenAngle(angle) {
+        return angle + this.board.course.phones[this.deviceIndex - 1].angle
     }
 
     get scalingFactor() {
@@ -279,10 +296,9 @@ class GameState {
     updateDuell() {
         const ball = this.board.balls[0]
         if (ball.radius == 0 && ball.inHole) {
-            const holeDist1 = ball.pos.distance(gameState.board.endPositions[0])
-            const holeDist2 = ball.pos.distance(gameState.board.endPositions[1])
+            const closestObject = this.board.getClosestObject(ball.pos)
 
-            if (holeDist1 < holeDist2) {
+            if (closestObject.type == golfObjectType.DuellHole1) {
                 this.duellWinnerIndex = 0
             } else {
                 this.duellWinnerIndex = 1

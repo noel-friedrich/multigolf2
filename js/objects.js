@@ -3,20 +3,26 @@ const golfObjectType = {
     Hole: "hole",
     Lava: "lava",
     Eraser: "eraser",
+    DuellHole1: "duell-hole-1",
+    DuellHole2: "duell-hole-2",
 }
 
 const golfObjectTypeSpriteMap = {
     [golfObjectType.Start]: Sprite.Start,
     [golfObjectType.Hole]: Sprite.Hole,
     [golfObjectType.Lava]: Sprite.Lava,
-    [golfObjectType.Eraser]: Sprite.Eraser
+    [golfObjectType.Eraser]: Sprite.Eraser,
+    [golfObjectType.DuellHole1]: Sprite.DuellHole1,
+    [golfObjectType.DuellHole2]: Sprite.DuellHole2,
 }
 
 const golfObjectTypeDescriptionMap = {
     [golfObjectType.Start]: "Place where all balls start",
     [golfObjectType.Hole]: "Goal that all balls must reach",
     [golfObjectType.Lava]: "Balls touching Lava are reset to the start",
-    [golfObjectType.Eraser]: "Erase placed Objects"
+    [golfObjectType.Eraser]: "Erase placed Objects",
+    [golfObjectType.DuellHole1]: "Goal that <duell-player-1> has to reach",
+    [golfObjectType.DuellHole2]: "Goal that <duell-player-2> has to reach"
 }
 
 class GolfObject {
@@ -28,6 +34,13 @@ class GolfObject {
         this.angle = angle ?? 0
         this.uid = uid ?? Math.random().toString().slice(2)
         this.resizable = resizable ?? false
+
+        // local attribute, won't be exported
+        // may be replaced with a function that returns
+        // wether to give the option to place this object,
+        // e.g. for duell ends which only make sense
+        // when playing a duell
+        this.visibility = () => true
     }
 
     get topLeftPos() {
@@ -110,6 +123,11 @@ class GolfObject {
         return this
     }
 
+    setVisibility(func) {
+        this.visibility = func
+        return this
+    }
+
     get description() {
         return golfObjectTypeDescriptionMap[this.type]
     }
@@ -121,4 +139,6 @@ const placableObjects = [
     new GolfObject(golfObjectType.Hole),
     new GolfObject(golfObjectType.Lava).setSize(new Vector2d(80, 80)).setResizable(true),
     new GolfObject(golfObjectType.Eraser),
+    new GolfObject(golfObjectType.DuellHole1).setVisibility(gs => gs.mode == gameMode.Duell),
+    new GolfObject(golfObjectType.DuellHole2).setVisibility(gs => gs.mode == gameMode.Duell),
 ]
