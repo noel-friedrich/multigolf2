@@ -129,8 +129,9 @@ class Renderer {
             context.rotate(ball.rotationAngle)
 
             this.drawSprite(context, new Vector2d(0, 0), size, ball.spriteUrl)
-            context.globalAlpha = 1.0
             context.restore()
+            
+            context.globalAlpha = 1.0
         }
     }
 
