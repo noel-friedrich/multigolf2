@@ -199,8 +199,12 @@ async function onPlaceTouchEvent(touchInfo) {
             return
         }
 
-        const placedObject = new GolfObject(gameState.placingObjectType,
-            gameState.screenPosToBoardPos(touchInfo.lastDownPos))
+        const placedObject = placableObjects.find(o => o.type == gameState.placingObjectType).copy()
+        if (!placedObject) {
+            return
+        }
+        
+        placedObject.pos = gameState.screenPosToBoardPos(touchInfo.lastDownPos)
     
         console.log("Place Object", placedObject)
         rtc.sendMessage(new DataMessage(dataMessageType.PLACE_OBJECT,
