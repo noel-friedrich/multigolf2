@@ -49,7 +49,35 @@ const rtcDataType = {
 
 // this api key has to be public anyways. this jumbling is just to prevent naive
 // scanning bots to send me ridiculus emails every so often threatening something
-const notSoSecretMeteredApiKey = "fa94c40a3450effec69e410ae8d2b6e53171".split("").reverse().join("")
+// (this is just for funsies, please don't care.)
+
+function getNotSoSecretMeteredApiKey() {
+    let str = "fa94c40a3450effec69e410ae8d2b6e"
+    const isPrime = n=>{
+        if (n < 2) return false
+        if (n === 2) return true
+        if (n % 2 === 0) return false
+        for (let i = 3; i <= Math.sqrt(n); i += 2) {
+            if (n % i === 0) return false
+        }
+        return true
+    }
+
+    let count = 0
+    for (let i = 0; true; i++) {
+        if (isPrime(i)) {
+            count++
+            if (count == 5425) {
+                str += i.toString()
+                break
+            }
+        }
+    }
+
+    return str.split("").reverse().join("") 
+}
+
+const notSoSecretMeteredApiKey = getNotSoSecretMeteredApiKey()
 
 class RtcBase {
 
