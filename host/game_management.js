@@ -35,7 +35,7 @@ function onDataMessage(dataMessage, rtc) {
         const phoneModel = PhoneCoordinates.fromObject(dataMessage.data.phone)
         gameState.board.addConstructionLine(
             constructionLine, phoneModel,
-            dataMessage.createTime, rtc.index
+            Date.now(), rtc.index
         )
 
     } else if (
