@@ -137,7 +137,7 @@ class RtcBase {
         }
     }
 
-    async uploadToServer(type, data, objectName) {
+    async uploadToServer(type, data, objectName, logSuccess=true) {
         try {
             let apiUrl = this.sendSignalApi
             apiUrl += `?type=${encodeURIComponent(type)}`
@@ -147,7 +147,9 @@ class RtcBase {
             const textResponse = await response.text()
     
             if (textResponse == "worked like a charm") {
-                this.logFunction(`✅ ${objectName} successfully sent.`)
+                if (logSuccess) {
+                    this.logFunction(`✅ ${objectName} successfully sent.`)
+                }
                 return true
             } else {
                 throw new Error(`Unknown Server Response: ${textResponse}`)
@@ -284,7 +286,7 @@ class RtcHost extends RtcBase {
             if (event.candidate == null) return
             this.uploadToServer(rtcDataType.HostCandidate, {
                 candidate: event.candidate
-            }, "Ice Candidate")
+            }, "Ice Candidate", false)
         })
 
         const offer = await this.peerConnection.createOffer()
@@ -345,7 +347,7 @@ class RtcClient extends RtcBase {
             if (event.candidate == null) return
             this.uploadToServer(rtcDataType.AnswerCandidate, {
                 candidate: event.candidate
-            }, "Ice Candidate")
+            }, "Ice Candidate", false)
         })
 
         await this.checkForUpdates(
