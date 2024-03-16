@@ -53,13 +53,12 @@ class GolfObject {
     }
 
     intersects(point) {
-        const topLeft = this.topLeftPos
-        topLeft.irotate(-this.angle)
-        point.irotate(-this.angle)
+        const topLeft = this.topLeftPos.rotate(-this.angle)
+        const rotatedPoint = point.rotate(-this.angle)
 
         return (
-            topLeft.x <= point.x && point.x <= (topLeft.x + this.size.x) &&
-            topLeft.y <= point.y && point.y <= (topLeft.y + this.size.y)
+            topLeft.x <= rotatedPoint.x && rotatedPoint.x <= (topLeft.x + this.size.x) &&
+            topLeft.y <= rotatedPoint.y && rotatedPoint.y <= (topLeft.y + this.size.y)
         )
     }
 

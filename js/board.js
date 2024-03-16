@@ -117,7 +117,7 @@ class Ball {
             .some(o => o.intersects(this.pos))
 
         if (inLava && !this.inHole) {
-            this.pos = board.startPos
+            this.pos = board.startPos.copy()
             this.vel.iscale(0)
             return
         }
