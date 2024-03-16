@@ -203,7 +203,8 @@ async function onPlaceTouchEvent(touchInfo) {
         if (!placedObject) {
             return
         }
-
+        
+        placedObject.uid = Math.random().toString().slice(2)
         placedObject.pos = gameState.screenPosToBoardPos(touchInfo.lastDownPos)
     
         console.log("Place Object", placedObject)
