@@ -315,6 +315,14 @@ main .object-selection-container .title {
     border-right: 1px solid #a1a1a1;
 }
 
+main .scoreboard {
+    border-radius: .8em;
+    border: 1px solid #ccc;
+    width: auto !important;
+    max-width: 100%;
+    max-height: 25em;
+}
+
 main .object-selection-container .description {
     font-family: var(--general-font);
 }
