@@ -72,12 +72,7 @@ function onDataMessage(dataMessage, rtc) {
         dataMessage.type == dataMessageType.CHANGE_OBJECT
     ) {
         const changedObject = GolfObject.fromObject(dataMessage.data.object)
-        for (let i = 0; i < gameState.board.objects.length; i++) {
-            if (gameState.board.objects[i].uid == changedObject.uid) {
-                gameState.board.objects[i] = changedObject
-                break
-            }
-        }
+        gameState.board.updateObject(changedObject)
 
         syncGamestate()
 

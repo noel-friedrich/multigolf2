@@ -203,7 +203,7 @@ async function onPlaceTouchEvent(touchInfo) {
         if (!placedObject) {
             return
         }
-        
+
         placedObject.pos = gameState.screenPosToBoardPos(touchInfo.lastDownPos)
     
         console.log("Place Object", placedObject)
@@ -245,6 +245,9 @@ async function onDataMessage(dataMessage) {
 
     if (dataMessage.type == dataMessageType.GAMESTATE) {
         gameState = GameState.fromObject(dataMessage.data)
+        if (touchInfo.focusedObject && touchInfo.isDown) {
+            gameState.board.updateObject(touchInfo.focusedObject)
+        }
 
     } else if (dataMessage.type == dataMessageType.REQUEST_DIMENSIONS) {
         const course = new Course([PhoneCoordinates.fromWidthHeight(window.innerWidth, window.innerHeight)])

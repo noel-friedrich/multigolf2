@@ -167,6 +167,18 @@ class Board {
         this.courseHistory = [this.course.copy()]
     }
 
+    updateObject(object) {
+        // find the object and replace it with new one,
+        // return wether object was found
+        for (let i = 0; i < gameState.board.objects.length; i++) {
+            if (gameState.board.objects[i].uid == object.uid) {
+                gameState.board.objects[i] = object
+                return true
+            }
+        }
+        return false
+    }
+
     getClosestObject(pos) {
         let smallestDistance = Infinity
         let closestObject = null
