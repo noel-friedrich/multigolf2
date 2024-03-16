@@ -113,6 +113,15 @@ class Ball {
             this.vel.iscale(0)
         }
 
+        const inLava = board.objects.filter(o => o.type == golfObjectType.Lava)
+            .some(o => o.intersects(this.pos))
+
+        if (inLava && !this.inHole) {
+            this.pos = board.startPos
+            this.vel.iscale(0)
+            return
+        }
+
         if (!board.course.containsPos(this.pos)) {
             const [p1, p2] = this._getClosestWall(this.pos, board)
 

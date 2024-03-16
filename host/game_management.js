@@ -71,9 +71,10 @@ function onDataMessage(dataMessage, rtc) {
         gameState.phase == gamePhase.Placing &&
         dataMessage.type == dataMessageType.CHANGE_OBJECT
     ) {
+        const changedObject = GolfObject.fromObject(dataMessage.data.object)
         for (let i = 0; i < gameState.board.objects.length; i++) {
-            if (gameState.board.objects[i].uid == dataMessage.data.uid) {
-                gameState.board.objects[i] = GolfObject.fromObject(dataMessage.data.object)
+            if (gameState.board.objects[i].uid == changedObject.uid) {
+                gameState.board.objects[i] = changedObject
                 break
             }
         }
@@ -191,7 +192,7 @@ function preparePlacing() {
     for (const container of document.querySelectorAll(".object-selection-container")) {
         container.innerHTML = ""
         const allObjectContainers = []
-        for (const obj of allGolfObjects) {
+        for (const obj of placableObjects) {
             const object = document.createElement("div")
             const title = document.createElement("div")
             const headImg = document.createElement("div")
@@ -204,7 +205,7 @@ function preparePlacing() {
             description.classList.add("description")
 
             title.textContent = obj.type
-            objectImg.src = new GolfObject(obj.type).sprite
+            objectImg.src = obj.sprite
             description.textContent = obj.description
 
             headImg.appendChild(objectImg)

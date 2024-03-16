@@ -20,6 +20,7 @@ class Renderer {
         this.spriteImgMap[Sprite.DuellHole1] = await this.loadImg(Sprite.DuellHole1)
         this.spriteImgMap[Sprite.DuellHole2] = await this.loadImg(Sprite.DuellHole2)
         this.spriteImgMap[Sprite.Lava] = await this.loadImg(Sprite.Lava)
+        this.spriteImgMap[Sprite.ZoomIcon] = await this.loadImg(Sprite.ZoomIcon)
     }
 
     static startSize = new Vector2d(40, 40)
@@ -30,14 +31,22 @@ class Renderer {
         context.canvas.height = context.canvas.clientHeight
     }
 
-    static drawSprite(context, centerPos, size, sprite) {
+    static drawSprite(context, centerPos, size, sprite, {
+        angle = 0,
+        imageSmoothing = false
+    }={}) {
         const img = this.spriteImgMap[sprite]
         if (!img) {
             throw new Error(`Unknown Sprite: ${sprite}`)
         }
-        context.imageSmoothingEnabled = false // as some sprites may be very small in size
-        context.drawImage(img, centerPos.x - size.x / 2, centerPos.y - size.y / 2,
-            size.x, size.y)
+
+        context.imageSmoothingEnabled = imageSmoothing // as some sprites may be very small in size
+
+        context.save()
+        context.translate(centerPos.x, centerPos.y)
+        context.rotate(angle)
+        context.drawImage(img, -size.x / 2, -size.y / 2, size.x, size.y)
+        context.restore()
     }
 
     static get screenUnit() {
@@ -83,25 +92,55 @@ class Renderer {
         }
     }
 
+    static drawObjectOutline(gameState, context, object) {
+        const screenCorners = object.relativeCorners
+            .map(c => c.scale(1.2))
+            .map(c => c.add(object.pos))
+            .map(c => gameState.boardPosToScreenPos(c))
+
+        context.beginPath()
+        context.moveTo(screenCorners[0].x, screenCorners[0].y)
+        for (let i = 0; i < screenCorners.length; i++) {
+            const index = (i + 1) % screenCorners.length
+            context.lineTo(screenCorners[index].x, screenCorners[index].y)
+        }
+
+        context.strokeStyle = "blue"
+        context.lineWidth = 3
+        context.lineCap = "round"
+        context.stroke()
+
+        this.drawSprite(context, gameState.boardPosToScreenPos(object.dragCorner),
+            new Vector2d(20, 20), Sprite.ZoomIcon, {imageSmoothing: true})
+    }
+
     static renderBoard(gameState, context, touchInfo, {
-        drawBalls = true
+        drawBalls = true,
+        drawSelection = true,
     }={}) {
         context.canvas.style.display = "block"
         context.canvas.style.display = "block"
-        const backgroundSizePercent = Math.max(Math.round(20 * gameState.scalingFactor), 5)
+        const backgroundSizePercent = Math.max(Math.round(20 / gameState.scalingFactor), 5)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
 
         for (const object of gameState.board.objects) {
             const screenPos = gameState.boardPosToScreenPos(object.pos)
-            this.drawSprite(context, screenPos, object.size.scale(gameState.scalingFactor), object.sprite)
+            this.drawSprite(context, screenPos, object.size.scale(1 / gameState.scalingFactor),
+                object.sprite, {angle: object.angle})
+
+            if (drawSelection) {
+                if (touchInfo.focusedObject && object.uid == touchInfo.focusedObject.uid) {
+                    this.drawObjectOutline(gameState, context, object)
+                }
+            }
         }
 
         if (gameState.mode == gameMode.Duell && gameState.board.endPositions.length == 2) {
             const screenPos1 = gameState.boardPosToScreenPos(gameState.board.endPositions[0])
-            this.drawSprite(context, screenPos1, this.startSize.scale(gameState.scalingFactor), Sprite.DuellHole1)
+            this.drawSprite(context, screenPos1, this.startSize.scale(1 / gameState.scalingFactor), Sprite.DuellHole1)
 
             const screenPos2 = gameState.boardPosToScreenPos(gameState.board.endPositions[1])
-            this.drawSprite(context, screenPos2, this.startSize.scale(gameState.scalingFactor), Sprite.DuellHole2)
+            this.drawSprite(context, screenPos2, this.startSize.scale(1 / gameState.scalingFactor), Sprite.DuellHole2)
         }
 
         if (!drawBalls) {
@@ -117,7 +156,7 @@ class Renderer {
 
         for (let ball of renderBalls) {
             const screenPos = gameState.boardPosToScreenPos(ball.pos)
-            const size = new Vector2d(ball.radius, ball.radius).scale(gameState.scalingFactor * 2)
+            const size = new Vector2d(ball.radius, ball.radius).scale(2 / gameState.scalingFactor)
 
             if (!ball.active && !ball.isMoving()) {
                 context.globalAlpha = 0.5
@@ -130,7 +169,7 @@ class Renderer {
 
             this.drawSprite(context, new Vector2d(0, 0), size, ball.spriteUrl)
             context.restore()
-            
+
             context.globalAlpha = 1.0
         }
     }
@@ -145,7 +184,7 @@ class Renderer {
         context.moveTo(ballScreenPos.x, ballScreenPos.y)
         context.lineTo(touchInfo.currPos.x, touchInfo.currPos.y)
         context.strokeStyle = "rgba(0, 0, 0, 0.5)"
-        context.lineWidth = touchInfo.focusedBall.radius * gameState.scalingFactor
+        context.lineWidth = touchInfo.focusedBall.radius / gameState.scalingFactor
         context.lineCap = "round"
         context.stroke()
     }
@@ -161,7 +200,7 @@ class Renderer {
             case gamePhase.PlayingDuell:
             case gamePhase.PlayingSandbox:
             case gamePhase.PlayingTournament:
-                this.renderBoard(gameState, context, touchInfo)
+                this.renderBoard(gameState, context, touchInfo, {drawSelection: false})
                 return this.renderBallInteractions(gameState, context, touchInfo)
             default:
                 document.body.style.overflow = "visible"
