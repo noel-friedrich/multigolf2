@@ -30,6 +30,11 @@
                 </div>
             </fieldset>
 
+            <fieldset id="board-canvas-fieldset" style="display: none;">
+                <legend>Multigolf Board</legend>
+                <canvas id="board-canvas" style="display: none;"></canvas>
+            </fieldset>
+
             <section data-phase="placing">
                 <h2>Placing Items</h2>
                 <p>
@@ -323,11 +328,6 @@
                 </p>
                 <button onclick="playNewGame()">Play a new Game</button>
             </section>
-
-            <fieldset id="board-canvas-fieldset" style="display: none;">
-                <legend>Multigolf Board</legend>
-                <canvas id="board-canvas" style="display: none;"></canvas>
-            </fieldset>
         </main>
         
         <script src="../js/sprite.js"></script>

@@ -28,7 +28,7 @@ class ScoreboardMaker {
         const fontSize = 40
         context.font = `${fontSize}px ${fontFamily}`
 
-        const imagePadding = 40
+        const imagePadding = 10
         const tablePadding = 20
         const tableOffset = new Vector2d(0, 0)
         const headerImgPadding = 40

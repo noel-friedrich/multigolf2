@@ -83,7 +83,9 @@ class Renderer {
         }
     }
 
-    static renderBoard(gameState, context, touchInfo) {
+    static renderBoard(gameState, context, touchInfo, {
+        drawBalls = true
+    }={}) {
         context.canvas.style.display = "block"
         context.canvas.style.display = "block"
         const backgroundSizePercent = Math.max(Math.round(20 * gameState.scalingFactor), 5)
@@ -100,6 +102,10 @@ class Renderer {
 
             const screenPos2 = gameState.boardPosToScreenPos(gameState.board.endPositions[1])
             this.drawSprite(context, screenPos2, this.startSize.scale(gameState.scalingFactor), Sprite.DuellHole2)
+        }
+
+        if (!drawBalls) {
+            return
         }
         
         // shallow copy to sort them into correct rendering order
@@ -150,7 +156,7 @@ class Renderer {
             case gamePhase.Construction:
                 return this.renderConstruction(gameState, context, touchInfo)
             case gamePhase.Placing:
-                return this.renderBoard(gameState, context, touchInfo)
+                return this.renderBoard(gameState, context, touchInfo, {drawBalls: false})
             case gamePhase.PlayingDuell:
             case gamePhase.PlayingSandbox:
             case gamePhase.PlayingTournament:
