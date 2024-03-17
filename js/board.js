@@ -258,7 +258,7 @@ class Board {
     }
 
     get startPos() {
-        const startObject = this.objects.find(o => o.type = golfObjectType.Start)
+        const startObject = this.objects.find(o => o.type == golfObjectType.Start)
         if (startObject) {
             return startObject.pos
         } else {

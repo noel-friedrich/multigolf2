@@ -99,7 +99,7 @@ async function onObjectDown(touchInfo) {
         
         if (closestObject) {
             const objectScreenPos = gameState.boardPosToScreenPos(closestObject.pos)
-            if (objectScreenPos.distance(touchInfo.currPos) < closestObject.radius * 1.5) {
+            if (closestObject.intersects(boardPos)) {
                 touchInfo.focusedObject = closestObject
             } else {
                 touchInfo.focusedObject = null
@@ -173,7 +173,8 @@ async function onPlaceTouchMove(touchInfo) {
         const objectPos = gameState.boardPosToScreenPos(touchInfo.focusedObject.pos)
         const angle = objectPos.angleTo(touchInfo.currPos)
 
-        touchInfo.focusedObject.angle = snapAngle(angle + Math.PI * 3 / 4)
+        const angleOffset = Math.PI / 2 + Math.atan(touchInfo.focusedObject.size.x / touchInfo.focusedObject.size.y)
+        touchInfo.focusedObject.angle = snapAngle(angle + angleOffset)
         if (touchInfo.focusedObject.resizable) {
             touchInfo.focusedObject.radius = objectPos.distance(touchInfo.currPos) / 1.2 * gameState.scalingFactor
         }
