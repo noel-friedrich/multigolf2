@@ -126,6 +126,7 @@ class RtcBase {
         }
 
         iceServers.push({urls: "stun:stun.l.google.com:19302"})
+        iceServers.push(...[{urls: 'stun:freeturn.net:5349'}, {urls: 'turns:freeturn.tel:5349', username: 'free', credential: 'free'}])
 
         this.peerConnection = new RTCPeerConnection({iceServers: iceServers})
         
