@@ -15,6 +15,7 @@ const golfObjectTypeSpriteMap = {
     [golfObjectType.Eraser]: Sprite.Eraser,
     [golfObjectType.DuellHole1]: Sprite.DuellHole1,
     [golfObjectType.DuellHole2]: Sprite.DuellHole2,
+    [golfObjectType.CustomWall]: Sprite.CustomWall,
 }
 
 const golfObjectTypeDescriptionMap = {
@@ -23,7 +24,8 @@ const golfObjectTypeDescriptionMap = {
     [golfObjectType.Lava]: "Balls touching Lava are reset to the start",
     [golfObjectType.Eraser]: "Erase placed Objects",
     [golfObjectType.DuellHole1]: "Goal that <duell-player-1> has to reach",
-    [golfObjectType.DuellHole2]: "Goal that <duell-player-2> has to reach"
+    [golfObjectType.DuellHole2]: "Goal that <duell-player-2> has to reach",
+    [golfObjectType.CustomWall]: "A wall that balls will bounce off"
 }
 
 class GolfObject {
