@@ -129,9 +129,11 @@ class Ball {
             if (collision) {
                 // https://en.wikipedia.org/wiki/Elastic_collision
                 const [v1, v2, x1, x2] = [this.vel, ball.vel, this.pos, ball.pos]
-                this.vel.isub(x1.sub(x2).scale(v1.sub(v2).dot(x1.sub(x2)) / (x2.sub(x1).length ** 2)))
-                ball.vel.isub(x2.sub(x1).scale(v2.sub(v1).dot(x2.sub(x1)) / (x1.sub(x2).length ** 2)))
-
+                const v1p = v1.sub(x1.sub(x2).scale(v1.sub(v2).dot(x1.sub(x2)) / (x1.sub(x2).length ** 2)))
+                const v2p = v2.sub(x2.sub(x1).scale(v2.sub(v1).dot(x2.sub(x1)) / (x2.sub(x1).length ** 2)))
+                
+                this.vel = v1p
+                ball.vel = v2p
                 this.pos.iadd(this.vel)
                 ball.pos.iadd(ball.vel)
             }
