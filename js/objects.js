@@ -136,7 +136,7 @@ class GolfObject {
 
 const placableObjects = [
     new GolfObject(golfObjectType.Start),
-    new GolfObject(golfObjectType.Hole),
+    new GolfObject(golfObjectType.Hole).setVisibility(gs => gs.mode != gameMode.Duell),
     new GolfObject(golfObjectType.Lava).setSize(new Vector2d(80, 80)).setResizable(true),
     new GolfObject(golfObjectType.Eraser),
     new GolfObject(golfObjectType.DuellHole1).setVisibility(gs => gs.mode == gameMode.Duell),

@@ -135,14 +135,6 @@ class Renderer {
             }
         }
 
-        if (gameState.mode == gameMode.Duell && gameState.board.endPositions.length == 2) {
-            const screenPos1 = gameState.boardPosToScreenPos(gameState.board.endPositions[0])
-            this.drawSprite(context, screenPos1, this.startSize.scale(1 / gameState.scalingFactor), Sprite.DuellHole1)
-
-            const screenPos2 = gameState.boardPosToScreenPos(gameState.board.endPositions[1])
-            this.drawSprite(context, screenPos2, this.startSize.scale(1 / gameState.scalingFactor), Sprite.DuellHole2)
-        }
-
         if (!drawBalls) {
             return
         }

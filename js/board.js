@@ -106,6 +106,38 @@ class Ball {
         return dir.rotate(-angleDifference * 2).scale(-1)
     }
 
+    readyToCollide(board) {
+        return board.startPos.distance(this.pos) > 2 * this.radius
+    }
+
+    calcBallCollisions(board) {
+        if (!this.readyToCollide(board)) {
+            return
+        }
+        
+        for (let ball of board.balls) {
+            if (ball.uid == this.uid) {
+                continue
+            }
+
+            if (!ball.readyToCollide(board)) {
+                continue
+            }
+
+            const collision = ball.pos.distance(this.pos) <= (ball.radius + this.radius)
+
+            if (collision) {
+                // https://en.wikipedia.org/wiki/Elastic_collision
+                const [v1, v2, x1, x2] = [this.vel, ball.vel, this.pos, ball.pos]
+                this.vel.isub(x1.sub(x2).scale(v1.sub(v2).dot(x1.sub(x2)) / (x2.sub(x1).length ** 2)))
+                ball.vel.isub(x2.sub(x1).scale(v2.sub(v1).dot(x2.sub(x1)) / (x1.sub(x2).length ** 2)))
+
+                this.pos.iadd(this.vel)
+                ball.pos.iadd(ball.vel)
+            }
+        }
+    }
+
     physicsStep(board) {
         this.pos.iadd(this.vel)
         this.vel.iscale(0.95)
@@ -128,6 +160,10 @@ class Ball {
             this.pos.isub(this.vel)
             this.vel = this._reflectAtWall(p1, p2, this.vel)
             this.pos.iadd(this.vel)
+        }
+
+        if (board.ballCollisionEnabled) {
+            this.calcBallCollisions(board)
         }
         
         const endPos = this._getClosestEndPos(this.pos, board)
@@ -154,11 +190,12 @@ class Board {
 
     static physicsTimestep = 30
 
-    constructor(course, objects, balls, physicsTime) {
+    constructor(course, objects, balls, physicsTime, ballCollisionEnabled) {
         this.course = course ?? new Course()
         this.objects = objects ?? []
         this.balls = balls ?? []
         this.physicsTime = physicsTime ?? Date.now()
+        this.ballCollisionEnabled = true
 
         // the following properties will not be
         // exported and thus not sent to clients
@@ -251,6 +288,7 @@ class Board {
             objects: this.objects.map(o => o.toObject()),
             balls: this.balls.map(b => b.toObject()),
             physicsTime: this.physicsTime,
+            ballCollisionEnabled: this.ballCollisionEnabled
         }
     }
 
@@ -259,7 +297,7 @@ class Board {
             Course.fromObject(obj.course),
             obj.objects.map(o => GolfObject.fromObject(o)),
             obj.balls.map(b => Ball.fromObject(b)),
-            obj.physicsTime
+            obj.physicsTime, obj.ballCollisionEnabled
         )
     }
 
