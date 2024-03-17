@@ -107,7 +107,7 @@ class Ball {
     }
 
     _isInCustomWall(pos, board) {
-        return board.objects.filter(o = o.type == golfObjectType.CustomWall)
+        return board.objects.filter(o => o.type == golfObjectType.CustomWall)
             .some(o => o.intersects(pos))
     }
 
