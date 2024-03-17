@@ -148,7 +148,7 @@ class Ball {
     }
 
     updatePhysics(board) {
-        const stepCount = Math.ceil(this.vel.length / 10)
+        const stepCount = Math.max(Math.ceil(this.vel.length / 10), 1)
         this.vel.iscale(1 / stepCount)
         for (let i = 0; i < stepCount; i++) {
             this.physicsStep(board)
