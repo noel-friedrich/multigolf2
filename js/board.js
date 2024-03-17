@@ -60,8 +60,11 @@ class Ball {
         let closestWall = null
         let smallestDistance = Infinity
 
-        for (let phone of board.course.phones) {
-            for (let [p1, p2] of phone.walls) {
+        const walledObjects = board.course.phones
+            .concat(board.objects.filter(o => o.type == golfObjectType.CustomWall))
+
+        for (let wallObject of walledObjects) {
+            for (let [p1, p2] of wallObject.walls) {
                 const distanceToWall = this._distanceToWall(p1, p2, pos)
                 if (distanceToWall < smallestDistance) {
                     closestWall = [p1, p2]
@@ -220,7 +223,7 @@ class Board {
         this.objects = objects ?? []
         this.balls = balls ?? []
         this.physicsTime = physicsTime ?? Date.now()
-        this.ballCollisionEnabled = true
+        this.ballCollisionEnabled = ballCollisionEnabled ?? true
 
         // the following properties will not be
         // exported and thus not sent to clients

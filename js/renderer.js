@@ -21,6 +21,7 @@ class Renderer {
         this.spriteImgMap[Sprite.DuellHole2] = await this.loadImg(Sprite.DuellHole2)
         this.spriteImgMap[Sprite.Lava] = await this.loadImg(Sprite.Lava)
         this.spriteImgMap[Sprite.ZoomIcon] = await this.loadImg(Sprite.ZoomIcon)
+        this.spriteImgMap[Sprite.CustomWall] = await this.loadImg(Sprite.CustomWall)
     }
 
     static startSize = new Vector2d(40, 40)

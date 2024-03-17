@@ -1,10 +1,11 @@
 const golfObjectType = {
-    Start: "start",
-    Hole: "hole",
-    Lava: "lava",
-    Eraser: "eraser",
-    DuellHole1: "duell-hole-1",
-    DuellHole2: "duell-hole-2",
+    Start: "Start",
+    Hole: "Hole",
+    Lava: "Lava",
+    Eraser: "Eraser",
+    DuellHole1: "Hole 1",
+    DuellHole2: "Hole 2",
+    CustomWall: "Extra Wall"
 }
 
 const golfObjectTypeSpriteMap = {
@@ -59,6 +60,16 @@ class GolfObject {
 
     get corners() {
         return this.relativeCorners.map(c => c.add(this.pos))
+    }
+
+    get walls() {
+        const corners = this.corners
+        return [
+            [corners[0], corners[1]],
+            [corners[1], corners[2]],
+            [corners[2], corners[3]],
+            [corners[3], corners[0]],
+        ]
     }
 
     get dragCorner() {
@@ -138,6 +149,7 @@ const placableObjects = [
     new GolfObject(golfObjectType.Start),
     new GolfObject(golfObjectType.Hole).setVisibility(gs => gs.mode != gameMode.Duell),
     new GolfObject(golfObjectType.Lava).setSize(new Vector2d(80, 80)).setResizable(true),
+    new GolfObject(golfObjectType.CustomWall).setSize(new Vector2d(120, 30)).setResizable(true),
     new GolfObject(golfObjectType.Eraser),
     new GolfObject(golfObjectType.DuellHole1).setVisibility(gs => gs.mode == gameMode.Duell),
     new GolfObject(golfObjectType.DuellHole2).setVisibility(gs => gs.mode == gameMode.Duell),

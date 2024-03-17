@@ -16,6 +16,7 @@ const Sprite = {
     Lava:          "../assets/compressed/objects/lava.png",
     Eraser:        "../assets/objects/eraser.svg",
     ZoomIcon:      "../assets/zoom-icon.svg",
+    CustomWall:    "../assets/wall.svg",
 }
 
 Sprite.AllBalls = [
