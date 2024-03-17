@@ -106,6 +106,11 @@ class Ball {
         }
     }
 
+    _isInCustomWall(pos, board) {
+        return board.objects.filter(o = o.type == golfObjectType.CustomWall)
+            .some(o => o.intersects(pos))
+    }
+
     _reflectAtWall(p1, p2, dir) {
         const wallDir = p2.sub(p1)
         const wallNormal = new Vector2d(-wallDir.y, wallDir.x)
@@ -172,22 +177,24 @@ class Ball {
             return
         }
 
-        if (!board.course.containsPos(this.pos)) {
-            this.outOfBoundsTickCount++
+        const outOfBounds = !board.course.containsPos(this.pos)
 
+        if (outOfBounds) {
+            this.outOfBoundsTickCount++
             if (this.outOfBoundsTickCount > 10) {
                 this.pos = board.startPos.copy()
                 this.vel.iscale(0)
                 return
             }
+        } else {
+            this.outOfBoundsTickCount = 0
+        }
 
+        if (outOfBounds || this._isInCustomWall(this.pos, board)) {
             const [p1, p2] = this._getClosestWall(this.pos, board)
-
             this.pos.isub(this.vel)
             this.vel = this._reflectAtWall(p1, p2, this.vel)
             this.pos.iadd(this.vel)
-        } else {
-            this.outOfBoundsTickCount = 0
         }
 
         if (board.ballCollisionEnabled) {
