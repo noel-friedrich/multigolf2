@@ -144,9 +144,18 @@ class Ball {
         }
     }
 
+    updatePhysics(board) {
+        const stepCount = Math.ceil(this.vel.length / 10)
+        this.vel.iscale(1 / stepCount)
+        for (let i = 0; i < stepCount; i++) {
+            this.physicsStep(board)
+        }
+        this.vel.iscale(stepCount)
+        this.vel.iscale(0.95)
+    }
+
     physicsStep(board) {
         this.pos.iadd(this.vel)
-        this.vel.iscale(0.95)
         if (this.vel.length < 0.05) {
             this.vel.iscale(0)
         }
@@ -264,7 +273,7 @@ class Board {
 
     physicsStep() {
         for (const ball of this.balls) {
-            ball.physicsStep(this)
+            ball.updatePhysics(this)
         }
         this.physicsTime += Board.physicsTimestep
     }
