@@ -13,6 +13,10 @@ class Ball {
         this.active = active ?? true
         this.uid = uid
         this.rotationAngle = rotationAngle ?? 0
+
+        // the following properties will not be saved
+        // and synced across devices
+        this.outOfBoundsTickCount = 0
     }
 
     toObject() {
@@ -157,11 +161,21 @@ class Ball {
         }
 
         if (!board.course.containsPos(this.pos)) {
+            this.outOfBoundsTickCount++
+
+            if (this.outOfBoundsTickCount > 10) {
+                this.pos = board.startPos.copy()
+                this.vel.iscale(0)
+                return
+            }
+
             const [p1, p2] = this._getClosestWall(this.pos, board)
 
             this.pos.isub(this.vel)
             this.vel = this._reflectAtWall(p1, p2, this.vel)
             this.pos.iadd(this.vel)
+        } else {
+            this.outOfBoundsTickCount = 0
         }
 
         if (board.ballCollisionEnabled) {
