@@ -284,7 +284,7 @@ class RtcHost extends RtcBase {
     }
 
     generateSignalingUid() {
-        return crypto.randomUUID()
+        return Math.random().toString().slice(2) + "-" + Math.random().toString().slice(2)
     }
 
     makeClientUrl() {
