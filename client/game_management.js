@@ -174,7 +174,8 @@ async function onPlaceTouchMove(touchInfo) {
         const angle = objectPos.angleTo(touchInfo.currPos)
 
         const angleOffset = Math.PI / 2 + Math.atan(touchInfo.focusedObject.size.x / touchInfo.focusedObject.size.y)
-        touchInfo.focusedObject.angle = snapAngle(angle + angleOffset)
+        const boardAngle = gameState.screenAngleToBoardAngle(angle + angleOffset)
+        touchInfo.focusedObject.angle = snapAngle(boardAngle)
         if (touchInfo.focusedObject.resizable) {
             touchInfo.focusedObject.radius = objectPos.distance(touchInfo.currPos) / 1.2 * gameState.scalingFactor
         }
