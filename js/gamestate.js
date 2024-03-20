@@ -92,7 +92,8 @@ class GameState {
     constructor(phase, mode, board, players=[], deviceIndex=null,
         placingObjectType=golfObjectType.Start,
         tournamentBuilderIndex=0, tournamentBallIndex=0,
-        duellActivePlayerIndex=0, duellWinnerIndex=null) {
+        duellActivePlayerIndex=0, duellWinnerIndex=null,
+        tournamentMaxKicks=10) {
         this.phase = phase
         this.mode = mode
         this.board = board
@@ -106,6 +107,7 @@ class GameState {
         this.tournamentBallIndex = tournamentBallIndex
         this.duellActivePlayerIndex = duellActivePlayerIndex
         this.duellWinnerIndex = duellWinnerIndex
+        this.tournamentMaxKicks = tournamentMaxKicks
     }
 
     replaceText(txt) {
@@ -180,7 +182,8 @@ class GameState {
             tournamentBuilderIndex: this.tournamentBuilderIndex,
             tournamentBallIndex: this.tournamentBallIndex,
             duellActivePlayerIndex: this.duellActivePlayerIndex,
-            duellWinnerIndex: this.duellWinnerIndex
+            duellWinnerIndex: this.duellWinnerIndex,
+            tournamentMaxKicks: this.tournamentMaxKicks
         }
     }
 
@@ -194,7 +197,8 @@ class GameState {
             obj.tournamentBuilderIndex,
             obj.tournamentBallIndex,
             obj.duellActivePlayerIndex,
-            obj.duellWinnerIndex)
+            obj.duellWinnerIndex,
+            obj.tournamentMaxKicks)
     }
 
     updatePhysics() {
@@ -260,7 +264,6 @@ class GameState {
             let kicks = this.board.balls[i].kicks
             const player = this.players[i]
             const roundIndex = this.tournamentBuilderIndex
-            if (kicks > 8) kicks = 10
             if (player.roundScores[roundIndex] === undefined) {
                 player.addRound(kicks)
             } else {
@@ -270,7 +273,7 @@ class GameState {
 
         let inHoleCount = 0
         while ((this.tournamentBall.inHole && this.tournamentBall.radius == 0)
-            || (this.tournamentBall.kicks >= 8 && !this.tournamentBall.isMoving())) {
+            || (this.tournamentBall.kicks >= this.tournamentMaxKicks && !this.tournamentBall.isMoving())) {
             inHoleCount++
 
             this.tournamentBall.active = false

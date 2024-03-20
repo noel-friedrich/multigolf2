@@ -117,6 +117,10 @@ async function startGame() {
             if (!gameState.board.balls.some(b => b.isMoving())) {
                 syncGamestate()
             }
+
+            if (gameState.phase == gamePhase.PlayingTournament) {
+                generateScoreboard()
+            }
         }, 500)
     
         renderingIntervalIsSet = true
