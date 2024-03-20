@@ -234,11 +234,6 @@ class GameState {
     endTournamentRound() {
         this.phase = gamePhase.TournamentExplanation
 
-        for (let i = 0; i < this.players.length; i++) {
-            const kicks = this.board.balls[i].kicks
-            this.players[i].addRound(kicks)
-        }
-
         this.tournamentBuilderIndex++
         this.board.balls.splice(0, this.board.balls.length)
 
@@ -261,19 +256,28 @@ class GameState {
             madeChange = true
         }
 
-        let inHoleCount = 0
-        while ((this.tournamentBall.inHole && this.tournamentBall.radius == 0) || this.tournamentBall.kicks > 8) {
-            inHoleCount++
-
-            if (this.tournamentBall.kicks > 8) {
-                this.tournamentBall.kicks = 10
+        for (let i = 0; i < this.players.length; i++) {
+            let kicks = this.board.balls[i].kicks
+            const player = this.players[i]
+            const roundIndex = this.tournamentBuilderIndex
+            if (kicks > 8) kicks = 10
+            if (player.roundScores[roundIndex] === undefined) {
+                player.addRound(kicks)
+            } else {
+                player.roundScores[roundIndex] = kicks
             }
+        }
+
+        let inHoleCount = 0
+        while ((this.tournamentBall.inHole && this.tournamentBall.radius == 0)
+            || (this.tournamentBall.kicks >= 8 && !this.tournamentBall.isMoving())) {
+            inHoleCount++
 
             this.tournamentBall.active = false
             this.tournamentBallIndex++
             this.tournamentBall.active = true
 
-            if (inHoleCount >= this.players.length) {
+            if (inHoleCount > this.players.length) {
                 this.endTournamentRound()
                 madeChange = true
                 break
