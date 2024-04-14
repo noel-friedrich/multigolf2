@@ -69,6 +69,10 @@ class Vector2d {
         return Math.sqrt(this.x * this.x + this.y * this.y)
     }
 
+    get squaredLength() {
+        return this.x * this.x + this.y * this.y
+    }
+
     get normalized() {
         let m = this.length
         return new Vector2d(this.x / m, this.y / m)
@@ -102,6 +106,10 @@ class Vector2d {
 
     distance(v) {
         return this.sub(v).length
+    }
+
+    distanceSquared(v) {
+        return this.sub(v).squaredLength
     }
 
     cross(v) {

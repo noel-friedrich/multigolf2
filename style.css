@@ -15,9 +15,9 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url('assets/gifs/background.gif');
-    background-repeat: repeat;
-    background-size: 100%;
+    background-color: #f2f2f2;
+    background-image: url("assets/gifs/background.gif");
+    background-size: 50%;
 }
 
 h1, h2, h3,
@@ -25,6 +25,7 @@ h4, h5, h6 {
     font-family: var(--header-font);
 }
 
+#interactive-background,
 .background {
     position: fixed;
     top: 0;
@@ -32,6 +33,7 @@ h4, h5, h6 {
     width: 100%;
     height: 100%;
     z-index: -1;
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 * {
@@ -41,9 +43,8 @@ h4, h5, h6 {
 header {
     padding: 1rem;
     border-bottom: 1px solid #ccc;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 1);
     display: flex;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 header > .logo {
@@ -63,6 +64,25 @@ header > a {
     font-family: var(--header-font);
 }
 
+header .link-island {
+    margin-left: auto;
+}
+
+header .link-island a {
+    display: block;
+    border: 1px solid #ccc;
+    padding: .4em;
+    text-decoration: none;
+    color: black;
+    font-family: var(--header-font);
+    font-size: 1.3em;
+    border-radius: 10px;
+}
+
+header .link-island a:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
 .in-between-img {
     position: relative;
     z-index: -1;
@@ -78,12 +98,16 @@ main {
     padding: 2rem;
     width: min(100%, 600px);
     margin: 0 auto;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
     display: grid;
     gap: 1em;
     border-radius: 1em;
     margin-top: 2rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid #ccc;
+}
+
+main.largebottomgap {
+    margin-bottom: 20rem;
 }
 
 main p {
@@ -175,16 +199,54 @@ main textarea {
 
 main img {
     width: 100%;
+    object-fit: cover;
+}
+
+main .middle-container {
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+
+main img.smaller {
+    width: auto;
+    max-width: 100%;
+    max-height: 20rem;
+    margin: 0 auto;
 }
 
 footer {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid #ccc;
     background-color: white;
     margin-top: auto;
     padding: 1rem;
 }
 
 /* non general css for multigolf */
+
+.fullwidth-banner {
+    background-image: url('assets/gifs/background.gif');
+    padding: 10vh;
+    position: relative;
+}
+
+.fullwidth-banner .darktop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.fullwidth-banner .hugetext {
+    position: relative;
+    color: white;
+    text-align: center;
+    font-weight: 900;
+    font-family: var(--header-font);
+    font-size: 2rem;
+}
 
 .player-status-container {
     display: grid;

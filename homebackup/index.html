@@ -13,23 +13,13 @@
     <body>
         <header> 
             <img src="assets/logo.svg" class="logo"></img>
-            <a href="./">Multigolf</a>
-            <div class="link-island">
-                <a href="host/">Start Game</a>
-            </div>
+            <a href="./index.html">Multigolf</a>
         </header>
-
-        <!--
-            <div class="fullwidth-banner">
-                <div class="darktop"></div>
-                <div class="hugetext">Ready for something cool?</div>
-            </div>
-        -->
-
-        <main class="largebottomgap">
-            <h1 style="font-weight: normal;">Welcome to <span style="color:rgb(0, 129, 43); font-weight: bolder;">Multigolf</span></h1>
+        
+        <main>
+            <h1>Welcome to Multigolf!</h1>
+            <a href="./host/index.html" class="linkbutton">Create a Game</a>
             <p>
-                
                 Multigolf is a cross-device Minigolf game. Build courses out of 
                 multiple phones, then battle your friends in the available
                 gamemodes. Grab your friends, steal their phones and begin
@@ -38,9 +28,6 @@
                 download, everyone will simply scan a QR code and begin playing.
                 Sounds good? Then try it out!
             </p>
-            <div class="middle-container">
-                <img src="assets/pics/demo-img.jpg" class="smaller middle">
-            </div>
             <h2>How does it work?</h2>
             <p>
                 By creating a game, your device will become the server. This server
@@ -54,7 +41,7 @@
                 unique courses, so make sure to be creative with your course 
                 design!
             </p>
-            <a href="host/" class="linkbutton">Start a Game</a>
+            <img src="assets/pics/multigolf-in-action.jpg" class="round-edges">
         </main>
 
         <footer>
@@ -63,9 +50,7 @@
             <a href="./data-privacy">Data Privacy</a>.
         </footer>
 
-        <canvas id="interactive-background"></canvas>
-        <script src="js/mathutils.js"></script>
-        <script src="js/interactive-background.js"></script>
+        <div class="background"></div>
     </body>
 
 </html>
