@@ -133,8 +133,8 @@ async function addPlayer(playerIndex) {
             if (removedPlayerUids.has(rtc.signalingUid) || removedPlayerUids.has(scopedUid)) return
             console.log("QR CODE URL", clientUrl + "&nofullscreen")
             console.log("QR CODE URL DEBUG", clientUrl.replace("https://multi.golf", "https://noel-friedrich.de/multigolf2") + "&nofullscreen")
-            const qrGenerationUrl = "https://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl="
-            qrImg.src = `${qrGenerationUrl}${encodeURIComponent(clientUrl)}`
+
+            new QRCode(qrImg, clientUrl)
             qrImg.style.display = "block"
         },
         onDataMessage: (event) => {
