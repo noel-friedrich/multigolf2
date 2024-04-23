@@ -23,6 +23,8 @@ function updateHtmlSection(phase) {
 
     fillPlaceholders("tournament-builder-name", gameState.tournamentBuilder?.name)
     fillPlaceholders("tournament-active-name", gameState.tournamentActivePlayer?.name)
+    fillPlaceholders("tournament-max-kicks", gameState.tournamentMaxKicks)
+    
     fillPlaceholders("duell-active-name", gameState.duellActivePlayer?.name)
     fillPlaceholders("duell-inactive-name", gameState.duellInactivePlayer?.name)
     fillPlaceholders("duell-winner-name", gameState.duellWinner?.name)

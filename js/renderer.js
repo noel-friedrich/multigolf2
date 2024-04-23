@@ -115,6 +115,23 @@ class Renderer {
             new Vector2d(20, 20), Sprite.ZoomIcon, {imageSmoothing: true})
     }
 
+    static drawCustomWall(gameState, context, corners) {
+        context.beginPath()
+        context.moveTo(corners[0].x, corners[0].y)
+        for (let i = 0; i < corners.length; i++) {
+            const index = (i + 1) % corners.length
+            context.lineTo(corners[index].x, corners[index].y)
+        }
+
+        context.strokeStyle = "black"
+        context.fillStyle = "white"
+        context.lineWidth = 5
+        context.lineCap = "round"
+
+        context.fill()
+        context.stroke()
+    }
+
     static renderBoard(gameState, context, touchInfo, {
         drawBalls = true,
         drawSelection = true,
@@ -125,9 +142,16 @@ class Renderer {
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
 
         for (const object of gameState.board.objects) {
-            const screenPos = gameState.boardPosToScreenPos(object.pos)
-            this.drawSprite(context, screenPos, object.size.scale(1 / gameState.scalingFactor),
-                object.sprite, {angle: gameState.boardAngleToScreenAngle(object.angle)})
+            if (object.type == golfObjectType.CustomWall) {
+                const screenCorners = object.corners.map(corner => {
+                    return gameState.boardPosToScreenPos(corner)})
+                this.drawCustomWall(gameState, context, screenCorners)
+            } else {
+                const screenPos = gameState.boardPosToScreenPos(object.pos)
+                this.drawSprite(context, screenPos, object.size.scale(1 / gameState.scalingFactor),
+                    object.sprite, {angle: gameState.boardAngleToScreenAngle(object.angle)})
+            }
+
 
             if (drawSelection) {
                 if (touchInfo.focusedObject && object.uid == touchInfo.focusedObject.uid) {

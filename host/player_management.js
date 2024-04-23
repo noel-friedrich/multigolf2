@@ -134,6 +134,7 @@ async function addPlayer(playerIndex) {
             console.log("QR CODE URL", clientUrl + "&nofullscreen")
             console.log("QR CODE URL DEBUG", clientUrl.replace("https://multi.golf", "https://noel-friedrich.de/multigolf2") + "&nofullscreen")
 
+            qrImg.innerHTML = "" // clear current qr code
             new QRCode(qrImg, clientUrl)
             qrImg.style.display = "block"
         },
