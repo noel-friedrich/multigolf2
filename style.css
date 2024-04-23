@@ -45,6 +45,7 @@ header {
     border-bottom: 1px solid #ccc;
     background-color: rgba(255, 255, 255, 1);
     display: flex;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
 header > .logo {
@@ -71,7 +72,7 @@ header .link-island {
 header .link-island a {
     display: block;
     border: 1px solid #ccc;
-    padding: .4em;
+    padding: .3em;
     text-decoration: none;
     color: black;
     font-family: var(--header-font);
@@ -103,7 +104,7 @@ main {
     gap: 1em;
     border-radius: 1em;
     margin-top: 2rem;
-    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
 main.largebottomgap {
@@ -141,6 +142,21 @@ main fieldset {
     gap: 1em;
     border-radius: .8em;
     border: 1px solid #ccc;
+}
+
+main fieldset.many-inputs {
+    gap: 0em;
+}
+
+main fieldset.many-inputs input:not(:last-of-type) {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom: none;
+}
+
+main fieldset.many-inputs input:not(:first-of-type) {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
 }
 
 main a.linkbutton,
@@ -220,6 +236,7 @@ footer {
     background-color: white;
     margin-top: auto;
     padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
 /* non general css for multigolf */
