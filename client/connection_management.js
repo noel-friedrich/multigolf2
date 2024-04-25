@@ -3,6 +3,9 @@ window.addEventListener("beforeunload", function (e) {
     return "You're in an active game of multigolf. Leaving this website will break the game!"
 })
 
+const activeMain = document.querySelector("#active-main")
+const failedMain = document.querySelector("#failed-main")
+
 const logOutput = document.querySelector("#log-output")
 const fullscreenCanvas = document.querySelector("#fullscreen-canvas")
 const context = fullscreenCanvas.getContext("2d")
@@ -34,13 +37,18 @@ addEventListener("error", (err) => {
 
 const rtc = new RtcClient({
     logFunction: logToUser,
-    onDataMessage: (event) => {
-        onDataMessage(DataMessage.fromString(event.data))
+    onDataMessage: (dataMessage) => {
+        onDataMessage(dataMessage)
     },
 })
 
 const urlParams = new URLSearchParams(location.search)
 const noSleep = new NoSleep()
+
+let hostTimeOffset = 0
+function getHostTime() {
+    return Date.now() + hostTimeOffset
+}
 
 async function main() {
     await Renderer.load()
@@ -54,12 +62,6 @@ async function main() {
     try {
         await rtc.start(urlParams.get("uid"))
         statusTitle.textContent = "Connected to Host."
-
-        rtc.sendMessage(DataMessage.Ping())
-        setInterval(() => {
-            if (!rtc.dataChannelOpen) return
-            rtc.sendMessage(DataMessage.Ping())
-        }, RtcBase.pingPeriod)
 
         startGame()
     } catch (err) {
@@ -86,5 +88,18 @@ async function main() {
         noSleep.enable()
     }, false)
 }
+
+setInterval(() => {
+    const status = rtc.getStatus()
+
+    if (status.color == "red") {
+        activeMain.style.display = "none"
+        failedMain.style.display = "grid"
+        fullscreenCanvas.remove()
+    } else {
+        activeMain.style.display = "grid"
+        failedMain.style.display = "none"
+    }
+}, 1000)
 
 main()

@@ -223,7 +223,7 @@ class Ball {
 
 class Board {
 
-    static physicsTimestep = 30
+    static physicsTimestep = 17 // approximately 60 fps
 
     constructor(course, objects, balls, physicsTime, ballCollisionEnabled) {
         this.course = course ?? new Course()
@@ -288,8 +288,12 @@ class Board {
         this.physicsTime += Board.physicsTimestep
     }
 
-    updatePhysics() {
-        this.physicsStep()
+    updatePhysics(maxTime=Date.now(), maxSteps=500) {
+        let stepCount = 0
+        while (stepCount < maxSteps && this.physicsTime < maxTime) {
+            this.physicsStep()
+            stepCount++
+        }
     }
 
     spawnBall({

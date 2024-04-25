@@ -25,7 +25,7 @@ function physicsLoop() {
 
 function onDataMessage(dataMessage, rtc) {
     if (dataMessage.type == dataMessageType.PING) {
-        return
+        rtc.receivePing(dataMessage)
 
     } else if (
         gameState.phase == gamePhase.Construction &&
@@ -90,7 +90,7 @@ function onDataMessage(dataMessage, rtc) {
         syncGamestate()
 
     } else {
-        console.log("received", dataMessage)
+        console.log("received unknown message", dataMessage)
     }
 }
 

@@ -137,7 +137,6 @@ class Renderer {
         drawSelection = true,
     }={}) {
         context.canvas.style.display = "block"
-        context.canvas.style.display = "block"
         const backgroundSizePercent = Math.max(Math.round(20 / gameState.scalingFactor), 5)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
 

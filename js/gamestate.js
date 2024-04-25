@@ -201,10 +201,8 @@ class GameState {
             obj.tournamentMaxKicks)
     }
 
-    updatePhysics() {
-        if (gamePhase.isPlaying(this.phase)) {
-            this.board.updatePhysics()
-        }
+    updatePhysics(hostTime=Date.now()) {
+        this.board.updatePhysics(hostTime)
     }
 
     startSandboxRound() {

@@ -15,15 +15,28 @@
             <img src="../assets/logo.svg" class="logo"></img>
             <a href="../index.html">Multigolf</a>
         </header>
+
+        <main id="failed-main" style="display: none">
+            <h2>Connection Failed</h2>
+            <p>
+                The connection to the host failed. To reconnect,
+                start a new connection on the host and rescan
+                the QR code with this device.
+            </p>
+            <p>
+                If you're finished, you may close this page.
+                Have a good day!
+            </p>
+        </main>
         
-        <main>
+        <main id="active-main">
             <h2 id="loading-indicator">
                 Loading...
             </h2>
 
             <h2 id="status-title">Connecting to Host...</h2>
             <p>
-                Welcome to the Game! Please keep this Tab open and don't 
+                Welcome to the game! Please keep this tab open and don't 
                 close the page until the game is over. While the game
                 is being setup, you don't need to do anything on this
                 device, except keeping it awake. Don't let it fall 

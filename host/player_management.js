@@ -49,9 +49,11 @@ function updatePlayerlist() {
 
         playerNameElement.textContent = `Device #${rtcConnections[i].index}`
 
-        circularIndicator.classList.add(rtcConnections[i].statusColor())
+        const connectionStatus = rtcConnections[i].getStatus()
+        circularIndicator.classList.add(connectionStatus.color)
+        playerContainer.title = connectionStatus.message ?? ""
 
-        if (rtcConnections[i].statusColor() == "red") {
+        if (connectionStatus.color == "red") {
             const reconnectButton = document.createElement("button")
             reconnectButton.classList.add("reconnect")
             reconnectButton.textContent = "Reconnect"
@@ -132,15 +134,14 @@ async function addPlayer(playerIndex) {
         onClientUrlAvailable: (clientUrl) => {
             if (removedPlayerUids.has(rtc.signalingUid) || removedPlayerUids.has(scopedUid)) return
             console.log("QR CODE URL", clientUrl + "&nofullscreen")
-            console.log("QR CODE URL DEBUG", clientUrl.replace("https://multi.golf", "https://noel-friedrich.de/multigolf2") + "&nofullscreen")
+            console.log("QR CODE URL DEBUG", clientUrl.replace("https://multi.golf", "localhost:8000") + "&nofullscreen")
 
             qrImg.innerHTML = "" // clear current qr code
             new QRCode(qrImg, clientUrl)
             qrImg.style.display = "block"
         },
-        onDataMessage: (event) => {
+        onDataMessage: (message) => {
             if (removedPlayerUids.has(rtc.signalingUid) || removedPlayerUids.has(scopedUid)) return
-            const message = DataMessage.fromString(event.data)
             onDataMessage(message, rtc)
         }
     })
@@ -170,6 +171,8 @@ async function addPlayer(playerIndex) {
             removedPlayerUids.add(rtcConnections[playerIndex].signalingUid)
             rtcConnections[playerIndex] = rtc
         }
+
+        rtc.startPinging()
 
         onRtcReconnect(rtc)
     } catch (err) {

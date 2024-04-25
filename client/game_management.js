@@ -63,7 +63,7 @@ fullscreenCanvas.addEventListener("touchend", event => {
 
 function renderLoop() {
     Renderer.render(gameState, context, touchInfo)
-    gameState.updatePhysics()
+    gameState.updatePhysics(getHostTime())
 
     window.requestAnimationFrame(renderLoop)
 }
@@ -241,13 +241,17 @@ async function onConstructionTouchEvent(touchInfo) {
 }
 
 async function onDataMessage(dataMessage) {
-    // ignore pings
     if (dataMessage.type == dataMessageType.PING) {
-        return
-    }
+        // send ping back
+        rtc.sendMessage(DataMessage.Ping())
 
-    if (dataMessage.type == dataMessageType.GAMESTATE) {
+    } else if (dataMessage.type == dataMessageType.GAMESTATE) {
         gameState = GameState.fromObject(dataMessage.data)
+        
+        if (dataMessage.hostTime) {
+            hostTimeOffset = dataMessage.hostTime - Date.now()
+        }
+
         if (touchInfo.focusedObject && touchInfo.isDown) {
             gameState.board.updateObject(touchInfo.focusedObject)
         }

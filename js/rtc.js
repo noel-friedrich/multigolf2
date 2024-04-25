@@ -12,22 +12,27 @@ const dataMessageType = {
 
 class DataMessage {
 
-    constructor(type, data, createTime) {
+    constructor(type, data, createTime, receivedTime, hostTime) {
         this.type = type
         this.data = data ?? {}
         this.createTime = createTime ?? Date.now()
+
+        this.hostTime = hostTime ?? null
+        this.receivedTime = receivedTime ?? null
     }
 
     toString() {
         return JSON.stringify({
             type: this.type,
             data: this.data,
-            createTime: this.createTime
+            createTime: this.createTime,
+            receivedTime: this.receivedTime,
+            hostTime: this.hostTime
         })
     }
 
     static fromObject(obj) {
-        return new DataMessage(obj.type, obj.data, obj.createTime)
+        return new DataMessage(obj.type, obj.data, obj.createTime, obj.receivedTime, obj.hostTime)
     }
 
     static fromString(jsonString) {
@@ -101,7 +106,14 @@ class RtcBase {
         }
 
         this.dataChannel.onmessage = (e) => {
-            this.onDataMessage(e)
+            const message = DataMessage.fromString(e.data)
+            if (message.receivedTime === null) {
+                message.receivedTime = Date.now()
+            }
+            
+            this.lastDataMessage = message
+            this.lastDataMessageTime = Date.now()
+            this.onDataMessage(message)
         }
 
         this.dataChannel.onclose = (e) => {
@@ -151,10 +163,16 @@ class RtcBase {
         this.signalingUid = null
         this.index = index
         this.hasInitted = false
+        this.lastDataMessage = null
+        this.lastDataMessageTime = null
     }
 
     sendMessage(message) {
         if (message instanceof DataMessage) {
+            if (this.delayMs !== undefined) {
+                message.hostTime = Date.now() + this.delayMs
+            }
+
             message = message.toString()
         }
 
@@ -257,30 +275,27 @@ class RtcBase {
 
 class RtcHost extends RtcBase {
 
-    pingMs() {
-        return this.lastDataMessageTime - this.lastDataMessage.createTime
-    }
+    getStatus() {
+        let color = "green"
+        let message = "Good Connection"
 
-    statusColor() {
-        let circleColor = "green"
         if (!this.lastDataMessageTime) {
-            circleColor = "red"
+            color = "blue"
+            message = "Connection is being initialized"
         } else if (Date.now() - this.lastDataMessageTime > RtcBase.pingPeriod * 2) {
-            circleColor = "red"
-        } else if (Date.now() - this.lastDataMessageTime > RtcBase.pingPeriod + 500) {
-            circleColor = "orange"
+            color = "red"
+            message = "Connection timed out"
         }
 
-        if (this.lastDataMessage && circleColor == "green") {
-            let pingMs = this.lastDataMessageTime - this.lastDataMessage.createTime
-
+        if (this.lastDataMessage && color == "green") {
             // phone clocks are very out of sync
-            if (pingMs > 5000) {
-                circleColor = "orange"
+            if (this.delayMs > 500) {
+                color = "orange"
+                message = `Connection is slow (${Math.round(this.delayMs * 2)}ms Ping)`
             }
         }
 
-        return circleColor
+        return {color, message}
     }
 
     generateSignalingUid() {
@@ -291,19 +306,35 @@ class RtcHost extends RtcBase {
         return this.clientUrl + `?uid=${encodeURIComponent(this.signalingUid)}`
     }
 
+    receivePing(pingMessage) {
+        this.receivedPing = pingMessage
+    }
+
+    async startPinging() {
+        while (true) {
+            const pingStartTime = Date.now()
+            this.sendMessage(DataMessage.Ping())
+
+            this.receivedPing = null
+            await this.waitUntil(() => this.receivedPing, "Pinging")
+            
+            const timeElapsed = this.receivedPing.receivedTime - pingStartTime
+
+            // the time between host and client (pingTime) is approximated as
+            // time delay between back and forth ping halved
+            this.delayMs = timeElapsed / 2
+            
+            await new Promise(resolve => setTimeout(resolve, RtcBase.pingPeriod))
+        }
+    }
+
     async start() {
+        this.delayMs = 0
+
         await this.init()
         this.logFunction("Starting Connection Process...")
 
         this.signalingUid = this.generateSignalingUid()
-
-        this.lastDataMessage = null
-        this.lastDataMessageTime = null
-
-        this.dataChannel.addEventListener("message", (e) => {
-            this.lastDataMessage = DataMessage.fromString(e.data)
-            this.lastDataMessageTime = Date.now()
-        })
 
         this.onClientUrlAvailable(this.makeClientUrl())
         this.logFunction("✅ Created QR Code Target")
@@ -363,6 +394,21 @@ class RtcHost extends RtcBase {
 }
 
 class RtcClient extends RtcBase {
+
+    getStatus() {
+        let color = "green"
+        let message = "Good Connection"
+
+        if (!this.lastDataMessageTime) {
+            color = "blue"
+            message = "Connection is being initialized"
+        } else if (Date.now() - this.lastDataMessageTime > RtcBase.pingPeriod * 2) {
+            color = "red"
+            message = "Connection timed out"
+        }
+
+        return {color, message}
+    }
 
     async start(signalingUid) {
         await this.init()
