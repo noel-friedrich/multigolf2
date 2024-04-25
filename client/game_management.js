@@ -62,8 +62,8 @@ fullscreenCanvas.addEventListener("touchend", event => {
 })
 
 function renderLoop() {
-    Renderer.render(gameState, context, touchInfo)
     gameState.updatePhysics(getHostTime())
+    Renderer.render(gameState, context, touchInfo)
 
     window.requestAnimationFrame(renderLoop)
 }
@@ -247,7 +247,7 @@ async function onDataMessage(dataMessage) {
 
     } else if (dataMessage.type == dataMessageType.GAMESTATE) {
         gameState = GameState.fromObject(dataMessage.data)
-        
+
         if (dataMessage.hostTime) {
             hostTimeOffset = dataMessage.hostTime - Date.now()
         }
