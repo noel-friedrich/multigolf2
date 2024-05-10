@@ -188,16 +188,13 @@
             <section data-phase="connecting">
                 <h2>Device Connections</h2>
                 <p>
-                    Welcome to the device connection centre! You're the host, so you're
-                    responsible for managing this process. Every player
-                    will have to scan a different QR code that will be
-                    generated on this phone. Make sure that every QR code
-                    is scanned only once by one device!
+                    Tell everyone to scan the QR code below! You do not
+                    need to download anything, the connection will
+                    connect to each other automagically!
                 </p>
                 <p>
                     The devices will try to connect directly via a peer-to-peer
-                    connection, similar to how videocalls work. Your game data isn't
-                    sent to any server.
+                    connection, similar to how videocalls work.
                 </p>
                 <p>
                     <span style="color: blue;">Important</span>: it's likely that you will
@@ -207,13 +204,12 @@
                 </p>
 
                 <div style="display: none;" id="qr-img"></div>
-                <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left; display: none;"></p>
-
-                <button id="add-player-button" onclick="addPlayer()">Add a new Device</button>
-                <button id="abort-player-button" onclick="abortPlayer()" style="display: none;">Cancel new Device</button>
-                <button id="finish-players-button" onclick="finishPlayers()" style="display: none;">
+                
+                <button id="finish-players-button" onclick="finishPlayers()">
                     I've connected all Devices!
                 </button>
+                
+                <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left"></p>
             </section>
         
             <section data-phase="tournament-explanation">

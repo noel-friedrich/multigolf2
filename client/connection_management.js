@@ -35,14 +35,35 @@ addEventListener("error", (err) => {
     logToUser(`⚠️ ${err.message}`)
 })
 
+function fillPlaceholders(attr, value) {
+    for (let element of document.querySelectorAll("[data-fill]")) {
+        if (element.dataset.fill == attr) {
+            element.textContent = value
+        }
+    }
+}
+
+let deviceIndex = null
+
+function updateDeviceIndex(newIndex) {
+    deviceIndex = newIndex
+    fillPlaceholders("device-index", deviceIndex != null ? deviceIndex : "?")
+    localStorage.setItem("multigolf-deviceIndex", deviceIndex)
+}
+
+const urlParams = new URLSearchParams(location.search)
+if (!urlParams.has("p")) {
+    location.href = "../index.html"
+}
+
 const rtc = new RtcClient({
     logFunction: logToUser,
     onDataMessage: (dataMessage) => {
         onDataMessage(dataMessage)
     },
+    poolUid: urlParams.get("p")
 })
 
-const urlParams = new URLSearchParams(location.search)
 const noSleep = new NoSleep()
 
 let hostTimeOffset = 0
@@ -51,16 +72,19 @@ function getHostTime() {
 }
 
 async function main() {
+    if (localStorage.getItem("multigolf-poolUid") == rtc.poolUid) {
+        if (localStorage.getItem("multigolf-deviceIndex") != null) {
+            updateDeviceIndex(localStorage.getItem("multigolf-deviceIndex"))
+        }
+    } else {
+        localStorage.setItem("multigolf-poolUid", rtc.poolUid)
+    }
+
     await Renderer.load()
     document.querySelector("#loading-indicator").style.display = "none"
 
-    if (!urlParams.has("uid")) {
-        location.href = "../index.html"
-        return
-    }
-
     try {
-        await rtc.start(urlParams.get("uid"))
+        await rtc.start(deviceIndex)
         statusTitle.textContent = "Connected to Host."
 
         startGame()

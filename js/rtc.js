@@ -39,13 +39,15 @@ class DataMessage {
         return DataMessage.fromObject(JSON.parse(jsonString))
     }
 
-    static Ping() {
-        return new DataMessage(dataMessageType.PING)
+    static Ping(data={}) {
+        return new DataMessage(dataMessageType.PING, data)
     }
 
 }
 
 const rtcDataType = {
+    openPool: "open_pool",
+    joinPool: "join_pool",
     Offer: "offer",
     Answer: "answer",
     HostCandidate: "host-candidate",
@@ -90,10 +92,10 @@ class RtcBase {
     // is still active. Used by both host & clients
     static pingPeriod = 3000
 
+    closePoolApi = "https://www.noel-friedrich.de/multigolf2/api/close_pool.php"
     getSignalsApi = "https://www.noel-friedrich.de/multigolf2/api/get_signals.php"
     sendSignalApi = "https://www.noel-friedrich.de/multigolf2/api/send_signal.php"
     getIceServersApi = "https://multigolf2.metered.live/api/v1/turn/credentials?apiKey=" + notSoSecretMeteredApiKey
-    clientUrl = "https://multi.golf/client/index.html"
 
     static checkForSignalsInterval = 1000
     static clientTimeoutPeriod = 20 * 1000
@@ -151,20 +153,30 @@ class RtcBase {
     constructor({
         logFunction = () => {},
         onDataMessage = () => {},
-        onClientUrlAvailable = () => {},
         index = -1,
+        poolUid = null,
     }={}) {
         this.logFunction = logFunction
         this.onDataMessage = onDataMessage
-        this.onClientUrlAvailable = onClientUrlAvailable
         
         this.processedSignalIds = new Set()
         this.dataChannelOpen = false
         this.signalingUid = null
-        this.index = index
         this.hasInitted = false
         this.lastDataMessage = null
         this.lastDataMessageTime = null
+        this.alive = true
+
+        this.index = index
+        this.poolUid = poolUid
+
+        if (!poolUid) {
+            throw new Error("PoolUid must be given to WebRTC Handler")
+        }
+    }
+
+    die() {
+        this.alive = false
     }
 
     sendMessage(message) {
@@ -188,6 +200,7 @@ class RtcBase {
         try {
             let apiUrl = this.sendSignalApi
             apiUrl += `?type=${encodeURIComponent(type)}`
+            apiUrl += `&pool_uid=${encodeURIComponent(this.poolUid)}`
             apiUrl += `&uid=${encodeURIComponent(this.signalingUid)}`
             apiUrl += `&data=${encodeURIComponent(JSON.stringify(data))}`
             const response = await fetch(apiUrl)
@@ -207,10 +220,10 @@ class RtcBase {
         }
     }
 
-    async getFromServer(type) {
+    async getFromServer(type, uid) {
         try {
             let apiUrl = this.getSignalsApi
-            apiUrl += `?uid=${encodeURIComponent(this.signalingUid)}`
+            apiUrl += `?pool_uid=${encodeURIComponent(this.poolUid)}`
             const response = await fetch(apiUrl)
             let rows = await response.json()
 
@@ -218,6 +231,10 @@ class RtcBase {
 
             if (type !== undefined) {
                 rows = rows.filter(r => r.type == type)
+            }
+
+            if (uid !== undefined) {
+                rows = rows.filter(r => r.uid == uid)
             }
 
             for (let row of rows) {
@@ -243,6 +260,10 @@ class RtcBase {
                 throw new Error(`Timeout while waiting for ${name}`)
             }
 
+            if (!this.alive) {
+                throw new Error(`Connection died while waiting for ${name}`)
+            }
+
             if (func()) {
                 return
             }
@@ -257,7 +278,7 @@ class RtcBase {
     }) {
         const startTime = Date.now()
         while (!untilFunc()) {
-            const updates = await this.getFromServer()
+            const updates = await this.getFromServer(undefined, this.signalingUid)
             for (let update of updates) {
                 handleUpdate(update)
             }
@@ -267,9 +288,17 @@ class RtcBase {
                 throw new Error(`Timeout while waiting for ${objectName}`)
             }
 
+            if (!this.alive) {
+                throw new Error(`Connection died while waiting for ${objectName}`)
+            }
+
             await new Promise(resolve => setTimeout(resolve, checkInterval))
         }
     }   
+
+    generateSignalingUid() {
+        return Math.random().toString().slice(2)
+    }
 
 }
 
@@ -298,14 +327,6 @@ class RtcHost extends RtcBase {
         return {color, message}
     }
 
-    generateSignalingUid() {
-        return Math.random().toString().slice(2) + "-" + Math.random().toString().slice(2)
-    }
-
-    makeClientUrl() {
-        return this.clientUrl + `?uid=${encodeURIComponent(this.signalingUid)}`
-    }
-
     receivePing(pingMessage) {
         this.receivedPing = pingMessage
     }
@@ -313,7 +334,7 @@ class RtcHost extends RtcBase {
     async startPinging() {
         while (true) {
             const pingStartTime = Date.now()
-            this.sendMessage(DataMessage.Ping())
+            this.sendMessage(DataMessage.Ping({index: this.index}))
 
             this.receivedPing = null
             await this.waitUntil(() => this.receivedPing, "Pinging")
@@ -328,16 +349,11 @@ class RtcHost extends RtcBase {
         }
     }
 
-    async start() {
+    async start(signalingUid) {
         this.delayMs = 0
+        this.signalingUid = signalingUid
 
         await this.init()
-        this.logFunction("Starting Connection Process...")
-
-        this.signalingUid = this.generateSignalingUid()
-
-        this.onClientUrlAvailable(this.makeClientUrl())
-        this.logFunction("✅ Created QR Code Target")
 
         this.peerConnection.addEventListener("icecandidateerror", event => {
             if (new URLSearchParams(location.search).has("debug")) {
@@ -410,13 +426,20 @@ class RtcClient extends RtcBase {
         return {color, message}
     }
 
-    async start(signalingUid) {
+    async joinPool(deviceIndex) {
+        await this.uploadToServer(rtcDataType.joinPool, {
+            signalingUid: this.signalingUid, deviceIndex
+        }, "Connection Invitation")
+    }
+
+    async start(deviceIndex=null) {
         await this.init()
-        this.logFunction("Starting Connection Process...")
 
         this.answerSdp = null
         this.offerSdp = null
-        this.signalingUid = signalingUid
+        this.signalingUid = this.generateSignalingUid()
+
+        await this.joinPool(deviceIndex)
 
         this.peerConnection.addEventListener("icecandidateerror", event => {
             if (new URLSearchParams(location.search).has("debug")) {
@@ -455,6 +478,104 @@ class RtcClient extends RtcBase {
             "RTC Offer",
             {timeoutPeriod: RtcBase.clientTimeoutPeriod}
         )
+    }
+
+}
+
+class RtcHostManager {
+
+    static checkForJoinsPeriod = 5000
+    static clientUrl = "https://multi.golf/client/"
+    static openPoolApi = "https://www.noel-friedrich.de/multigolf2/api/open_pool.php"
+
+    constructor({
+        logFunction = () => {},
+        onDataMessage = () => {},
+        onClientUrlAvailable = () => {},
+    }={}) {
+        this.logFunction = logFunction
+        this.onDataMessage = onDataMessage
+        this.onClientUrlAvailable = onClientUrlAvailable
+
+        this.poolUid = null
+        this.connections = []
+        this.polling = false
+    }
+
+    makeConnection(deviceIndex) {
+        const connection = new RtcHost({
+            logFunction: (message) => {
+                if (!connection.alive) {
+                    return
+                }
+                this.logFunction(`[${connection.index}] ${message}`)
+            },
+            onDataMessage: (message) => {
+                this.onDataMessage(message, connection)
+            },
+            poolUid: this.poolUid
+        })
+
+        if (deviceIndex != null && deviceIndex <= this.connections.length) {
+            this.connections[deviceIndex - 1].die()
+            this.connections[deviceIndex - 1] = connection
+        } else {
+            this.connections.push(connection)
+        }
+
+        this.sortConnections()
+        return connection
+    }
+
+    sortConnections() {
+        this.connections.sort((a, b) => {
+            return a.randomOffset - b.randomOffset
+        })
+
+        for (let i = 0; i < this.connections.length; i++) {
+            // index=0 is reserved for host (legacy)
+            this.connections[i].index = i + 1
+        }
+    }
+
+    async openPool() {
+        const response = await fetch(RtcHostManager.openPoolApi)
+        const jsonData = await response.json()
+        return jsonData["pool_uid"]
+    }
+
+    makeClientUrl() {
+        return RtcHostManager.clientUrl + `?p=${encodeURIComponent(this.poolUid)}`
+    }
+
+    async start() {
+        this.poolUid = await this.openPool()
+        this.onClientUrlAvailable(this.makeClientUrl())
+        this.logFunction(`✅ Created Pool (${this.poolUid})`)
+
+        // the baseConnection is just used to get updates from
+        // the signalling server, not to form a peer-to-peer
+        // webrtc connection with another device
+        this.baseConnection = new RtcBase({poolUid: this.poolUid})
+        
+        this.startPolling()
+    }
+
+    async startPolling() {
+        this.polling = true
+        while (this.polling) {
+            const updates = await this.baseConnection.getFromServer(rtcDataType.joinPool)
+            for (let update of updates) {
+                const deviceIndex = update.data.deviceIndex
+                const signalingUid = update.data.signalingUid
+                const connection = this.makeConnection(deviceIndex)
+                connection.start(signalingUid).then(() => {
+                    connection.startPinging()
+                })
+            }
+
+            await new Promise(resolve => setTimeout(resolve, RtcHostManager.checkForJoinsPeriod))
+        }
     }
 
 }

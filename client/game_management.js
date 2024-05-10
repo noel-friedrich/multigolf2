@@ -243,6 +243,7 @@ async function onConstructionTouchEvent(touchInfo) {
 async function onDataMessage(dataMessage) {
     if (dataMessage.type == dataMessageType.PING) {
         // send ping back
+        updateDeviceIndex(dataMessage.data.index)
         rtc.sendMessage(DataMessage.Ping())
 
     } else if (dataMessage.type == dataMessageType.GAMESTATE) {

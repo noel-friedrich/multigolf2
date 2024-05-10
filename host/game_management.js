@@ -3,7 +3,7 @@ function playNewGame() {
 }
 
 function syncGamestate(rtcs) {
-    rtcs ??= rtcConnections
+    rtcs ??= rtc.connections
     for (const rtc of rtcs) {
         const message = new DataMessage(
             dataMessageType.GAMESTATE,
@@ -15,9 +15,7 @@ function syncGamestate(rtcs) {
 function physicsLoop() {
     if (gameState.update()) {
         syncGamestate()
-        if (!currAddingPlayerUid) {
-            updateHtmlSection(gameState.phase)
-        }
+        updateHtmlSection(gameState.phase)
     }
 
     window.requestAnimationFrame(physicsLoop)
@@ -110,9 +108,7 @@ async function startGame() {
             boardCanvasFieldset.style.display = "grid"
             BoardRenderer.render(gameState.board, boardContext)
     
-            if (!currAddingPlayerUid) {
-                updateHtmlSection(gameState.phase)
-            }
+            updateHtmlSection(gameState.phase)
     
             if (!gameState.board.balls.some(b => b.isMoving())) {
                 syncGamestate()
@@ -131,12 +127,12 @@ async function startGame() {
         isPhysicsLoopRunning = true
     }
 
-    if (rtcConnections.length == 1) {
+    if (rtc.connections.length == 1) {
         gameState.phase = gamePhase.Loading
         updateHtmlSection(gameState.phase)
         syncGamestate()
 
-        rtcConnections[0].sendMessage(new DataMessage(
+        rtc.connections[0].sendMessage(new DataMessage(
             dataMessageType.REQUEST_DIMENSIONS))
     } else {
         gameState.phase = gamePhase.Construction
@@ -147,11 +143,6 @@ async function startGame() {
 
 function finishConstruction() {
     if (gameState.phase != gamePhase.Construction) {
-        return
-    }
-
-    if (gameState.board.course.phones.length < rtcConnections.length) {
-        alert("You haven't connected all phones to the course. Connect all and try again.")
         return
     }
 

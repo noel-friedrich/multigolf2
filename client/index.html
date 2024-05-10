@@ -17,11 +17,9 @@
         </header>
 
         <main id="failed-main" style="display: none">
-            <h2>Connection Failed</h2>
+            <h2>[<span data-fill="device-index">?</span>] Connection Failed</h2>
             <p>
-                The connection to the host failed. To reconnect,
-                start a new connection on the host and rescan
-                the QR code with this device.
+                The connection to the host failed.
             </p>
             <p>
                 If you're finished, you may close this page.
@@ -39,8 +37,10 @@
                 Welcome to the game! Please keep this tab open and don't 
                 close the page until the game is over. While the game
                 is being setup, you don't need to do anything on this
-                device, except keeping it awake. Don't let it fall 
-                asleep, or the connection will probably fail!
+                device, except keeping it awake.
+            </p>
+            <p>
+                This is Device#<span data-fill="device-index">?</span>.
             </p>
             <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left;"></p>
             <fieldset>
