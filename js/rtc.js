@@ -103,7 +103,7 @@ class RtcBase {
     
     initDatachannelListeners() {
         this.dataChannel.onopen = (e) => {
-            this.logFunction("✅ DataChannel opened")
+            this.logFunction("✅ Connection established.")
             this.dataChannelOpen = true
         }
 
@@ -129,7 +129,9 @@ class RtcBase {
             return
         }
 
-        this.logFunction("🫂 Initializing Peer-To-Peer...")
+        if (new URLSearchParams(location.search).has("debug")) {
+            this.logFunction("🫂 Initializing Peer-To-Peer...")
+        }
         this.hasInitted = true
 
         const response = await fetch(this.getIceServersApi)
@@ -372,7 +374,7 @@ class RtcHost extends RtcBase {
         await this.peerConnection.setLocalDescription(offer)
         this.uploadToServer(rtcDataType.Offer, {
             sdp: this.peerConnection.localDescription
-        }, "Connection Offer")
+        }, "Connection Offer", new URLSearchParams(location.search).has("debug"))
 
         await this.checkForUpdates(
             () => this.dataChannelOpen,
