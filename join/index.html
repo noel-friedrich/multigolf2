@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" style="overscroll-behavior: contain;">
+
+    <!-- SET title=Join | Multigolf -->
+    <!-- BEGIN default_head -->
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Join | Multigolf</title>
+        <link rel="icon" type="image/svg" href="../assets/logo.svg" />
+        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
+    </head>
+    <!-- END -->
+
+    <body>
+
+        <!-- BEGIN default_header -->
+        <header> 
+            <img src="../assets/logo.svg" class="logo"></img>
+            <a href="../">Multigolf</a>
+            <div class="link-island">
+                <a href="../host/">Start Game</a>
+                <a href="../join/">Join Game</a>
+                <a href="../about/">About</a>
+                <a href="../faq/">FAQ</a>
+                <a href="../contact/">Contact</a>
+            </div>
+            <div class="hamburger-icon" tabindex="0">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </header>
+        
+        <div class="header-drop-menu">
+            <a href="../host/">Start a Game</a>
+            <a href="../join/">Join a Game</a>
+            <a href="../about/">What is Multigolf?</a>
+            <a href="../faq/">FAQ & Help</a>
+            <a href="../contact/">Contact</a>
+        </div>
+        
+        <script src="../js/dom.js"></script>
+        <!-- END -->
+        
+        <main>
+            <h1>Join a Game</h1>
+            <p>
+                To join a game, enter the session code below. The session code
+                will be shown on the host device when the QR code is generated.
+            </p>
+            <p>
+                You may also scan the QR code instead of typing the code
+                here manually.
+            </p>
+            
+            <input type="text" placeholder="Enter Code here" style="font-family: monospace;" id="code-input">
+            <p class="error" id="code-error-output" style="display: none;"></p>
+            <button id="join-button">Join Game</button>
+        </main>
+
+        <script>
+            const codeInput = document.getElementById("code-input")
+            const codeErrorOutput = document.getElementById("code-error-output")
+            const joinButton = document.getElementById("join-button")
+            const codeLength = 8
+
+            const validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("")
+
+            const sanetizeCode = code => code.toUpperCase().split("")
+                    .filter(c => validChars.includes(c)).join("").substring(0, codeLength)
+            codeInput.oninput = () => {
+                codeInput.value = sanetizeCode(codeInput.value)
+            }
+
+            const error = (errorMessage) => {
+                codeErrorOutput.style.display = "block"
+                codeErrorOutput.textContent = errorMessage
+                
+                codeErrorOutput.animate([
+                    { transform: "translateX(-10px)" },
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                    { transform: "translateX(0px)" },
+                ], {
+                    duration: 500,
+                    iterations: 1,
+                })
+            }
+
+            let busy = false
+            joinButton.onclick = async () => {
+                const code = sanetizeCode(codeInput.value)
+                if (code.length == 0) {
+                    return error("Please enter a code.")
+                }
+                if (code.length != codeLength) {
+                    return error("Code must be 8 characters long.")
+                }
+
+                if (busy) return
+
+                let rows = []
+                try {
+                    busy = true
+                    const response = await fetch(`https://www.noel-friedrich.de/multigolf2/api/get_signals.php?pool_uid=${code}`)
+                    rows = await response.json()
+                    setTimeout(() => busy = false, 250)
+                } catch {
+                    return error("Couldn't request site: Server down?")
+                }
+
+                if (rows.length == 0) {
+                    return error("Unknown Code")
+                }
+
+                codeErrorOutput.style.display = "none"
+                location.href = `../client/?p=${code}`
+            }
+        </script>
+
+        <!-- BEGIN default_footer -->
+        <footer>
+            Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
+            <a href="../impressum">Impressum / Contact</a>.
+            <a href="../data-privacy">Data Privacy</a>.
+            <a href="../.">Home</a>.
+        </footer>
+        <!-- END -->
+    </body>
+
+</html>

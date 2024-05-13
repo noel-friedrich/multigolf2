@@ -1,42 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 
+    <!-- SET title=Multigolf -->
+    <!-- BEGIN default_head -->
     <head>
-        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
         <title>Multigolf</title>
-        <link rel="icon" type="image/svg" href="./assets/logo.svg" />
+        <link rel="icon" type="image/svg" href="assets/logo.svg" />
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
     </head>
+    <!-- END -->
 
     <body>
+        <!-- BEGIN default_header -->
         <header> 
             <img src="assets/logo.svg" class="logo"></img>
-            <a href="./">Multigolf</a>
+            <a href="">Multigolf</a>
             <div class="link-island">
                 <a href="host/">Start Game</a>
+                <a href="join/">Join Game</a>
+                <a href="about/">About</a>
+                <a href="faq/">FAQ</a>
+                <a href="contact/">Contact</a>
+            </div>
+            <div class="hamburger-icon" tabindex="0">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
             </div>
         </header>
-
-        <!--
-            <div class="fullwidth-banner">
-                <div class="darktop"></div>
-                <div class="hugetext">Ready for something cool?</div>
-            </div>
-        -->
+        
+        <div class="header-drop-menu">
+            <a href="host/">Start a Game</a>
+            <a href="join/">Join a Game</a>
+            <a href="about/">What is Multigolf?</a>
+            <a href="faq/">FAQ & Help</a>
+            <a href="contact/">Contact</a>
+        </div>
+        
+        <script src="js/dom.js"></script>
+        <!-- END -->
 
         <main>
             <h1 style="font-weight: normal;">Welcome to <span style="color:rgb(0, 129, 43); font-weight: bolder;">Multigolf</span></h1>
             <p>
-                
                 Multigolf is a cross-device Minigolf game. Build courses out of 
                 multiple phones, then battle your friends in the available
-                gamemodes. Grab your friends, steal their phones and begin
+                game-modes. Grab your friends, steal their phones and begin
                 building complex minigolf courses on any tabletop anywhere. 
                 It's extremely simple to setup and doesn't require any
                 download, everyone will simply scan a QR code and begin playing.
-                Sounds good? Then try it out!
+                Sounds good? Then go <a href="host">Start a Game</a>!
             </p>
             <div class="middle-container">
                 <img src="assets/pics/demo-img.jpg" class="smaller middle">
@@ -57,13 +73,14 @@
             <a href="host/" class="linkbutton">Start a Game</a>
         </main>
 
+        <!-- BEGIN default_footer -->
         <footer>
             Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
-            <a href="./impressum">Impressum / Contact</a>.
-            <a href="./data-privacy">Data Privacy</a>.
+            <a href="impressum">Impressum / Contact</a>.
+            <a href="data-privacy">Data Privacy</a>.
+            <a href=".">Home</a>.
         </footer>
-
-        <script src="js/mathutils.js"></script>
+        <!-- END -->
     </body>
 
 </html>

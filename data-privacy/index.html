@@ -1,20 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" style="overscroll-behavior: contain;">
 
+    <!-- SET title=Data Privacy | Multigolf -->
+    <!-- BEGIN default_head -->
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
         <title>Data Privacy | Multigolf</title>
-        <link rel="stylesheet" href="../style.css?t">
         <link rel="icon" type="image/svg" href="../assets/logo.svg" />
+        <link rel="stylesheet" href="../style.css">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
     </head>
+    <!-- END -->
 
     <body>
-        <header>
+        <!-- BEGIN default_header -->
+        <header> 
             <img src="../assets/logo.svg" class="logo"></img>
-            <a href="../index.html">Multigolf</a>
+            <a href="../">Multigolf</a>
+            <div class="link-island">
+                <a href="../host/">Start Game</a>
+                <a href="../join/">Join Game</a>
+                <a href="../about/">About</a>
+                <a href="../faq/">FAQ</a>
+                <a href="../contact/">Contact</a>
+            </div>
+            <div class="hamburger-icon" tabindex="0">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
         </header>
+        
+        <div class="header-drop-menu">
+            <a href="../host/">Start a Game</a>
+            <a href="../join/">Join a Game</a>
+            <a href="../about/">What is Multigolf?</a>
+            <a href="../faq/">FAQ & Help</a>
+            <a href="../contact/">Contact</a>
+        </div>
+        
+        <script src="../js/dom.js"></script>
+        <!-- END -->
         
         <main>
             <h1>Data Privacy</h1>
@@ -136,11 +163,14 @@
             document.querySelector("#email-out").href = "mailto:" + email
         </script>
 
+        <!-- BEGIN default_footer -->
         <footer>
             Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
-            <a href="../impressum/">Impressum / Contact</a>.
-            <a href="../data-privacy/">Data Privacy</a>.
+            <a href="../impressum">Impressum / Contact</a>.
+            <a href="../data-privacy">Data Privacy</a>.
+            <a href="../.">Home</a>.
         </footer>
+        <!-- END -->
     </body>
 
 </html>

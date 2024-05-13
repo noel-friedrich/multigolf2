@@ -42,9 +42,11 @@ h4, h5, h6 {
 
 header {
     padding: 1rem;
-    border-bottom: 1px solid #ccc;
     background-color: rgba(255, 255, 255, 1);
     display: flex;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    z-index: 40;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
@@ -67,21 +69,118 @@ header > a {
 
 header .link-island {
     margin-left: auto;
+    display: flex;
+    gap: .5em;
 }
 
 header .link-island a {
     display: block;
-    border: 1px solid #ccc;
     padding: .3em;
+    padding-left: .6em;
+    padding-right: .6em;
     text-decoration: none;
     color: black;
     font-family: var(--header-font);
     font-size: 1.3em;
-    border-radius: 10px;
 }
 
 header .link-island a:hover {
+    text-decoration: underline;
+}
+
+.header-drop-menu {
+    transition: 300ms;
+    max-height: 0;
+    z-index: 30;
+    display: none;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+    gap: .5em;
+    transform: translateY(-100%) scaleY(0);
+    padding: 0;
+}
+
+.header-drop-menu.visible {
+    max-height: 20em;
+    padding: 1rem;
+    transform: translateY(0) scaleY(1);
+}
+
+.header-drop-menu a {
+    display: block;
+    padding: .5em;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: black;
+    border-radius: 5px;
+}
+
+.header-drop-menu a:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+header .hamburger-icon {
+    display: none;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2em;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5px 5px 5px;
+    gap: 5px;
+    cursor: pointer;
+}
+
+header .hamburger-icon .bar {
+    width: 100%;
+    background-color: rgb(0, 218, 22);
+    transition: 300ms;
+}
+
+header .hamburger-icon:not(.x) .bar:nth-child(2) {
+    width: 75%;
+    margin-left: 25%;
+}
+
+header .hamburger-icon:not(.x) .bar:nth-child(3) {
+    width: 50%;
+    margin-left: 50%;
+}
+
+header .hamburger-icon.x .bar:nth-child(1) {
+    transform: rotate(45deg) translate(.3em, .6em);
+}
+
+header .hamburger-icon.x .bar:nth-child(2) {
+    width: 0;
+    margin-left: 50%;
+}
+
+header .hamburger-icon.x .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(.3em, -.6em);
+}
+
+@media only screen and (max-width: 800px) {
+
+    header .hamburger-icon {
+        display: grid;
+    }
+
+    header .link-island {
+        display: none;
+    }
+
+    .header-drop-menu {
+        display: grid;
+    }
+
+    header.expanded {
+        box-shadow: none;
+    }
+    
 }
 
 .in-between-img {
@@ -116,6 +215,16 @@ main p {
     margin: 0;
 }
 
+main p.error {
+    text-align: center;
+    color: red;
+}
+
+main p.error::before {
+    content: "Error: ";
+    font-weight: bold;
+}
+
 main .checkbox-container {
     display: grid;
     grid-template-columns: 2em 1fr;
@@ -142,6 +251,11 @@ main fieldset {
     gap: 1em;
     border-radius: .8em;
     border: 1px solid #ccc;
+}
+
+main .enable-gap {
+    display: grid;
+    gap: 1em;
 }
 
 main fieldset.many-inputs {
@@ -180,14 +294,15 @@ main button {
 
 main input {
     background-color: white;
+    font-family: var(--general-font);
+    font-weight: normal;
+    cursor: initial;
+    font-size: 1em;
+    background-color: rgb(251, 251, 251);
 }
 
 main .round-edges {
     border-radius: .8em;
-}
-
-main input[type=text] {
-    cursor: text;
 }
 
 main a.linkbutton:hover,
@@ -211,6 +326,24 @@ main textarea {
     border-radius: .5em;
     background-color: rgb(251, 251, 251);
     border: 1px solid #a1a1a1;
+    font-family: var(--general-font);
+    font-size: 1em;
+}
+
+main .custom-form {
+    display: grid;
+    gap: 0;
+}
+
+main .custom-form *:not(:first-child) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+}
+
+main .custom-form *:not(:last-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 main img {
@@ -240,6 +373,57 @@ footer {
 }
 
 /* non general css for multigolf */
+
+main .faq-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .7em;
+}
+
+main .faq-container .entry {
+    background-color: rgb(244, 244, 244);
+    border: 1px solid #a1a1a1;
+    border-radius: .3em;
+    padding: .5rem;
+    transition: 300ms;
+}
+
+main .faq-container .question {
+    position: relative;
+    cursor: pointer;
+}
+
+main .faq-container .entry.unfolded .question {
+    font-weight: bold;
+    margin-bottom: .5em;
+    padding-right: 20px;
+}
+
+main .faq-container .question::after {
+    content: ">";
+    position: absolute;
+    right: 0;
+    top: 0;
+    color:rgba(0, 0, 0, 0.5);
+    transform: rotate(90deg);
+    transition: 500ms;
+}
+
+main .faq-container .entry.unfolded .question::after {
+    transform: rotate(270deg);
+}
+
+main .faq-container .entry.unfolded .answer {
+    transition: 300ms;
+    max-height: 300px;
+    opacity: 1;
+}
+
+main .faq-container .entry:not(.unfolded) .answer {
+    transition: 300ms;
+    max-height: 0;
+    opacity: 0;
+}
 
 .fullwidth-banner {
     background-image: url('assets/gifs/background.gif');

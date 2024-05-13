@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" style="overscroll-behavior: contain;">
+
+    <!-- SET title=Contact | Multigolf -->
+    <!-- BEGIN default_head -->
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Contact | Multigolf</title>
+        <link rel="icon" type="image/svg" href="../assets/logo.svg" />
+        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
+    </head>
+    <!-- END -->
+
+    <body>
+
+        <!-- BEGIN default_header -->
+        <header> 
+            <img src="../assets/logo.svg" class="logo"></img>
+            <a href="../">Multigolf</a>
+            <div class="link-island">
+                <a href="../host/">Start Game</a>
+                <a href="../join/">Join Game</a>
+                <a href="../about/">About</a>
+                <a href="../faq/">FAQ</a>
+                <a href="../contact/">Contact</a>
+            </div>
+            <div class="hamburger-icon" tabindex="0">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </header>
+        
+        <div class="header-drop-menu">
+            <a href="../host/">Start a Game</a>
+            <a href="../join/">Join a Game</a>
+            <a href="../about/">What is Multigolf?</a>
+            <a href="../faq/">FAQ & Help</a>
+            <a href="../contact/">Contact</a>
+        </div>
+        
+        <script src="../js/dom.js"></script>
+        <!-- END -->
+        
+        <main>
+            <h1>Contact Form</h1>
+            <p>
+                Before asking a question below, make sure to take a peek
+                at the <a href="../faq/">Frequently asked Questions</a>.
+            </p>
+            
+        </main>
+
+        <script>
+            const formContainer = document.createElement("div")
+            formContainer.classList.add("custom-form")
+
+            const formWidth = "min(25em, 50vw)"
+
+            let formInfo = {}
+
+            function addInput({
+                type="text",
+                name=null,
+                errorFunc=null,
+                placeholder=null,
+            }={}) {
+                const input = document.createElement("input")
+                input.setAttribute("type", type)
+                if (placeholder) input.setAttribute("placeholder", placeholder)
+
+                if (name) {
+                    input.setAttribute("name", name)
+                    formInfo[name] = {
+                        errorFunc,
+                        input,
+                    }
+                    input.addEventListener("input", validateForm)
+                }
+
+                formContainer.appendChild(input)
+
+                return input
+            }
+
+            const nameInput = addInput({
+                name: "name",
+                placeholder: "Name *",
+                errorFunc: (value) => {
+                    if (!value) return "Please enter a name"
+                    if (value.length > 100) return "Name is too long"
+                    return ""
+                }
+            })
+
+            const emailInput = addInput({
+                type: "email",
+                name: "email",
+                placeholder: "Email *",
+                errorFunc: (value) => {
+                    if (!value) return "Please enter an email"
+                    if (value.length > 100) return "Email is too long"
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                    if (!emailRegex.test(value)) return "Invalid email format"
+                    return ""
+                }
+            })
+
+            const phoneInput = addInput({
+                type: "tel",
+                name: "phone",
+                placeholder: "Phone",
+                errorFunc: (value) => {
+                    if (!value) return ""
+                    if (value.length > 100) return "Phone is too long"
+                    const phoneRegex = /^\+?[0-9\s]+$/
+                    if (!phoneRegex.test(value)) return "Invalid phone format"
+                    return ""
+                }
+            })
+
+            const messageTextarea = document.createElement("textarea")
+            messageTextarea.setAttribute("name", "message")
+            messageTextarea.setAttribute("placeholder", "Message *")
+            formContainer.appendChild(messageTextarea)
+
+            formInfo["message"] = {
+                errorFunc: (value) => {
+                    if (!value) return "Please enter a message"
+                    if (value.length > 1000) return "Message max length is 1000 characters"
+                    return ""
+                },
+                input: messageTextarea
+            }
+
+            messageTextarea.addEventListener("input", validateForm)
+            messageTextarea.rows = 10
+
+            const submitButton = document.createElement("button")
+            submitButton.textContent = "Send Message"
+            formContainer.appendChild(submitButton)
+
+            const errorOutput = document.createElement("div")
+            errorOutput.style.color = "#ff5555"
+            errorOutput.style.textAlign = "center"
+            errorOutput.style.margin = "10px"
+
+            function validateForm() {
+                errorOutput.style.color = "red"
+                for (let [name, info] of Object.entries(formInfo)) {
+                    const { errorFunc, input } = info
+                    if (errorFunc) {
+                        const error = errorFunc(input.value)
+                        errorOutput.textContent = error
+                        if (error) {
+                            return false
+                        }
+                    }
+                }
+                errorOutput.style.color = "green"
+                errorOutput.textContent = "✅ Ready to send"
+                return true
+            }
+
+            validateForm()
+
+            submitButton.addEventListener("click", async () => {
+                if (!validateForm()) {
+                    errorOutput.animate([
+                        { transform: "translateX(-10px)" },
+                        { transform: "translateX(10px)" },
+                        { transform: "translateX(-10px)" },
+                        { transform: "translateX(10px)" },
+                        { transform: "translateX(-10px)" },
+                        { transform: "translateX(10px)" },
+                        { transform: "translateX(-10px)" },
+                        { transform: "translateX(10px)" },
+                        { transform: "translateX(-10px)" },
+                        { transform: "translateX(0px)" },
+                    ], {
+                        duration: 500,
+                        iterations: 1,
+                    })
+                    return
+                }
+
+                let submitUrl = "https://www.noel-friedrich.de/multigolf2/api/contact.php"
+                let formData = new FormData()
+                for (let [name, info] of Object.entries(formInfo)) {
+                    formData.append(name, info.input.value)
+                }
+                const response = await fetch(submitUrl, {
+                    method: "POST",
+                    body: formData,
+                })
+                const data = await response.json()
+                if (data.ok) {
+                    errorOutput.textContent = "Message sent - I'll get back to you as soon as possible!"
+                    errorOutput.style.color = "green"
+                    formContainer.remove()
+                } else {
+                    errorOutput.textContent = data.error
+                }
+            })
+
+            document.querySelector("main").appendChild(formContainer)
+            document.querySelector("main").appendChild(errorOutput)
+        </script>
+
+        <!-- BEGIN default_footer -->
+        <footer>
+            Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
+            <a href="../impressum">Impressum / Contact</a>.
+            <a href="../data-privacy">Data Privacy</a>.
+            <a href="../.">Home</a>.
+        </footer>
+        <!-- END -->
+    </body>
+
+</html>
