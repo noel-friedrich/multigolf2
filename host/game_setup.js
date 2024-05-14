@@ -8,8 +8,10 @@ function updateHtmlSection(phase) {
     for (let section of document.querySelectorAll("main > section[data-phase]")) {
         if (section.dataset.phase == gamePhaseNames[phase]) {
             section.style.display = "grid"
+            section.classList.add("visible")
         } else {
             section.style.display = "none"
+            section.classList.remove("visible")
         }
     }
 

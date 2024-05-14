@@ -83,8 +83,13 @@ def handle_file(file_path: str):
 
             if add_line:
                 new_lines.append(line)
-            
-        if new_lines != lines:
+
+        if insert_info["found"]:
+            # the last BEGIN wasn't followed by an END
+            # then revert changes
+            print(f"unmatched BEGIN in {file_path}")
+            new_lines = lines  
+        elif new_lines != lines:
             print(f"made changes in {file_path}")
         with open(file_path, "w", encoding="utf-8") as file:
             file.write("\n".join(new_lines))

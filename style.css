@@ -185,7 +185,7 @@ header .hamburger-icon.x .bar:nth-child(3) {
 
 .in-between-img {
     position: relative;
-    z-index: -1;
+    z-index: -2;
     max-height: 10em;
 }
 
@@ -204,6 +204,9 @@ main {
     border-radius: 1em;
     margin-top: 2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 100;
+    transition: 300ms;
 }
 
 main.largebottomgap {
@@ -374,6 +377,28 @@ footer {
 
 /* non general css for multigolf */
 
+main .back-button {
+    position: absolute;
+    top: -2rem;
+    left: 1rem;
+    font-size: 1rem;
+    font-weight: normal;
+    padding: .3rem;
+    height: 2rem;
+    width: fit-content;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top:   none;
+    border-left:  none;
+    border-right: none;
+    padding-left: .8rem;
+    padding-right: .8rem;
+}
+
+main:has(section.visible .back-button) {
+    margin-top: 4rem;
+}
+
 main .faq-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -391,12 +416,12 @@ main .faq-container .entry {
 main .faq-container .question {
     position: relative;
     cursor: pointer;
+    padding-right: 20px;
 }
 
 main .faq-container .entry.unfolded .question {
     font-weight: bold;
     margin-bottom: .5em;
-    padding-right: 20px;
 }
 
 main .faq-container .question::after {
@@ -486,7 +511,7 @@ main .faq-container .entry:not(.unfolded) .answer {
 
 #fullscreen-canvas {
     position: fixed;
-    z-index: 100;
+    z-index: 200;
     top: 0;
     left: 0;
     width: 100%;
@@ -501,7 +526,7 @@ main section[data-phase] {
 
 main #board-canvas {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 5 / 3;
 }
 
 @keyframes loading-text {

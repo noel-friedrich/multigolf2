@@ -63,18 +63,6 @@
                 <canvas id="board-canvas" style="display: none;"></canvas>
             </fieldset>
 
-            <section data-phase="placing">
-                <h2>Placing Items</h2>
-                <p>
-                    Select an object below and click anywhere on the course to place it.
-                    Every course must have at least a start and a hole. You can move
-                    existing items around by dragging and pinching. Remove items using
-                    the eraser.
-                </p>
-                <div class="object-selection-container"></div>
-                <button onclick="finishPlacing()">I'm finished.</button>
-            </section>
-
             <section data-phase="hello">
                 <h2>Welcome to Multigolf!</h2>
                 <p>
@@ -113,6 +101,7 @@
             </section>
 
             <section data-phase="mode-choice">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
                 <h2>Choose your Gamemode</h2>
                 <p>
                     To start, choose a Gamemode. The number of players
@@ -169,6 +158,7 @@
             </section>
 
             <section data-phase="player-setup-duell">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
                 <h2>Player Registration!</h2>
                 <p>
                     I need to know the name of the two duellists.
@@ -184,6 +174,7 @@
             </section>
 
             <section data-phase="player-setup-tournament">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
                 <h2>Player Registration!</h2>
                 <p>
                     I need the participants names! Leave names empty to
@@ -214,6 +205,7 @@
             </section>
 
             <section data-phase="connecting">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
                 <h2>Device Connections</h2>
                 <p>
                     Tell everyone to scan the QR code below! You do not
@@ -241,6 +233,7 @@
             </section>
         
             <section data-phase="tournament-explanation">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
                 <h2>Let the games begin!</h2>
                 <p>
                     <span data-fill="tournament-builder-name">NAME</span>
@@ -260,6 +253,7 @@
             </section>
 
             <section data-phase="duell-explanation">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
                 <h2>Let the Duell begin!</h2>
                 <p>
                     Welcome to the Duell! You will now have to construct your course.
@@ -271,6 +265,7 @@
             </section>
 
             <section data-phase="construction">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
                 <h2>Course Construction</h2>
                 <p>
                     It's time to construct the Multigolf course. Each phone should show 
@@ -280,6 +275,19 @@
                 </p>
                 <img src="../assets/gifs/building.gif">
                 <button onclick="finishConstruction()">I'm finished</button>
+            </section>
+
+            <section data-phase="placing">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
+                <h2>Placing Items</h2>
+                <p>
+                    Select an object below and click anywhere on the course to place it.
+                    Every course must have at least a start and a hole. You can move
+                    existing items around by dragging and pinching. Remove items using
+                    the eraser.
+                </p>
+                <div class="object-selection-container"></div>
+                <button onclick="finishPlacing()">I'm finished.</button>
             </section>
 
             <section data-phase="playing-tournament">

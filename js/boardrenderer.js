@@ -12,6 +12,13 @@ class BoardRenderer {
 
         const screenCourse = board.course.copy()
 
+        // rotate if more efficient
+        let maxX = Math.max(...screenCourse.phones.map(p => p.points.map(c => c.x)).flat())
+        let maxY = Math.max(...screenCourse.phones.map(p => p.points.map(c => c.y)).flat())
+        if (maxX < maxY) {
+            screenCourse.rotate(Math.PI / 2)
+        }
+
         // move to strictly positive coords
         let minX = Math.min(...screenCourse.phones.map(p => p.points.map(c => c.x)).flat())
         let minY = Math.min(...screenCourse.phones.map(p => p.points.map(c => c.y)).flat())
@@ -22,7 +29,6 @@ class BoardRenderer {
         //  step-by-step optimization until we reach the goal)
         // (this part doesn't have to be _that_ efficient)
         // (the approach is converging exponentially, so should be fine)
-        let maxX, maxY
         while (maxX == undefined || maxX > canvas.width || maxY > canvas.height) {
             screenCourse.scale(0.95 ** 2)
             maxX = Math.max(...screenCourse.phones.map(p => p.points.map(c => c.x)).flat())

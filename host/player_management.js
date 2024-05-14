@@ -94,9 +94,7 @@ function startConnectionProcess() {
     updatePlayerlist()
     changeGamePhase(gamePhase.Connecting)
 
-    if (rtc) {
-        startGame()
-    } else {
+    if (!rtc) {
         rtc = new RtcHostManager({
             logFunction: (message) => {
                 logToConnectionLog(message)

@@ -151,7 +151,7 @@ const placableObjects = [
     new GolfObject(golfObjectType.Start),
     new GolfObject(golfObjectType.Hole).setVisibility(gs => gs.mode != gameMode.Duell),
     new GolfObject(golfObjectType.Lava).setSize(new Vector2d(80, 80)).setResizable(true),
-    new GolfObject(golfObjectType.CustomWall).setSize(new Vector2d(80, 40)).setResizable(true),
+    new GolfObject(golfObjectType.CustomWall).setSize(new Vector2d(120, 40)).setResizable(true),
     new GolfObject(golfObjectType.Eraser),
     new GolfObject(golfObjectType.DuellHole1).setVisibility(gs => gs.mode == gameMode.Duell),
     new GolfObject(golfObjectType.DuellHole2).setVisibility(gs => gs.mode == gameMode.Duell),

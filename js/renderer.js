@@ -21,6 +21,7 @@ class Renderer {
         this.spriteImgMap[Sprite.DuellHole2] = await this.loadImg(Sprite.DuellHole2)
         this.spriteImgMap[Sprite.Lava] = await this.loadImg(Sprite.Lava)
         this.spriteImgMap[Sprite.ZoomIcon] = await this.loadImg(Sprite.ZoomIcon)
+        this.spriteImgMap[Sprite.Eraser] = await this.loadImg(Sprite.Eraser)
         this.spriteImgMap[Sprite.CustomWall] = await this.loadImg(Sprite.CustomWall)
     }
 
@@ -81,14 +82,14 @@ class Renderer {
                 context.beginPath()
                 context.moveTo(touchInfo.lastDownPos.x, touchInfo.lastDownPos.y)
                 context.lineTo(touchInfo.currPos.x, touchInfo.currPos.y)
-                context.lineWidth = this.screenUnit
+                context.lineWidth = 30
                 context.lineCap = "round"
                 context.strokeStyle = "#bac4ff"
                 context.stroke()
             }
 
             context.fillStyle = "blue"
-            this.drawCircle(context, touchInfo.currPos, Math.min(this.screenUnit, 100))
+            this.drawCircle(context, touchInfo.currPos, 25)
             context.fill()
         }
     }
@@ -205,6 +206,14 @@ class Renderer {
         context.stroke()
     }
 
+    static renderPlacingTools(gameState, context, touchInfo) {
+        if (gameState.placingObjectType == golfObjectType.Eraser 
+            && touchInfo.isDown && touchInfo.currPos
+        ) {
+            this.drawSprite(context, touchInfo.currPos, new Vector2d(60, 60), Sprite.Eraser)
+        }
+    }
+
     static render(gameState, context, touchInfo) {
         this.updateCanvasSize(context)
         document.body.style.overflow = "hidden"
@@ -212,7 +221,8 @@ class Renderer {
             case gamePhase.Construction:
                 return this.renderConstruction(gameState, context, touchInfo)
             case gamePhase.Placing:
-                return this.renderBoard(gameState, context, touchInfo, {drawBalls: false})
+                this.renderBoard(gameState, context, touchInfo, {drawBalls: false})
+                return this.renderPlacingTools(gameState, context, touchInfo)
             case gamePhase.PlayingDuell:
             case gamePhase.PlayingSandbox:
             case gamePhase.PlayingTournament:

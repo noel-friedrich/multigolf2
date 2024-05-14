@@ -252,3 +252,40 @@ function startPlaying() {
 
     syncGamestate()
 }
+
+
+function back() {
+    switch (gameState.phase) {
+        case gamePhase.ModeChoice:
+            return changeGamePhase(gamePhase.Hello, true)
+        case gamePhase.PlayerSetupTournament:
+            return changeGamePhase(gamePhase.ModeChoice, true)
+        case gamePhase.PlayerSetupDuell:
+            return changeGamePhase(gamePhase.ModeChoice, true)
+        case gamePhase.Connecting:
+            if (gameState.mode == gameMode.Tournament) {
+                return changeGamePhase(gamePhase.PlayerSetupTournament, true)
+            } else if (gameState.mode == gameMode.Duell) {
+                return changeGamePhase(gamePhase.PlayerSetupDuell, true)
+            } else {
+                return changeGamePhase(gamePhase.ModeChoice, true)
+            }
+        case gamePhase.TournamentExplanation:
+        case gamePhase.DuellExplanation:
+            return changeGamePhase(gamePhase.Connecting, true)
+        case gamePhase.Construction:
+            if (gameState.mode == gameMode.Tournament) {
+                return changeGamePhase(gamePhase.TournamentExplanation, true)
+            } else if (gameState.mode == gameMode.Duell) {
+                return changeGamePhase(gamePhase.DuellExplanation, true)
+            } else {
+                return changeGamePhase(gamePhase.Connecting, true)
+            }
+        case gamePhase.Placing:
+            if (rtc.connections.length == 1) {
+                return changeGamePhase(gamePhase.Connecting, true)
+            } else {
+                return changeGamePhase(gamePhase.Construction, true)
+            }
+    }
+}
