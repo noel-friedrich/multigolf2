@@ -236,6 +236,15 @@ class GameState {
     endTournamentRound() {
         this.phase = gamePhase.TournamentExplanation
 
+        // penalize balls that haven't reached goal in time 
+        // with two extra points!
+        for (let i = 0; i < this.players.length; i++) {
+            const roundIndex = this.tournamentBuilderIndex
+            if (!this.board.balls[i].inHole) {
+                this.players[i].roundScores[roundIndex] += 2
+            }
+        }
+
         this.tournamentBuilderIndex++
         this.board.balls.splice(0, this.board.balls.length)
 
@@ -246,17 +255,22 @@ class GameState {
         this.board.objects = []
     }
 
+    onTournamentKick(ball) {
+        let ballIndex = 0
+        for (let i = 0; i < this.board.balls.length; i++) {
+            ballIndex = i
+            if (ball.uid == this.board.balls[i].uid) {
+                break
+            }
+        }
+
+        this.tournamentBall.active = false
+        this.tournamentBallIndex = ballIndex + 1
+        this.tournamentBall.active = true
+    }
+
     updateTournament() {
         let madeChange = false
-
-        const currBall = this.tournamentBall
-        const nextBall = this.board.balls[(this.tournamentBallIndex + 1) % this.board.balls.length]
-        if (currBall.isMoving() && !nextBall.isMoving()) {
-            currBall.active = false
-            nextBall.active = true
-            this.tournamentBallIndex++
-            madeChange = true
-        }
 
         for (let i = 0; i < this.players.length; i++) {
             let kicks = this.board.balls[i].kicks

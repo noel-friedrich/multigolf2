@@ -80,6 +80,9 @@ function onDataMessage(dataMessage, rtc) {
     ) {
         const ball = gameState.board.balls.find(b => b.uid == dataMessage.data.ballUid)
         if (ball) {
+            if (gameState.mode == gameMode.Tournament) {
+                gameState.onTournamentKick(ball)
+            }
             ball.kick(Vector2d.fromObject(dataMessage.data.direction))
         } else {
             console.error("Couldn't find ball with id", dataMessage.data.ballUid)
