@@ -65,15 +65,54 @@ class Ball {
 
         for (let wallObject of walledObjects) {
             for (let [p1, p2] of wallObject.walls) {
-                const distanceToWall = this._distanceToWall(p1, p2, pos)
-                if (distanceToWall < smallestDistance) {
+                const {distance} = this._distanceToWall(p1, p2, pos)
+                if (distance < smallestDistance) {
                     closestWall = [p1, p2]
-                    smallestDistance = distanceToWall
+                    smallestDistance = distance
                 }
             }
         }
 
         return closestWall
+    }
+
+    _getCollidingWalls(board) {
+        const walledObjects = board.course.phones
+            .concat(board.objects.filter(o => o.type == golfObjectType.CustomWall))
+        const collidingWalls = []
+        
+        const epsilon = 0.01
+        for (let wallObject of walledObjects) {
+            for (let [p1, p2] of wallObject.walls) {
+                const {distance, closestPoint} = this._distanceToWall(p1, p2, this.pos)
+                if (distance <= this.radius) {
+                    // we need to check wether the closestPoint of the wall is
+                    // on a connecting part between devices. We check by testing
+                    // wether the closestPoint is 'inside' (including boundary)
+                    // of multiple phones.
+                    // Due to inaccurate coordinates, we need to check wether
+                    // the device box contains the point up to an epsilon
+                    // (due to floating point and wishy washy calculations)
+
+                    let overlapCount = 0
+                    for (const box of board.course.phones) {
+                        const boxDist = box.distanceToPos(closestPoint)
+                        if (boxDist < epsilon) {
+                            overlapCount++
+                            if (overlapCount > 1) {
+                                break
+                            }
+                        }
+                    }
+
+                    if (overlapCount < 2) {
+                        collidingWalls.push([p1, p2])
+                    }
+                }
+            }
+        }
+
+        return collidingWalls
     }
 
     _getClosestEndPos(pos, board) {
@@ -102,7 +141,7 @@ class Ball {
             return p2.distance(point)
         } else {
             let closestPoint = p1.add(p2toP1.scale(d))
-            return closestPoint.distance(point)
+            return {distance: closestPoint.distance(point), closestPoint}
         }
     }
 
@@ -177,9 +216,11 @@ class Ball {
             return
         }
 
-        const outOfBounds = !board.course.containsPos(this.pos)
-
-        if (outOfBounds) {
+        if (!board.course.containsPos(this.pos)) {
+            // if the ball is out of bounds too long,
+            // something went horribly wrong and we reset
+            // him to the start
+            
             this.outOfBoundsTickCount++
             if (this.outOfBoundsTickCount > 10) {
                 this.pos = board.startPos.copy()
@@ -190,8 +231,8 @@ class Ball {
             this.outOfBoundsTickCount = 0
         }
 
-        if (outOfBounds || this._isInCustomWall(this.pos, board)) {
-            const [p1, p2] = this._getClosestWall(this.pos, board)
+        const collidingWalls = this._getCollidingWalls(board)
+        for (const [p1, p2] of collidingWalls) {
             this.pos.isub(this.vel)
             this.vel = this._reflectAtWall(p1, p2, this.vel)
             this.pos.iadd(this.vel)

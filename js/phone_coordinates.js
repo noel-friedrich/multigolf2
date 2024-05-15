@@ -118,6 +118,17 @@ class PhoneCoordinates {
         return pos.x >= minX && pos.x <= maxX && pos.y >= minY && pos.y <= maxY
     }
 
+    distanceToPos(pos) {
+        // assuming that this.angle is multiple of 90° (Math.PI / 2)
+        const minX = Math.min(this.topLeft.x, this.bottomRight.x)
+        const minY = Math.min(this.topLeft.y, this.bottomRight.y)
+        const maxX = Math.max(this.topLeft.x, this.bottomRight.x)
+        const maxY = Math.max(this.topLeft.y, this.bottomRight.y)
+        const dx = Math.max(minX - pos.x, 0, pos.x - maxX)
+        const dy = Math.max(minY - pos.y, 0, pos.y - maxY)
+        return Math.sqrt(dx * dx + dy * dy)
+    }
+
     get walls() {
         return [
             [this.points[0], this.points[1]],
