@@ -393,6 +393,7 @@ main .back-button {
     border-right: none;
     padding-left: .8rem;
     padding-right: .8rem;
+    background-color: white;
 }
 
 main:has(section.visible .back-button) {
@@ -507,6 +508,18 @@ main .faq-container .entry:not(.unfolded) .answer {
 .player-status-container .reconnect {
     font-size: .8em;
     padding: .3em;
+}
+
+#qr-img {
+    padding: 1em;
+}
+
+.qr-loading {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    height: 100%;
+    background-image: url("assets/gifs/qr-loading.gif");
+    background-size: 100%;
 }
 
 #fullscreen-canvas {

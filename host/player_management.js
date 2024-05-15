@@ -99,7 +99,7 @@ function startConnectionProcess() {
             logFunction: (message) => {
                 logToConnectionLog(message)
             },
-            onClientUrlAvailable: (clientUrl) => {
+            onClientUrlAvailable: async (clientUrl) => {
                 if (new URLSearchParams(location.search).has("debug")) {
                     console.log("QR CODE URL", clientUrl + "&nofullscreen")
                     console.log("QR CODE URL DEBUG", clientUrl.replace("https://multi.golf", "localhost:8000") + "&nofullscreen")
@@ -107,7 +107,6 @@ function startConnectionProcess() {
 
                 qrImg.innerHTML = "" // clear current qr code
                 new QRCode(qrImg, clientUrl)
-                qrImg.style.display = "block"
             },
             onDataMessage: (message, connection) => {
                 onDataMessage(message, connection)
