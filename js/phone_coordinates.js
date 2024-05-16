@@ -138,6 +138,10 @@ class PhoneCoordinates {
         ]
     }
 
+    get corners() {
+        return this.points
+    }
+
 }
 
 class Course {
