@@ -17,6 +17,51 @@ if (new URLSearchParams(location.search).has("nofullscreen")) {
     requestFullscreenOnCanvasClick = false
 }
 
+const deviceTilt = {
+    get steady() {
+        // device is considered steady if it hasn't moved
+        // significantly for at least 3 seconds
+        return Date.now() - deviceTilt.lastSignificantMoveTime > 3000
+    },
+    get stableTilt() {
+        return deviceTilt.previousSteadyTilt
+    },
+    lastSignificantMoveTime: Date.now(),
+    tilt: new Vector2d(0, 0),
+    previousSteadyTilt: new Vector2d(0, 0),
+    hasChangedFlag: false
+}
+
+addEventListener("deviceorientation", event => {
+    if (event.gamma == null || event.beta == null) {
+        return
+    }
+
+    deviceTilt.tilt.x = event.beta
+    if (deviceTilt.tilt.x > 90) {
+        deviceTilt.tilt.x = deviceTilt.tilt.x - 180
+    } else if (deviceTilt.tilt.x < -90) {
+        deviceTilt.tilt.x = 180 + deviceTilt.tilt.x
+    }
+    deviceTilt.tilt.y = event.gamma
+
+    // swap x and y and adjust scaling to map to interval [-1, 1] each
+    // (rounded to the nearest hundreth)
+    const temp = deviceTilt.tilt.x
+    deviceTilt.tilt.x = deviceTilt.tilt.y
+    deviceTilt.tilt.y = temp
+
+    deviceTilt.tilt.x = Math.round(deviceTilt.tilt.x / 0.9) / 100
+    deviceTilt.tilt.y = Math.round(deviceTilt.tilt.y / 0.9) / 100
+
+    const epsilon = 0.05
+    if (!deviceTilt.tilt.distance(deviceTilt.previousSteadyTilt) < epsilon) {
+        deviceTilt.lastSignificantMoveTime = Date.now()
+        deviceTilt.previousSteadyTilt = deviceTilt.tilt.copy()
+        deviceTilt.hasChangedFlag = true
+    }
+}, true)
+
 fullscreenCheckbox.checked = requestFullscreenOnCanvasClick
 fullscreenCheckbox.addEventListener("click", () => {
     requestFullscreenOnCanvasClick = !requestFullscreenOnCanvasClick

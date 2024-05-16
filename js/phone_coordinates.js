@@ -142,18 +142,23 @@ class PhoneCoordinates {
 
 class Course {
 
-    constructor(phones=[]) {
+    constructor(phones=[], phoneOrientations=[]) {
         this.phones = phones
+        this.phoneOrientations = phoneOrientations ?? this.phones.map(() => new Vector2d(0, 0))
     }
 
     toObject() {
         return {
-            phones: this.phones.map(p => p.toObject())
+            phones: this.phones.map(p => p.toObject()),
+            orientations: this.phoneOrientations.map(p => p.toObject())
         }
     }
 
     static fromObject(obj) {
-        return new Course(obj.phones.map(p => PhoneCoordinates.fromObject(p)))
+        return new Course(
+            obj.phones.map(p => PhoneCoordinates.fromObject(p)),
+            obj.orientations.map(o => Vector2d.fromObject(o))
+        )
     }
 
     copy() {
@@ -174,6 +179,7 @@ class Course {
 
     addPhone(phone) {
         this.phones.push(phone)
+        this.phoneOrientations.push(new Vector2d(0, 0))
     }
 
     containsPos(pos) {

@@ -7,7 +7,8 @@ const dataMessageType = {
     REMOVE_OBJECT: "remove_object",
     REQUEST_DIMENSIONS: "request_dimensions",
     SEND_DIMENSIONS: "send_dimensions",
-    KICK_BALL: "kick_ball"
+    KICK_BALL: "kick_ball",
+    DEVICE_ORIENTATION: "device_orientation"
 }
 
 class DataMessage {

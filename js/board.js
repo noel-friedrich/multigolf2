@@ -1,18 +1,20 @@
 class Ball {
 
-    constructor(pos, vel, inHole, radius, spriteUrl, kicks, active, uid, rotationAngle) {
+    constructor(pos, vel, inHole, radius, spriteUrl, kicks, active, uid, rotationAngle, lastImmobilePos, immobileTickCount) {
         this.pos = pos
         this.vel = vel ?? new Vector2d(0, 0)
 
         this.inHole = inHole ?? false
         this.radius = radius ?? 18
         this.spriteUrl = spriteUrl ?? Sprite.BallWhite
-
         
         this.kicks = kicks ?? 0
         this.active = active ?? true
         this.uid = uid
         this.rotationAngle = rotationAngle ?? 0
+
+        this.lastImmobilePos = lastImmobilePos ?? this.pos.copy()
+        this.immobileTickCount = immobileTickCount ?? 0
 
         // the following properties will not be saved
         // and synced across devices
@@ -30,6 +32,8 @@ class Ball {
             active: this.active,
             uid: this.uid,
             rotationAngle: this.rotationAngle,
+            lastImmobilePos: this.lastImmobilePos,
+            immobileTickCount: this.immobileTickCount
         }
     }
 
@@ -43,13 +47,17 @@ class Ball {
             obj.kicks,
             obj.active,
             obj.uid,
-            obj.rotationAngle
+            obj.rotationAngle,
+            obj.lastImmobilePos,
+            obj.immobileTickCount
         )
     }
 
     kick(direction) {
         this.vel.iadd(direction)
         this.kicks++
+        this.immobileTickCount = 0
+        this.lastImmobilePos = this.pos.copy( )
     }
 
     isMoving() {
@@ -193,12 +201,45 @@ class Ball {
 
     updatePhysics(board) {
         const stepCount = Math.max(Math.ceil(this.vel.length / 10), 1)
+
+        // add gravity from current phone
+        if (this.isMoving()) {
+            for (let i = 0; i < board.course.phones.length; i++) {
+                if (board.course.phones[i].containsPos(this.pos)) {
+                    const gravity = board.course.phoneOrientations[i]
+                    if (!gravity) break
+                    this.vel.iadd(gravity)
+                    break
+                }
+            }
+        }
+
+        this.vel.iscale(0.95)
         this.vel.iscale(1 / stepCount)
         for (let i = 0; i < stepCount; i++) {
             this.physicsStep(board)
         }
         this.vel.iscale(stepCount)
-        this.vel.iscale(0.95)
+
+        // check if ball has moved from lastImmobilePos significantly.
+        // (signifacntly = more than it's own radius)
+        // if yes, reset the immobilecounter, else increse it.
+        // after the immobilecounter reaches a certain threashold,
+        // we set the velocity to 0, meaning that no gravity will be
+        // applied anymore. We do this to prevent ball bouncing
+        // indefinitely under influence of semi-constant gravity 
+
+        if (this.pos.distance(this.lastImmobilePos) > this.radius) {
+            this.immobileTickCount = 0
+            this.lastImmobilePos = this.pos.copy()
+        } else {
+            this.immobileTickCount++
+        }
+
+        // aprox. 3 seconds before it's considered stuck
+        if (this.immobileTickCount > 180) {
+            this.vel.iscale(0)
+        }
     }
 
     physicsStep(board) {
@@ -235,7 +276,7 @@ class Ball {
         for (const [p1, p2] of collidingWalls) {
             this.pos.isub(this.vel)
             this.vel = this._reflectAtWall(p1, p2, this.vel)
-            this.pos.iadd(this.vel)
+            this.pos.iadd(this.vel.scale(0.95))
         }
 
         if (board.ballCollisionEnabled) {
@@ -255,6 +296,7 @@ class Ball {
             this.radius = Math.max(0, this.radius - 0.1)
             this.pos = this.pos.lerp(endPos, 0.1)
             this.rotationAngle += 0.4
+            this.vel.iscale(0.8)
         } else {
             this.rotationAngle += this.vel.length / 40
         }
@@ -416,8 +458,8 @@ class Board {
             return false
         }
         
-        // delete all existing connections (after and including the one we are modifying)
         if (a.deviceIndex < this.currPhoneIndex) {
+            // delete all existing connections (after and including the one we are modifying)
             while (this.course.phones.length > parseInt(a.deviceIndex)) {
                 this.courseHistory.pop()
                 this.course = this.courseHistory.slice(-1)[0].copy()

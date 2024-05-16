@@ -133,13 +133,60 @@ class Renderer {
         context.stroke()
     }
 
+    static drawGravityArrow(context, pos, direction) {
+        direction = direction.rotate(-Math.PI / 2)
+
+        context.save()
+        context.translate(pos.x, pos.y)
+        context.rotate(direction.angle)
+        context.scale(direction.length, direction.length)
+        context.beginPath()
+        context.moveTo(-0.5, 0)
+        context.lineTo(0.5, 0)
+        context.lineTo(0, 1)
+        context.lineTo(-0.5, 0)
+        context.fillStyle = "#5cfaa3"
+        context.fill()
+        context.restore()
+    }
+
+    static drawGravityArrows(gameState, context, touchInfo) {
+        try {
+            let arrowDirection = gameState.board.course.phoneOrientations[gameState.deviceIndex - 1]
+            if (!arrowDirection) return
+
+            arrowDirection = arrowDirection.scale(200 / gameState.scalingFactor)
+            if (arrowDirection.length < 30 / gameState.scalingFactor) {
+                arrowDirection = arrowDirection.normalized.scale(30 / gameState.scalingFactor)
+            }
+
+            let pos = new Vector2d(0, 0)
+            let gridSize = Math.max(arrowDirection.length * 2, 100 / gameState.scalingFactor)
+
+            for (let x = gridSize / 2; x < context.canvas.width; x += gridSize) {
+                for (let y = gridSize / 2; y < context.canvas.height; y += gridSize) {
+                    pos.set(x, y)
+                    this.drawGravityArrow(context, pos, arrowDirection)
+                }
+            }
+        } catch (e) {
+            logToUser(e.toString())
+            context.canvas.style.display = "none"
+        }
+    }
+
     static renderBoard(gameState, context, touchInfo, {
         drawBalls = true,
         drawSelection = true,
+        drawGravity = true
     }={}) {
         context.canvas.style.display = "block"
         const backgroundSizePercent = Math.max(Math.round(20 / gameState.scalingFactor), 5)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
+
+        if (drawGravity) {
+            this.drawGravityArrows(gameState, context, touchInfo)
+        }
 
         for (const object of gameState.board.objects) {
             if (object.type == golfObjectType.CustomWall) {
@@ -221,7 +268,7 @@ class Renderer {
             case gamePhase.Construction:
                 return this.renderConstruction(gameState, context, touchInfo)
             case gamePhase.Placing:
-                this.renderBoard(gameState, context, touchInfo, {drawBalls: false})
+                this.renderBoard(gameState, context, touchInfo, {drawBalls: false, drawGravity: false})
                 return this.renderPlacingTools(gameState, context, touchInfo)
             case gamePhase.PlayingDuell:
             case gamePhase.PlayingSandbox:

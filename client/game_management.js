@@ -68,9 +68,23 @@ function renderLoop() {
     window.requestAnimationFrame(renderLoop)
 }
 
+let startedOrientationInterval = false
 async function startGame() {
     gameState = new GameState(gamePhase.Connecting, gameMode.None, new Board())
     renderLoop()
+
+    if (!startedOrientationInterval) {
+        startedOrientationInterval = true
+
+        setInterval(() => {
+            if (deviceTilt.steady && deviceTilt.hasChangedFlag && rtc) {
+                rtc.sendMessage(new DataMessage(dataMessageType.DEVICE_ORIENTATION,
+                    {x: deviceTilt.stableTilt.x, y: deviceTilt.stableTilt.y, deviceIndex: gameState.deviceIndex}
+                ))
+                deviceTilt.hasChangedFlag = false
+            }
+        }, 3000)
+    }
 }
 
 async function onKickBallTouchEvent(touchInfo) {
@@ -87,6 +101,12 @@ async function onKickBallTouchEvent(touchInfo) {
     const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
     rtc.sendMessage(new DataMessage(dataMessageType.KICK_BALL,
         {direction: direction.toObject(), ballUid: touchInfo.focusedBall.uid}))
+
+    // do an optimistic change
+    if (gameState.mode == gameMode.Tournament) {
+        gameState.onTournamentKick(touchInfo.focusedBall)
+    }
+    touchInfo.focusedBall.kick(direction)
 }
 
 async function onObjectDown(touchInfo) {
