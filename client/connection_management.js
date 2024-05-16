@@ -20,8 +20,8 @@ if (new URLSearchParams(location.search).has("nofullscreen")) {
 const deviceTilt = {
     get steady() {
         // device is considered steady if it hasn't moved
-        // significantly for at least 3 seconds
-        return Date.now() - deviceTilt.lastSignificantMoveTime > 3000
+        // significantly for at least a second
+        return Date.now() - deviceTilt.lastSignificantMoveTime > 1000
     },
     get stableTilt() {
         return deviceTilt.previousSteadyTilt
