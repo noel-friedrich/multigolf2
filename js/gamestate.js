@@ -160,11 +160,11 @@ class GameState {
     }
 
     screenAngleToBoardAngle(angle) {
-        return angle - this.board.course.phones[this.deviceIndex - 1].angle
+        return angle + this.board.course.phones[this.deviceIndex - 1].angle
     }
 
     boardAngleToScreenAngle(angle) {
-        return angle + this.board.course.phones[this.deviceIndex - 1].angle
+        return angle - this.board.course.phones[this.deviceIndex - 1].angle
     }
 
     get scalingFactor() {

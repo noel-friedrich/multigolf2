@@ -152,7 +152,7 @@ class Renderer {
 
     static drawGravityArrows(gameState, context, touchInfo) {
         try {
-            let arrowDirection = gameState.board.course.phoneOrientations[gameState.deviceIndex - 1]
+            let arrowDirection = gameState.board.course.phones[gameState.deviceIndex - 1].gravity
             if (!arrowDirection) return
 
             arrowDirection = arrowDirection.scale(200 / gameState.scalingFactor)
@@ -257,7 +257,8 @@ class Renderer {
         if (gameState.placingObjectType == golfObjectType.Eraser 
             && touchInfo.isDown && touchInfo.currPos
         ) {
-            this.drawSprite(context, touchInfo.currPos, new Vector2d(60, 60), Sprite.Eraser)
+            this.drawSprite(context, touchInfo.currPos, new Vector2d(60, 60), Sprite.Eraser,
+                {angle: gameState.boardAngleToScreenAngle(0)})
         }
     }
 

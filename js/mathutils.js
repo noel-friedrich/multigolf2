@@ -15,6 +15,10 @@ class Vector2d {
 
     static fromObject(obj) {
         if (obj == null) return null
+        if (obj.x == undefined || obj.y == undefined) {
+            throw new Error(`Vector object must have x and y properties`)
+        }
+        
         return new Vector2d(obj.x, obj.y)
     }
 

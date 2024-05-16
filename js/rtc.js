@@ -542,6 +542,11 @@ class RtcHostManager {
     }
 
     async openPool() {
+        const urlParams = new URLSearchParams(location.search)
+        if (urlParams.has("debug") && urlParams.has("p")) {
+            return urlParams.get("p")
+        }
+
         const response = await fetch(RtcHostManager.openPoolApi)
         const jsonData = await response.json()
         return jsonData["pool_uid"]

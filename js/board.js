@@ -54,7 +54,7 @@ class Ball {
     }
 
     kick(direction) {
-        this.vel.iadd(direction)
+        this.vel.iadd(direction.scale(0.6))
         this.kicks++
         this.immobileTickCount = 0
         this.lastImmobilePos = this.pos.copy( )
@@ -210,6 +210,10 @@ class Ball {
                 ball.vel = v2p
                 this.pos.iadd(this.vel)
                 ball.pos.iadd(ball.vel)
+
+                // reset immobileTickCount for both
+                ball.immobileTickCount = 0
+                this.immobileTickCount = 0
             }
         }
     }
@@ -221,7 +225,8 @@ class Ball {
         if (this.isMoving()) {
             for (let i = 0; i < board.course.phones.length; i++) {
                 if (board.course.phones[i].containsPos(this.pos)) {
-                    const gravity = board.course.phoneOrientations[i]
+                    const gravity = board.course.phones[i].gravity
+                        .rotate(board.course.phones[i].angle)
                     if (!gravity) break
                     this.vel.iadd(gravity)
                     break
@@ -229,7 +234,7 @@ class Ball {
             }
         }
 
-        this.vel.iscale(0.95)
+        this.vel.iscale(0.97)
         this.vel.iscale(1 / stepCount)
         for (let i = 0; i < stepCount; i++) {
             this.physicsStep(board)

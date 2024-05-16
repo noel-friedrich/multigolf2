@@ -31,13 +31,19 @@ class ConstructionLine {
 
 class PhoneCoordinates {
 
-    constructor(topLeft, topRight, bottomLeft, bottomRight, angle, scalar) {
+    constructor(topLeft, topRight, bottomLeft, bottomRight, angle, scalar, gravity) {
         this.topLeft = topLeft
         this.topRight = topRight
         this.bottomLeft = bottomLeft
         this.bottomRight = bottomRight
         this.angle = angle
         this.scalar = scalar
+
+        // gravity isn't adjusted for rotations and when read must be
+        // rotated according to the device rotation in course
+        // (this is because it's adjusted constantly throughout
+        //  the game and would be a hassle to rotate before)
+        this.gravity = gravity
     }
 
     static fromWidthHeight(width, height) {
@@ -46,7 +52,8 @@ class PhoneCoordinates {
             new Vector2d(width, 0),
             new Vector2d(0, height),
             new Vector2d(width, height),
-            0, 1
+            0, 1,
+            new Vector2d(0, 0)
         )
     }
 
@@ -59,7 +66,8 @@ class PhoneCoordinates {
                 this.bottomRight.toObject(),
             ],
             angle: this.angle,
-            scalar: this.scalar
+            scalar: this.scalar,
+            gravity: this.gravity.toObject()
         }
     }
 
@@ -67,7 +75,8 @@ class PhoneCoordinates {
         return new PhoneCoordinates(
             ...obj.coords.map(coord => Vector2d.fromObject(coord)),
             obj.angle,
-            obj.scalar
+            obj.scalar,
+            Vector2d.fromObject(obj.gravity)
         )
     }
 
@@ -146,22 +155,19 @@ class PhoneCoordinates {
 
 class Course {
 
-    constructor(phones=[], phoneOrientations=[]) {
+    constructor(phones=[]) {
         this.phones = phones
-        this.phoneOrientations = phoneOrientations ?? this.phones.map(() => new Vector2d(0, 0))
     }
 
     toObject() {
         return {
-            phones: this.phones.map(p => p.toObject()),
-            orientations: this.phoneOrientations.map(p => p.toObject())
+            phones: this.phones.map(p => p.toObject())
         }
     }
 
     static fromObject(obj) {
         return new Course(
-            obj.phones.map(p => PhoneCoordinates.fromObject(p)),
-            obj.orientations.map(o => Vector2d.fromObject(o))
+            obj.phones.map(p => PhoneCoordinates.fromObject(p))
         )
     }
 
@@ -183,7 +189,6 @@ class Course {
 
     addPhone(phone) {
         this.phones.push(phone)
-        this.phoneOrientations.push(new Vector2d(0, 0))
     }
 
     containsPos(pos) {

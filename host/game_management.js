@@ -97,7 +97,7 @@ function onDataMessage(dataMessage, rtc) {
             const gravity = Vector2d.fromObject(dataMessage.data)
             if (Math.abs(gravity.x) < 0.1) gravity.x = 0
             if (Math.abs(gravity.y) < 0.1) gravity.y = 0
-            gameState.board.course.phoneOrientations[dataMessage.data.deviceIndex - 1] = gravity
+            gameState.board.course.phones[dataMessage.data.deviceIndex - 1].gravity = gravity
             syncGamestate()
         }
 
