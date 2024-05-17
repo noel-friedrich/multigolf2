@@ -62,8 +62,17 @@ fullscreenCanvas.addEventListener("touchend", event => {
 })
 
 function renderLoop() {
-    gameState.updatePhysics(getHostTime())
-    Renderer.render(gameState, context, touchInfo)
+    try {
+        gameState.updatePhysics(getHostTime())
+    } catch (physicsError) {
+        logToUser(`[p] ${physicsError}`)
+    }
+
+    try {
+        Renderer.render(gameState, context, touchInfo)
+    } catch (renderError) {
+        logToUser(`[r] ${renderError}`)
+    }
 
     window.requestAnimationFrame(renderLoop)
 }

@@ -13,6 +13,8 @@ const boardContext = boardCanvas.getContext("2d")
 const boardCanvasFieldset = document.querySelector("#board-canvas-fieldset")
 const playerListFieldset = document.querySelector("#player-list-fieldset")
 
+const gameConfigContainer = document.querySelector("#game-config-container")
+
 function logToConnectionLog(message) {
     if (logOutput.textContent.length > 0) {
         logOutput.textContent += "\n"
@@ -69,14 +71,19 @@ async function finishPlayers() {
 
     if (confirm("Do you really want to start the game? You won't be able to add any more players.")) {
         updatePlayerlist()
+        changeGamePhase(gamePhase.ConfigGame)
+    }
+}
 
-        if (gameState.mode == gameMode.Tournament) {
-            changeGamePhase(gamePhase.TournamentExplanation)
-        } else if (gameState.mode == gameMode.Duell) {
-            changeGamePhase(gamePhase.DuellExplanation)
-        } else {
-            startGame()
-        }
+async function finishConfig() {
+    if (gameState.phase != gamePhase.ConfigGame) return
+
+    if (gameState.mode == gameMode.Tournament) {
+        changeGamePhase(gamePhase.TournamentExplanation)
+    } else if (gameState.mode == gameMode.Duell) {
+        changeGamePhase(gamePhase.DuellExplanation)
+    } else {
+        startGame()
     }
 }
 

@@ -222,7 +222,7 @@ class Ball {
         const stepCount = Math.max(Math.ceil(this.vel.length / 10), 1)
 
         // add gravity from current phone
-        if (this.isMoving()) {
+        if (board.deviceGravityEnabled && this.isMoving()) {
             for (let i = 0; i < board.course.phones.length; i++) {
                 if (board.course.phones[i].containsPos(this.pos)) {
                     const gravity = board.course.phones[i].gravity
@@ -341,12 +341,13 @@ class Board {
 
     static physicsTimestep = 17 // approximately 60 fps
 
-    constructor(course, objects, balls, physicsTime, ballCollisionEnabled) {
+    constructor(course, objects, balls, physicsTime, ballCollisionEnabled, deviceGravityEnabled) {
         this.course = course ?? new Course()
         this.objects = objects ?? []
         this.balls = balls ?? []
         this.physicsTime = physicsTime ?? Date.now()
         this.ballCollisionEnabled = ballCollisionEnabled ?? true
+        this.deviceGravityEnabled = deviceGravityEnabled ?? true
 
         // the following properties will not be
         // exported and thus not sent to clients
@@ -443,7 +444,8 @@ class Board {
             objects: this.objects.map(o => o.toObject()),
             balls: this.balls.map(b => b.toObject()),
             physicsTime: this.physicsTime,
-            ballCollisionEnabled: this.ballCollisionEnabled
+            ballCollisionEnabled: this.ballCollisionEnabled,
+            deviceGravityEnabled: this.deviceGravityEnabled
         }
     }
 
@@ -452,7 +454,8 @@ class Board {
             Course.fromObject(obj.course),
             obj.objects.map(o => GolfObject.fromObject(o)),
             obj.balls.map(b => Ball.fromObject(b)),
-            obj.physicsTime, obj.ballCollisionEnabled
+            obj.physicsTime, obj.ballCollisionEnabled,
+            obj.deviceGravityEnabled
         )
     }
 

@@ -233,6 +233,19 @@
 
                 <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left"></p>
             </section>
+
+            <section data-phase="config-game">
+                <button class="back-button" onclick="back()">&#x25c0; Back</button>
+                <h2>Game Configuration</h2>
+                <p>
+                    You have successfully connected <span data-fill="num-connected-devices">?</span>
+                    device(s). You're now able to configure a few settings about the game.
+                </p>
+                <div id="game-config-container"></div>
+                <button onclick="finishConfig()">
+                    Start Playing
+                </button>
+            </section>
         
             <section data-phase="tournament-explanation">
                 <button class="back-button" onclick="back()">&#x25c0; Back</button>

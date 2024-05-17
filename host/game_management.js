@@ -119,10 +119,9 @@ async function startGame() {
 
     if (!renderingIntervalIsSet) {
         setInterval(() => {
-            boardCanvasFieldset.style.display = "grid"
-            BoardRenderer.render(gameState.board, boardContext)
-    
-            updateHtmlSection(gameState.phase)
+            if (gameState.phase >= gamePhase.Construction) {
+                BoardRenderer.render(gameState.board, boardContext)
+            }
     
             if (!gameState.board.balls.some(b => b.isMoving())) {
                 syncGamestate()
@@ -142,17 +141,15 @@ async function startGame() {
     }
 
     if (rtc.connections.length == 1) {
-        gameState.phase = gamePhase.Loading
-        updateHtmlSection(gameState.phase)
+        changeGamePhase(gamePhase.Loading, true)
         syncGamestate()
-
         rtc.connections[0].sendMessage(new DataMessage(
             dataMessageType.REQUEST_DIMENSIONS))
     } else {
-        gameState.phase = gamePhase.Construction
-        updateHtmlSection(gameState.phase)
-        syncGamestate()
+        changeGamePhase(gamePhase.Construction, true)
     }
+
+    syncGamestate()
 }
 
 function finishConstruction() {
@@ -284,20 +281,28 @@ function back() {
             } else {
                 return changeGamePhase(gamePhase.ModeChoice, true)
             }
+        case gamePhase.ConfigGame:
+            return changeGamePhase(gamePhase.Connecting, true)
         case gamePhase.TournamentExplanation:
         case gamePhase.DuellExplanation:
-            return changeGamePhase(gamePhase.Connecting, true)
+            return changeGamePhase(gamePhase.ConfigGame, true)
         case gamePhase.Construction:
             if (gameState.mode == gameMode.Tournament) {
                 return changeGamePhase(gamePhase.TournamentExplanation, true)
             } else if (gameState.mode == gameMode.Duell) {
                 return changeGamePhase(gamePhase.DuellExplanation, true)
             } else {
-                return changeGamePhase(gamePhase.Connecting, true)
+                return changeGamePhase(gamePhase.ConfigGame, true)
             }
         case gamePhase.Placing:
             if (rtc.connections.length == 1) {
-                return changeGamePhase(gamePhase.Connecting, true)
+                if (gameState.mode == gameMode.Tournament) {
+                    return changeGamePhase(gamePhase.TournamentExplanation, true)
+                } else if (gameState.mode == gameMode.Duell) {
+                    return changeGamePhase(gamePhase.DuellExplanation, true)
+                } else {
+                    return changeGamePhase(gamePhase.ConfigGame, true)
+                }
             } else {
                 return changeGamePhase(gamePhase.Construction, true)
             }

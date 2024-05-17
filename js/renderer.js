@@ -151,27 +151,22 @@ class Renderer {
     }
 
     static drawGravityArrows(gameState, context, touchInfo) {
-        try {
-            let arrowDirection = gameState.board.course.phones[gameState.deviceIndex - 1].gravity
-            if (!arrowDirection) return
+        let arrowDirection = gameState.board.course.phones[gameState.deviceIndex - 1].gravity
+        if (!arrowDirection) return
 
-            arrowDirection = arrowDirection.scale(200 / gameState.scalingFactor)
-            if (arrowDirection.length < 30 / gameState.scalingFactor) {
-                arrowDirection = arrowDirection.normalized.scale(30 / gameState.scalingFactor)
+        arrowDirection = arrowDirection.scale(200 / gameState.scalingFactor)
+        if (arrowDirection.length < 30 / gameState.scalingFactor) {
+            arrowDirection = arrowDirection.normalized.scale(30 / gameState.scalingFactor)
+        }
+
+        let pos = new Vector2d(0, 0)
+        let gridSize = Math.max(arrowDirection.length * 2, 100 / gameState.scalingFactor)
+
+        for (let x = gridSize / 2; x < context.canvas.width; x += gridSize) {
+            for (let y = gridSize / 2; y < context.canvas.height; y += gridSize) {
+                pos.set(x, y)
+                this.drawGravityArrow(context, pos, arrowDirection)
             }
-
-            let pos = new Vector2d(0, 0)
-            let gridSize = Math.max(arrowDirection.length * 2, 100 / gameState.scalingFactor)
-
-            for (let x = gridSize / 2; x < context.canvas.width; x += gridSize) {
-                for (let y = gridSize / 2; y < context.canvas.height; y += gridSize) {
-                    pos.set(x, y)
-                    this.drawGravityArrow(context, pos, arrowDirection)
-                }
-            }
-        } catch (e) {
-            logToUser(e.toString())
-            context.canvas.style.display = "none"
         }
     }
 
@@ -274,7 +269,7 @@ class Renderer {
             case gamePhase.PlayingDuell:
             case gamePhase.PlayingSandbox:
             case gamePhase.PlayingTournament:
-                this.renderBoard(gameState, context, touchInfo, {drawSelection: false})
+                this.renderBoard(gameState, context, touchInfo, {drawSelection: false, drawGravity: false})
                 return this.renderBallInteractions(gameState, context, touchInfo)
             default:
                 document.body.style.overflow = "visible"

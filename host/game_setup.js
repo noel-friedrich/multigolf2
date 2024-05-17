@@ -23,6 +23,18 @@ function updateHtmlSection(phase) {
         }
     }
 
+    if (phase == gamePhase.ConfigGame) {
+        updateConfigHtml()
+    }
+
+    if (phase >= gamePhase.Construction) {
+        boardCanvasFieldset.style.display = "grid"
+    } else {
+        boardCanvasFieldset.style.display = "none"
+    }
+
+    fillPlaceholders("num-connected-devices", rtc?.connections.length)
+
     fillPlaceholders("tournament-builder-name", gameState.tournamentBuilder?.name)
     fillPlaceholders("tournament-active-name", gameState.tournamentActivePlayer?.name)
     fillPlaceholders("tournament-max-kicks", gameState.tournamentMaxKicks)
@@ -131,4 +143,105 @@ function registerPlayers() {
 
     gameState.players = players
     startConnectionProcess()
+}
+
+const gameConfigSettings = [
+    {
+        name: "Device Gravity",
+        description: "If enabled, phones that are tilted in real life will apply a gravity effect on balls.",
+        warning: "Only works for phones with accelorometers.",
+        getValue: () => gameState.board.deviceGravityEnabled,
+        setValue: val => gameState.board.deviceGravityEnabled = val,
+        type: "boolean",
+        showIf: () => true
+    },
+    {
+        name: "Ball Collisions",
+        description: "If enabled, balls can kick each other. If disabled, balls will fly over each other.",
+        getValue: () => gameState.board.ballCollisionEnabled,
+        setValue: val => gameState.board.ballCollisionEnabled = val,
+        type: "boolean",
+        showIf: () => [gameMode.Sandbox, gameMode.Tournament].includes(gameState.mode)
+    },
+    {
+        name: "Maximum Kicks per Round",
+        description: "Decide how many kicks each player can have per round before failing and getting a 2 point penalty.",
+        getValue: () => gameState.tournamentMaxKicks,
+        setValue: val => gameState.tournamentMaxKicks = val,
+        type: "integer", min: 1, max: 100,
+        showIf: () => gameState.mode == gameMode.Tournament
+    }
+]
+
+async function updateConfigHtml() {
+    gameConfigContainer.innerHTML = ""
+
+    for (const setting of gameConfigSettings) {
+        if (!setting.showIf()) continue
+
+        const container = document.createElement("div")
+        const titleRow = document.createElement("div")
+        titleRow.classList.add("titlerow")
+        const name = document.createElement("div")
+        name.textContent = setting.name
+        name.classList.add("name")
+        const inputContainer = document.createElement("div")
+        inputContainer.classList.add("input-container")
+        
+        let inputElement = null
+        if (setting.type == "boolean") {
+            inputElement = document.createElement("input")
+            inputElement.type = "checkbox"
+            inputElement.checked = setting.getValue()
+
+            inputElement.onchange = () => {
+                setting.setValue(inputElement.checked)
+            }
+        } else if (setting.type == "integer") {
+            inputElement= document.createElement("input")
+            inputElement.type = "number"
+            inputElement.value = setting.getValue()
+            inputElement.min = setting.min
+            inputElement.max = setting.max
+            
+            inputElement.oninput = () => {
+                const stringValue = inputElement.value.trim()
+                if (/^-?[0-9]+$/.test(stringValue)) {
+                    inputElement.style.color = "black"
+                } else {
+                    inputElement.style.color = "red"
+                    return
+                }
+                const value = parseInt(stringValue)
+                if ((setting.min ?? -Infinity) > value
+                    || (setting.max ?? Infinity) < value
+                ) {
+                    inputElement.style.color = "red"
+                    return
+                }
+                setting.setValue(value)
+            }
+        } else {
+            throw new Error(`Unknown Setting type "${setting.type}"`)
+        }
+
+        const description = document.createElement("div")
+        description.textContent = setting.description
+        description.classList.add("description")
+
+        container.appendChild(titleRow)
+        titleRow.appendChild(name)
+        inputContainer.appendChild(inputElement)
+        titleRow.appendChild(inputContainer)
+        container.appendChild(description)
+
+        if (setting.warning) {
+            const warning = document.createElement("div")
+            warning.textContent = setting.warning
+            warning.classList.add("warning")
+            container.appendChild(warning)
+        }
+
+        gameConfigContainer.appendChild(container)
+    }
 }

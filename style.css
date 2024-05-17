@@ -510,6 +510,58 @@ main .faq-container .entry:not(.unfolded) .answer {
     padding: .3em;
 }
 
+#game-config-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+#game-config-container > div {
+    background-color: rgb(245, 245, 245);;
+    border-radius: .5rem;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .5rem;
+}
+
+#game-config-container > div > .titlerow {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+}
+
+#game-config-container > div .name {
+    font-family: var(--header-font);
+    font-weight: bold;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+}
+
+#game-config-container > div .input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+#game-config-container > div .input-container * {
+    width: fit-content;
+}
+
+#game-config-container > div .input-container input[type=checkbox] {
+    transform: scale(1.5);
+}
+
+#game-config-container > div .input-container input[type=number] {
+    padding: .3rem;
+}
+
+#game-config-container > div .warning::before {
+    content: "Warning: ";
+    color: red;
+}
+
 #qr-img {
     padding: 1em;
 }
