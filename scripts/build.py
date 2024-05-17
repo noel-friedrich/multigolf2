@@ -5,7 +5,7 @@ templates = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>$title$</title>
-    <link rel="icon" type="image/svg" href="$base-path$assets/logo.svg" />
+    <link rel="icon" type="image/svg" href="$base-path$assets/logo.png" />
     <link rel="stylesheet" href="$base-path$style.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>""",
