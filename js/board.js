@@ -465,7 +465,7 @@ class Board {
 
     parseConstructionLines() {
         this.constructionLineBuffer = this.constructionLineBuffer
-            .filter(c => Date.now() - c.timestamp < 5000)
+            .filter(c => Date.now() - c.timestamp < 2500)
         
         if (this.constructionLineBuffer.length < 2) {
             return
