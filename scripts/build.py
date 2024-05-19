@@ -43,12 +43,22 @@ templates = {
 </footer>"""
 }
 
-SET_regex = r"^[\s\t]*<!--\s*SET\s+([a-zA-Z0-9_]+)\s*=\s*([a-zA-Z0-9_\s\|]+?)\s*-->[\s\t]*$"
-BEGIN_regex = r"^[\s\t]*<!--\s*BEGIN\s+([a-zA-Z0-9_]+)\s*-->[\s\t]*$"
+def make_js_imports(js_imports, file_dict):
+    out = ""
+    version = file_dict["js_version"] if "js_version" in file_dict else 0
+    base = file_dict["base-path"]
+    for js_import in js_imports:
+        out += f"<script src=\"{base}{js_import}?v{version}\"></script>\n"
+    return out[:-1]
+
+SET_regex = r"^[\s\t]*<!--\s*SET\s+([a-zA-Z0-9_\.]+)\s*=\s*([a-zA-Z0-9_\s\|\.]+?)\s*-->[\s\t]*$"
+BEGIN_regex = r"^[\s\t]*<!--\s*BEGIN\s+([a-zA-Z0-9_\.]+)\s*-->[\s\t]*$"
 END_regex = r"^([\s\t]*)<!--\s*END\s*-->[\s\t]*$"
+JS_IMPORT_regex = r"^[\s\t]*<!--\s*JS_IMPORT\s+([a-zA-Z0-9_\.\/]+)\s*-->[\s\t]*$"
 
 def handle_file(file_path: str):
     file_dict = {}
+    js_imports = []
     insert_info = {"start_line": None, "name": None, "found": False}
     new_lines = []
 
@@ -62,6 +72,8 @@ def handle_file(file_path: str):
             SET_search = re.search(SET_regex, line)
             BEGIN_search = re.search(BEGIN_regex, line)
             END_search = re.search(END_regex, line)
+            JS_IMPORT_search = re.search(JS_IMPORT_regex, line)
+
             if (SET_search):
                 key, value = SET_search.group(1), SET_search.group(2)
                 file_dict[key] = value
@@ -77,7 +89,12 @@ def handle_file(file_path: str):
                         template = template.replace(f"${key}$", value)
                     template_lines = template.split("\n")
                     new_lines.extend([indent + l for l in template_lines])
+                elif name == "js_imports":
+                    template_lines = make_js_imports(js_imports, file_dict).split("\n")
+                    new_lines.extend([indent + l for l in template_lines])
                 insert_info["found"] = False
+            elif (JS_IMPORT_search):
+                js_imports.append(JS_IMPORT_search.group(1))
             elif (insert_info["found"]):
                 add_line = False
 
@@ -91,6 +108,7 @@ def handle_file(file_path: str):
             new_lines = lines  
         elif new_lines != lines:
             print(f"made changes in {file_path}")
+
         with open(file_path, "w", encoding="utf-8") as file:
             file.write("\n".join(new_lines))
 
