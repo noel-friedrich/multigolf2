@@ -104,11 +104,13 @@ class RtcBase {
     
     initDatachannelListeners() {
         this.dataChannel.onopen = (e) => {
+            if (!this.alive) return
             this.logFunction("✅ Connection established.")
             this.dataChannelOpen = true
         }
 
         this.dataChannel.onmessage = (e) => {
+            if (!this.alive) return
             const message = DataMessage.fromString(e.data)
             if (message.receivedTime === null) {
                 message.receivedTime = Date.now()
@@ -120,8 +122,11 @@ class RtcBase {
         }
 
         this.dataChannel.onclose = (e) => {
-            this.logFunction("❌ DataChannel closed")
+            if (!this.alive) return
+            this.logFunction("❌ Connection died")
             this.dataChannelOpen = false
+            this.die()
+            this.onDataClose()
         }
     }
 
@@ -156,11 +161,13 @@ class RtcBase {
     constructor({
         logFunction = () => {},
         onDataMessage = () => {},
+        onDataClose = () => {},
         index = -1,
         poolUid = null,
     }={}) {
         this.logFunction = logFunction
         this.onDataMessage = onDataMessage
+        this.onDataClose = onDataClose
         
         this.processedSignalIds = new Set()
         this.dataChannelOpen = false
@@ -282,6 +289,11 @@ class RtcBase {
         const startTime = Date.now()
         while (!untilFunc()) {
             const updates = await this.getFromServer(undefined, this.signalingUid)
+
+            if (!this.alive) {
+                throw new Error(`Connection died while waiting for ${objectName}`)
+            }
+
             for (let update of updates) {
                 handleUpdate(update)
             }
@@ -289,10 +301,6 @@ class RtcBase {
             const timeElapsed = Date.now() - startTime
             if (timeElapsed > timeoutPeriod) {
                 throw new Error(`Timeout while waiting for ${objectName}`)
-            }
-
-            if (!this.alive) {
-                throw new Error(`Connection died while waiting for ${objectName}`)
             }
 
             await new Promise(resolve => setTimeout(resolve, checkInterval))
@@ -359,12 +367,14 @@ class RtcHost extends RtcBase {
         await this.init()
 
         this.peerConnection.addEventListener("icecandidateerror", event => {
+            if (!this.alive) return
             if (new URLSearchParams(location.search).has("debug")) {
                 console.log(`[DEBUG] ICE candidate error: ${event.errorText}`)
             }
         })
 
         this.peerConnection.addEventListener("icecandidate", event => {
+            if (!this.alive) return
             if (event.candidate == null) return
             this.uploadToServer(rtcDataType.HostCandidate, {
                 candidate: event.candidate
@@ -373,6 +383,8 @@ class RtcHost extends RtcBase {
 
         const offer = await this.peerConnection.createOffer()
         await this.peerConnection.setLocalDescription(offer)
+        if (!this.alive) return
+
         this.uploadToServer(rtcDataType.Offer, {
             sdp: this.peerConnection.localDescription
         }, "Connection Offer", new URLSearchParams(location.search).has("debug"))
@@ -443,14 +455,17 @@ class RtcClient extends RtcBase {
         this.signalingUid = this.generateSignalingUid()
 
         await this.joinPool(deviceIndex)
+        if (!this.alive) return
 
         this.peerConnection.addEventListener("icecandidateerror", event => {
+            if (!this.alive) return
             if (new URLSearchParams(location.search).has("debug")) {
                 console.log(`[DEBUG] ICE candidate error: ${event.errorText}`)
             }
         })
 
         this.peerConnection.addEventListener("icecandidate", event => {
+            if (!this.alive) return
             if (event.candidate == null) return
             this.uploadToServer(rtcDataType.AnswerCandidate, {
                 candidate: event.candidate

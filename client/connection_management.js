@@ -3,9 +3,6 @@ window.addEventListener("beforeunload", function (e) {
     return "You're in an active game of multigolf. Leaving this website will break the game!"
 })
 
-const activeMain = document.querySelector("#active-main")
-const failedMain = document.querySelector("#failed-main")
-
 const logOutput = document.querySelector("#log-output")
 const fullscreenCanvas = document.querySelector("#fullscreen-canvas")
 const context = fullscreenCanvas.getContext("2d")
@@ -101,13 +98,7 @@ if (!urlParams.has("p")) {
     location.href = "../index.html"
 }
 
-const rtc = new RtcClient({
-    logFunction: logToUser,
-    onDataMessage: (dataMessage) => {
-        onDataMessage(dataMessage)
-    },
-    poolUid: urlParams.get("p")
-})
+let rtc = null
 
 const noSleep = new NoSleep()
 
@@ -117,6 +108,24 @@ function getHostTime() {
 }
 
 async function main() {
+    logOutput.textContent = ""
+
+    rtc?.die()
+    rtc = new RtcClient({
+        logFunction: logToUser,
+        onDataMessage: (dataMessage) => {
+            onDataMessage(dataMessage)
+        },
+        onDataClose: () => {
+            statusTitle.textContent = "Connection failed."
+            logToUser("⌛ Trying again in 5 seconds.")
+            setTimeout(main, 1 * 2 * 3 * 4 * 5 * 6 * 7) // 7! ~ 5000
+        },
+        poolUid: urlParams.get("p"),
+    })
+
+    statusTitle.textContent = "Connecting to Host..."
+    
     if (localStorage.getItem("multigolf-poolUid") == rtc.poolUid) {
         if (localStorage.getItem("multigolf-deviceIndex") != null) {
             updateDeviceIndex(localStorage.getItem("multigolf-deviceIndex"))
@@ -131,44 +140,28 @@ async function main() {
     try {
         await rtc.start(deviceIndex)
         statusTitle.textContent = "Connected to Host."
-
         startGame()
     } catch (err) {
         logToUser("❌ Could not connect to Host.")
         logToUser(`Error-Message: ${err.message}`)
+        logToUser("⌛ Trying again in 10 seconds.")
         statusTitle.textContent = "Connection failed."
-        throw err
+        return setTimeout(main, 10 * 1000)
     }
-
-    fullscreenCanvas.addEventListener("click", () => {
-        if (!requestFullscreenOnCanvasClick) {
-            return
-        }
-
-        if (document.fullscreenElement != fullscreenCanvas) {
-            if (fullscreenCanvas.requestFullscreen) {
-                fullscreenCanvas.requestFullscreen()
-            }
-        }
-    })
-
-    document.addEventListener("click", function enableNoSleep() {
-        document.removeEventListener("click", enableNoSleep, false)
-        noSleep.enable()
-    }, false)
 }
 
-setInterval(() => {
-    const status = rtc.getStatus()
+document.addEventListener("click", function enableNoSleep() {
+    document.removeEventListener("click", enableNoSleep, false)
+    noSleep.enable()
+}, false)
 
-    if (status.color == "red") {
-        activeMain.style.display = "none"
-        failedMain.style.display = "grid"
-        fullscreenCanvas.remove()
-    } else {
-        activeMain.style.display = "grid"
-        failedMain.style.display = "none"
+fullscreenCanvas.addEventListener("click", () => {
+    if (requestFullscreenOnCanvasClick
+        && document.fullscreenElement != fullscreenCanvas
+        && fullscreenCanvas.requestFullscreen
+    ) {
+        fullscreenCanvas.requestFullscreen()
     }
-}, 1000)
+})
 
 main()
