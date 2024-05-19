@@ -190,6 +190,8 @@ class RtcBase {
     }
 
     sendMessage(message) {
+        if (!this.alive) return
+        
         if (message instanceof DataMessage) {
             if (this.delayMs !== undefined) {
                 message.hostTime = Date.now() + this.delayMs

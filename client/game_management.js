@@ -62,16 +62,18 @@ fullscreenCanvas.addEventListener("touchend", event => {
 })
 
 function renderLoop() {
-    try {
-        gameState.updatePhysics(getHostTime())
-    } catch (physicsError) {
-        logToUser(`[p] ${physicsError}`)
-    }
-
-    try {
-        Renderer.render(gameState, context, touchInfo)
-    } catch (renderError) {
-        logToUser(`[r] ${renderError}`)
+    if (rtc) {
+        try {
+            gameState.updatePhysics(getHostTime())
+        } catch (physicsError) {
+            logToUser(`[p] ${physicsError}`)
+        }
+    
+        try {
+            Renderer.render(gameState, context, touchInfo)
+        } catch (renderError) {
+            logToUser(`[r] ${renderError}`)
+        }
     }
 
     window.requestAnimationFrame(renderLoop)
@@ -127,7 +129,6 @@ async function onObjectDown(touchInfo) {
         const closestObject = gameState.board.getClosestObject(boardPos)
         
         if (closestObject) {
-            const objectScreenPos = gameState.boardPosToScreenPos(closestObject.pos)
             if (closestObject.intersects(boardPos)) {
                 touchInfo.focusedObject = closestObject
             } else {
@@ -182,15 +183,21 @@ const snapAngle = angle => {
 async function onPlaceTouchMove(touchInfo) {
     if (gameState.placingObjectType == golfObjectType.Eraser) {
         const eraserPos = gameState.screenPosToBoardPos(touchInfo.currPos)
-        const closestObject = gameState.board.getClosestObject(eraserPos)
+        let hitObject = null
+        for (const object of gameState.board.objects) {
+            if (object.intersects(eraserPos)) {
+                hitObject = object
+                break
+            }
+        }
 
-        if (!closestObject || closestObject.pos.distance(eraserPos) > 30) {
+        if (!hitObject) {
             return
         }
 
         // optimistic change
-        gameState.board.objects = gameState.board.objects.filter(o => o.uid != closestObject.uid)
-        rtc.sendMessage(new DataMessage(dataMessageType.REMOVE_OBJECT, {uid: closestObject.uid}))
+        gameState.board.objects = gameState.board.objects.filter(o => o.uid != hitObject.uid)
+        rtc.sendMessage(new DataMessage(dataMessageType.REMOVE_OBJECT, {uid: hitObject.uid}))
         return
     }
 
