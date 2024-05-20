@@ -3,14 +3,15 @@ import re
 templates = {
 "default_head": """<head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="$description$">
     <meta charset="UTF-8">
     <title>$title$</title>
-    <link rel="icon" type="image/svg" href="$base-path$assets/logo.png" />
+    <link rel="icon" type="image/svg" href="$base-path$assets/logo/favicon.ico" />
     <link rel="stylesheet" href="$base-path$style.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>""",
 "default_header": """<header> 
-    <img src="$base-path$assets/logo.svg" class="logo"></img>
+    <img src="$base-path$assets/logo/logo.svg" class="logo" alt="Multigolf Logo">
     <a href="$base-path$">Multigolf</a>
     <div class="link-island">
         <a href="$base-path$host/">Start Game</a>
@@ -51,7 +52,7 @@ def make_js_imports(js_imports, file_dict):
         out += f"<script src=\"{base}{js_import}?v{version}\"></script>\n"
     return out[:-1]
 
-SET_regex = r"^[\s\t]*<!--\s*SET\s+([a-zA-Z0-9_\.]+)\s*=\s*([a-zA-Z0-9_\s\|\.]+?)\s*-->[\s\t]*$"
+SET_regex = r"^[\s\t]*<!--\s*SET\s+([a-zA-Z0-9_\.]+)\s*=\s*([a-zA-Z0-9_\s\|\.\:\;]+?)\s*-->[\s\t]*$"
 BEGIN_regex = r"^[\s\t]*<!--\s*BEGIN\s+([a-zA-Z0-9_\.]+)\s*-->[\s\t]*$"
 END_regex = r"^([\s\t]*)<!--\s*END\s*-->[\s\t]*$"
 JS_IMPORT_regex = r"^[\s\t]*<!--\s*JS_IMPORT\s+([a-zA-Z0-9_\.\/]+)\s*-->[\s\t]*$"
