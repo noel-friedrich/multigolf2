@@ -19,6 +19,7 @@ class Ball {
         // the following properties will not be saved
         // and synced across devices
         this.outOfBoundsTickCount = 0
+        this.movingTickCount = 0
     }
 
     toObject() {
@@ -274,6 +275,36 @@ class Ball {
         if (this.immobileTickCount > 180) {
             this.vel.iscale(0)
         }
+
+        if (!board.course.containsPos(this.pos)) {
+            // if the ball is out of bounds too long,
+            // something went horribly wrong and we reset
+            // him to the start
+            
+            this.outOfBoundsTickCount++
+            if (this.outOfBoundsTickCount > 10) {
+                this.pos = board.startPos.copy()
+                this.vel.iscale(0)
+            }
+        } else {
+            this.outOfBoundsTickCount = 0
+        }
+
+        if (this.isMoving()) {
+            // if the ball is moving for more than
+            // ~10 seconds, we stop it. causes for 
+            // this could be gravity box loops
+            // or other things that are too difficult
+            // to prevent or detect, and this solves the 
+            // ball from moving indefinitely
+            // and thus the turn never ending.
+            this.movingTickCount++
+            if (this.movingTickCount > 60 * 10) {
+                this.vel.iscale(0)
+            }
+        } else {
+            this.movingTickCount = 0
+        }
     }
 
     physicsStep(board) {
@@ -289,21 +320,6 @@ class Ball {
             this.pos = board.startPos.copy()
             this.vel.iscale(0)
             return
-        }
-
-        if (!board.course.containsPos(this.pos)) {
-            // if the ball is out of bounds too long,
-            // something went horribly wrong and we reset
-            // him to the start
-            
-            this.outOfBoundsTickCount++
-            if (this.outOfBoundsTickCount > 10) {
-                this.pos = board.startPos.copy()
-                this.vel.iscale(0)
-                return
-            }
-        } else {
-            this.outOfBoundsTickCount = 0
         }
 
         const collidingCorner = this._getCollidingCorner(board)
