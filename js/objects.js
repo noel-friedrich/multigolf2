@@ -5,7 +5,8 @@ const golfObjectType = {
     Eraser: "Eraser",
     DuellHole1: "Hole 1",
     DuellHole2: "Hole 2",
-    CustomWall: "Extra Wall"
+    CustomWall: "Extra Wall",
+    GravityBox: "Gravity Box"
 }
 
 const golfObjectTypeSpriteMap = {
@@ -16,6 +17,7 @@ const golfObjectTypeSpriteMap = {
     [golfObjectType.DuellHole1]: Sprite.DuellHole1,
     [golfObjectType.DuellHole2]: Sprite.DuellHole2,
     [golfObjectType.CustomWall]: Sprite.CustomWall,
+    [golfObjectType.GravityBox]: Sprite.GravityBox
 }
 
 const golfObjectTypeDescriptionMap = {
@@ -25,7 +27,8 @@ const golfObjectTypeDescriptionMap = {
     [golfObjectType.Eraser]: "Erase placed Objects",
     [golfObjectType.DuellHole1]: "Goal that <duell-player-1> has to reach",
     [golfObjectType.DuellHole2]: "Goal that <duell-player-2> has to reach",
-    [golfObjectType.CustomWall]: "A wall that balls will bounce off"
+    [golfObjectType.CustomWall]: "A wall that balls will bounce off",
+    [golfObjectType.GravityBox]: "Balls inside will experience gravity"
 }
 
 class GolfObject {
@@ -152,6 +155,7 @@ const placableObjects = [
     new GolfObject(golfObjectType.Hole).setVisibility(gs => gs.mode != gameMode.Duell),
     new GolfObject(golfObjectType.Lava).setSize(new Vector2d(80, 80)).setResizable(true),
     new GolfObject(golfObjectType.CustomWall).setSize(new Vector2d(120, 40)).setResizable(true),
+    new GolfObject(golfObjectType.GravityBox).setSize(new Vector2d(80, 80)).setResizable(true),
     new GolfObject(golfObjectType.Eraser),
     new GolfObject(golfObjectType.DuellHole1).setVisibility(gs => gs.mode == gameMode.Duell),
     new GolfObject(golfObjectType.DuellHole2).setVisibility(gs => gs.mode == gameMode.Duell),

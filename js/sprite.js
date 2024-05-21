@@ -14,6 +14,7 @@ const Sprite = {
     DuellHole1:    "../assets/compressed/objects/duellHole1.png",
     DuellHole2:    "../assets/compressed/objects/duellHole2.png",
     Lava:          "../assets/compressed/objects/lava.png",
+    GravityBox:    "../assets/compressed/objects/gravity-box.png",
     Eraser:        "../assets/objects/eraser.svg",
     ZoomIcon:      "../assets/zoom-icon.svg",
     CustomWall:    "../assets/objects/wall.svg",

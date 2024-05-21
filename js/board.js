@@ -180,6 +180,14 @@ class Ball {
         return dir.rotate(-angleDifference * 2).scale(-1)
     }
 
+    _getIntersectingObjects(board, objectType=null) {
+        return board.objects.filter(o => {
+            return o.intersects(this.pos) && (
+                objectType == null || o.type == objectType
+            )
+        })
+    }
+
     readyToCollide(board) {
         return board.startPos.distance(this.pos) > 2 * this.radius
     }
@@ -232,6 +240,12 @@ class Ball {
                     break
                 }
             }
+        }
+
+        const gravityBoxes = this._getIntersectingObjects(board, golfObjectType.GravityBox)
+        for (const box of gravityBoxes) {
+            const gravity = Vector2d.fromAngle(box.angle - Math.PI / 2).scale(0.5)
+            this.vel.iadd(gravity)
         }
 
         this.vel.iscale(0.97)
@@ -310,7 +324,6 @@ class Ball {
             this.vel = this._reflectAtWall(p1, p2, this.vel)
             this.pos.iadd(this.vel.scale(0.95))
         }
-
 
         if (board.ballCollisionEnabled) {
             this.calcBallCollisions(board)
