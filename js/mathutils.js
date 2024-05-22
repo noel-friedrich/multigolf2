@@ -251,4 +251,36 @@ class Vector2d {
         return newVector
     }
 
+    min() {
+        return Math.min(this.x, this.y)
+    }
+
+    max() {
+        return Math.max(this.x, this.y)
+    }
+
+}
+
+function calcLineIntersection(s1, e1, s2, e2) {
+    // get intersection point between two lines defined each
+    // by start and end position (start n, end n)
+    // algorithm found on https://paulbourke.net/geometry/pointlineplane/
+
+    const denominator = (e2.y - s2.y)*(e1.x - s1.x) - (e2.x - s2.x)*(e1.y - s1.y)
+    if (denominator == 0) {
+        return null
+    }
+
+    const ua = ((e2.x - s2.x) * (s1.y - s2.y) - (e2.y - s2.y) * (s1.x - s2.x)) / denominator
+    const ub = ((e1.x - s1.x) * (s1.y - s2.y) - (e1.y - s1.y) * (s1.x - s2.x)) / denominator
+
+    if (ua < 0 || ua > 1 || ub < 0 || ub > 1) return null
+    return new Vector2d(
+        s1.x + ua * (e1.x - s1.x),
+        s1.y + ua * (e1.y - s1.y),
+    )
+}
+
+function calcAveragePos(vecs) {
+    return vecs.reduce((p,c) => p.add(c), new Vector2d(0,0)).scale(1 / vecs.length)
 }

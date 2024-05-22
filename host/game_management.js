@@ -119,10 +119,6 @@ async function startGame() {
 
     if (!renderingIntervalIsSet) {
         setInterval(() => {
-            if (gameState.phase >= gamePhase.Construction) {
-                BoardRenderer.render(gameState.board, boardContext)
-            }
-    
             if (!gameState.board.balls.some(b => b.isMoving())) {
                 syncGamestate()
             }

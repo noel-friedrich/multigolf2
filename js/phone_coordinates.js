@@ -36,14 +36,14 @@ class PhoneCoordinates {
         this.topRight = topRight
         this.bottomLeft = bottomLeft
         this.bottomRight = bottomRight
-        this.angle = angle
-        this.scalar = scalar
+        this.angle = angle ?? 0
+        this.scalar = scalar ?? 1
 
         // gravity isn't adjusted for rotations and when read must be
         // rotated according to the device rotation in course
         // (this is because it's adjusted constantly throughout
         //  the game and would be a hassle to rotate before)
-        this.gravity = gravity
+        this.gravity = gravity ?? new Vector2d(0, 0)
     }
 
     static fromWidthHeight(width, height) {
@@ -151,6 +151,100 @@ class PhoneCoordinates {
         return this.points
     }
 
+    get minXY() {
+        return new Vector2d(
+            Math.min(this.topLeft.x, this.bottomRight.x),
+            Math.min(this.topLeft.y, this.bottomRight.y)
+        )
+    }
+
+    get maxXY() {
+        return new Vector2d(
+            Math.max(this.topLeft.x, this.bottomRight.x),
+            Math.max(this.topLeft.y, this.bottomRight.y)
+        )
+    }
+
+    get minXmaxY() {
+        return new Vector2d(
+            Math.min(this.topLeft.x, this.bottomRight.x),
+            Math.max(this.topLeft.y, this.bottomRight.y)
+        )
+    }
+
+    get maxXminY() {
+        return new Vector2d(
+            Math.max(this.topLeft.x, this.bottomRight.x),
+            Math.min(this.topLeft.y, this.bottomRight.y)
+        )
+    }
+
+    get size() {
+        return this.maxXY.sub(this.minXY)
+    }
+
+    hasOverlap(other) {
+        for (const [p1, p2] of this.walls) {
+            for (const [p3, p4] of other.walls) {
+                const intersection = calcLineIntersection(p1, p2, p3, p4)
+                if (intersection) return true
+            }
+        }
+        return false
+    }
+
+    getOverlap(other) {
+        const wallIntersections = []
+        for (const [p1, p2] of this.walls) {
+            for (const [p3, p4] of other.walls) {
+                const intersection = calcLineIntersection(p1, p2, p3, p4)
+                if (!intersection) continue
+                wallIntersections.push(intersection)
+            }
+        }
+
+        // find unique intersection points by combining
+        // wallIntersections and insidePoints and 
+        // adjusting for inaccuracies error using an epsilon
+        const uniqueIntersections = []
+        const epsilon = 0.1
+        
+        const insidePoints = this.points.filter(p => other.distanceToPos(p) < epsilon)
+            .concat(other.points.filter(p => this.distanceToPos(p) < epsilon))
+        
+        for (const point of wallIntersections.concat(insidePoints)) {
+            let foundSimilar = false
+            for (const other of uniqueIntersections) {
+                if (point.distance(other) < epsilon) {
+                    foundSimilar = true
+                    break
+                }
+            }
+            if (!foundSimilar) {
+                uniqueIntersections.push(point)
+            }
+        }
+
+        if (uniqueIntersections.length == 4) {
+            // we found an overlap!
+            const minXY = new Vector2d(
+                Math.min(...uniqueIntersections.map(p => p.x)),
+                Math.min(...uniqueIntersections.map(p => p.y)),
+            )
+            const maxXY = new Vector2d(
+                Math.max(...uniqueIntersections.map(p => p.x)),
+                Math.max(...uniqueIntersections.map(p => p.y)),
+            )
+            const size = maxXY.sub(minXY)
+            return new PhoneCoordinates(
+                minXY, minXY.addX(size.x),
+                minXY.addY(size.y), maxXY
+            )
+        } else {
+            return null
+        }
+    }
+
 }
 
 class Course {
@@ -193,6 +287,20 @@ class Course {
 
     containsPos(pos) {
         return this.phones.some(p => p.containsPos(pos))
+    }
+
+    getOverlaps() {
+        const overlaps = []
+        for (let i = 0; i < this.phones.length; i++) {
+            for (let j = 0; j < this.phones.length; j++) {
+                if (i >= j) continue
+                const overlap = this.phones[i].getOverlap(this.phones[j])
+                if (overlap) {
+                    overlaps.push(overlap)
+                }
+            }
+        }
+        return overlaps
     }
 
 }

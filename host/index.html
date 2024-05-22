@@ -60,11 +60,6 @@
                 </div>
             </fieldset>
 
-            <fieldset id="board-canvas-fieldset" style="display: none;">
-                <legend>Multigolf Board</legend>
-                <canvas id="board-canvas" style="display: none;"></canvas>
-            </fieldset>
-
             <section data-phase="hello">
                 <h2>Welcome to Multigolf!</h2>
                 <p>
@@ -285,13 +280,25 @@
                 <button class="back-button" onclick="back()">&#x25c0; Back</button>
                 <h2>Course Construction</h2>
                 <p>
-                    It's time to construct the Multigolf course. Each phone should show 
-                    a number. You have to connect phone #1 to #2, #2 to #3 and so on.
-                    To connect two phones, draw a line on each phone screen at the same time.
-                    You can redraw existing connections.
+                    You can either connect phones manually by drawing
+                    connecting lines along borders (as illustrated at the bottom) or by
+                    choosing an existing layout below.
                 </p>
+                <div id="layout-choice-container"></div> 
+                <button onclick="updateConstructionHtml()">Regenerate</button>
+                <p>
+                    To connect phones to each other manually,
+                    draw lines on both edges on both phones that you want to connect.
+                    You can only connect ascending phone numbers to each other: 
+                    #1 to #2, #2 to #3, etc. You can see the current board 
+                    status (what the game thinks your board looks like) below.
+                </p>
+                <fieldset id="board-canvas-fieldset" style="display: none;">
+                    <legend>Multigolf Board</legend>
+                    <canvas id="board-canvas" style="display: none;"></canvas>
+                </fieldset>
                 <img src="../assets/gifs/building.gif">
-                <button onclick="finishConstruction()">I'm finished</button>
+                <button onclick="finishConstruction()">I've connected all phones</button>
             </section>
 
             <section data-phase="placing">
@@ -386,6 +393,7 @@
         <!-- JS_IMPORT js/rtc.js -->
         <!-- JS_IMPORT js/objects.js -->
         <!-- JS_IMPORT js/scoreboardmaker.js -->
+        <!-- JS_IMPORT js/boardgenerator.js -->
         <!-- JS_IMPORT host/game_setup.js -->
         <!-- JS_IMPORT host/game_management.js -->
         <!-- JS_IMPORT host/player_management.js -->
@@ -403,6 +411,7 @@
         <script src="../js/rtc.js?v20"></script>
         <script src="../js/objects.js?v20"></script>
         <script src="../js/scoreboardmaker.js?v20"></script>
+        <script src="../js/boardgenerator.js?v20"></script>
         <script src="../host/game_setup.js?v20"></script>
         <script src="../host/game_management.js?v20"></script>
         <script src="../host/player_management.js?v20"></script>

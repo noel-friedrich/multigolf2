@@ -11,19 +11,9 @@ class Renderer {
     }
 
     static async load() {
-        for (let ballSprite of Sprite.AllBalls) {
-            this.spriteImgMap[ballSprite] = await this.loadImg(ballSprite)
+        for (let sprite of Object.values(Sprite)) {
+            this.spriteImgMap[sprite] = await this.loadImg(sprite)
         }
-
-        this.spriteImgMap[Sprite.Hole] = await this.loadImg(Sprite.Hole)
-        this.spriteImgMap[Sprite.Start] = await this.loadImg(Sprite.Start)
-        this.spriteImgMap[Sprite.DuellHole1] = await this.loadImg(Sprite.DuellHole1)
-        this.spriteImgMap[Sprite.DuellHole2] = await this.loadImg(Sprite.DuellHole2)
-        this.spriteImgMap[Sprite.Lava] = await this.loadImg(Sprite.Lava)
-        this.spriteImgMap[Sprite.ZoomIcon] = await this.loadImg(Sprite.ZoomIcon)
-        this.spriteImgMap[Sprite.Eraser] = await this.loadImg(Sprite.Eraser)
-        this.spriteImgMap[Sprite.CustomWall] = await this.loadImg(Sprite.CustomWall)
-        this.spriteImgMap[Sprite.GravityBox] = await this.loadImg(Sprite.GravityBox)
     }
 
     static startSize = new Vector2d(40, 40)

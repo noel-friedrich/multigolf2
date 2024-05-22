@@ -342,6 +342,10 @@ class RtcHost extends RtcBase {
 
     receivePing(pingMessage) {
         this.receivedPing = pingMessage
+        
+        if (pingMessage.data.displaySize) {
+            this.clientDisplaySize = Vector2d.fromObject(pingMessage.data.displaySize)
+        }
     }
 
     async startPinging() {
@@ -365,6 +369,7 @@ class RtcHost extends RtcBase {
     async start(signalingUid) {
         this.delayMs = 0
         this.signalingUid = signalingUid
+        this.clientDisplaySize = null
 
         await this.init()
 

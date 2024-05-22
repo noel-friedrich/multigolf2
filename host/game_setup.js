@@ -23,14 +23,12 @@ function updateHtmlSection(phase) {
         }
     }
 
-    if (phase == gamePhase.ConfigGame) {
-        updateConfigHtml()
+    if (phase == gamePhase.Construction) {
+        updateConstructionHtml()
     }
 
-    if (phase >= gamePhase.Construction) {
-        boardCanvasFieldset.style.display = "grid"
-    } else {
-        boardCanvasFieldset.style.display = "none"
+    if (phase == gamePhase.ConfigGame) {
+        updateConfigHtml()
     }
 
     fillPlaceholders("num-connected-devices", rtc?.connections.length)
@@ -244,4 +242,41 @@ async function updateConfigHtml() {
 
         gameConfigContainer.appendChild(container)
     }
+}
+
+async function updateConstructionHtml() {
+    boardCanvasFieldset.style.display = "grid"
+    layoutChoiceContainer.innerHTML = ""
+
+    const displaySizes = rtc.connections.map(r => r.clientDisplaySize).filter(r => r != null)
+
+    if (displaySizes.length == 0) return
+
+    const boardGenerator = new BoardGenerator(displaySizes)
+
+    for (let i = 0; i < 2; i++) {
+        const layoutContainer = document.createElement("div")
+        layoutContainer.classList.add("layout-choice")
+
+        const canvas = document.createElement("canvas")
+        const context = canvas.getContext("2d")
+
+        const button = document.createElement("button")
+        button.textContent = "Choose Layout"
+
+        const boardOption = boardGenerator.generate()
+        setTimeout(() => {
+            BoardRenderer.render(boardOption, context)
+        }, 100)
+
+        button.onclick = () => {
+            gameState.board = boardOption.copy()
+            finishConstruction()
+        }
+
+        layoutContainer.appendChild(canvas)
+        layoutContainer.appendChild(button)
+
+        layoutChoiceContainer.appendChild(layoutContainer)
+    }   
 }

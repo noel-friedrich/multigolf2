@@ -1,7 +1,7 @@
 from pathlib import Path
 import subprocess, os
 
-img_output_size = 10
+img_output_size = 11
 
 for svg_path in Path("assets").rglob("*.svg"):
     svg_file_relative = str(svg_path)

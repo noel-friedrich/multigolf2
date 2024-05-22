@@ -164,4 +164,12 @@ fullscreenCanvas.addEventListener("click", () => {
     }
 })
 
+setInterval(() => {
+    if (!rtc || rtc.getStatus().color == "green") {
+        fullscreenCanvas.style.display = "block"
+    } else {
+        fullscreenCanvas.style.display = "none"
+    }
+}, 1000)
+
 main()

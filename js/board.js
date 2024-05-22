@@ -364,6 +364,20 @@ class Ball {
         }
     }
 
+    translate(point) {
+        this.pos.iadd(point)
+    }
+
+    scale(scalar) {
+        this.radius *= scalar
+        this.pos.iscale(scalar)
+    }
+
+    rotate(angle) {
+        this.pos.irotate(angle)
+        this.angle += angle
+    }
+
 }
 
 class Board {
@@ -383,6 +397,28 @@ class Board {
         // (as they are only useful for host)
         this.constructionLineBuffer = []
         this.courseHistory = [this.course.copy()]
+    }
+
+    get movableThings() {
+        return this.objects.concat(this.balls).concat([this.course])
+    }
+
+    translate(point) {
+        for (const thing of this.movableThings) {
+            thing.translate(point)
+        }
+    }
+
+    rotate(angle) {
+        for (const thing of this.movableThings) {
+            thing.rotate(angle)
+        }
+    }
+
+    scale(scalar) {
+        for (const thing of this.movableThings) {
+            thing.scale(scalar)
+        }
     }
 
     updateObject(object) {
@@ -450,7 +486,7 @@ class Board {
         }
 
         if (spriteUrl == "random") {
-            spriteUrl = Sprite.AllBalls[Math.floor(Math.random() * Sprite.AllBalls.length)]
+            spriteUrl = AllBallSprites[Math.floor(Math.random() * AllBallSprites.length)]
         }
 
         this.balls.push(new Ball(
@@ -561,6 +597,10 @@ class Board {
         this.courseHistory.push(this.course.copy())
 
         return true
+    }
+
+    copy() {
+        return Board.fromObject(this.toObject())
     }
 
 }

@@ -13,6 +13,7 @@ const boardContext = boardCanvas.getContext("2d")
 const boardCanvasFieldset = document.querySelector("#board-canvas-fieldset")
 const playerListFieldset = document.querySelector("#player-list-fieldset")
 
+const layoutChoiceContainer = document.querySelector("#layout-choice-container")
 const gameConfigContainer = document.querySelector("#game-config-container")
 
 function logToConnectionLog(message) {

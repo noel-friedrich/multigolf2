@@ -219,7 +219,7 @@ class GameState {
     startTournamentRound() {
         this.board.balls = []
         for (let i = 0; i < this.players.length; i++) {
-            const spriteUrl = Sprite.AllBalls[i % Sprite.AllBalls.length]
+            const spriteUrl = AllBallSprites[i % AllBallSprites.length]
             this.board.spawnBall({spriteUrl})
         }
 

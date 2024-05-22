@@ -20,7 +20,7 @@ const Sprite = {
     CustomWall:    "../assets/objects/wall.svg",
 }
 
-Sprite.AllBalls = [
+const AllBallSprites = [
     Sprite.BallBlue,
     Sprite.BallRed,
     Sprite.BallYellow,

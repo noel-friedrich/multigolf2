@@ -17,7 +17,7 @@ body {
     min-height: 100vh;
     background-color: #f2f2f2;
     background-image: url("assets/gifs/background.gif");
-    background-size: auto 50%;
+    background-size: 40%;
 }
 
 h1, h2, h3,
@@ -683,4 +683,36 @@ main .scoreboard {
 
 main .object-selection-container .description {
     font-family: var(--general-font);
+}
+
+#layout-choice-container {
+    display: grid;
+    gap: 1rem;
+}
+
+main .layout-choice {
+    position: relative;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid #ccc;
+}
+
+main .layout-choice canvas {
+    width: 100%;
+    height: 15em;
+}
+
+main .layout-choice button {
+    width: fit-content;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-right: none;
+    border-radius: 1rem;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 1rem;
 }

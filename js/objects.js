@@ -49,6 +49,25 @@ class GolfObject {
         this.visibility = () => true
     }
 
+    setPos(pos) {
+        this.pos = pos
+        return this
+    }
+
+    translate(point) {
+        this.pos.iadd(point)
+    }
+
+    rotate(angle) {
+        this.pos.irotate(angle)
+        this.angle += angle
+    }
+
+    scale(scalar) {
+        this.pos.iscale(scalar)
+        this.size.iscale(scalar)
+    }
+
     get topLeftPos() {
         return this.pos.sub(this.size.scale(0.5).rotate(this.angle))
     }
@@ -156,7 +175,17 @@ const placableObjects = [
     new GolfObject(golfObjectType.Lava).setSize(new Vector2d(80, 80)).setResizable(true),
     new GolfObject(golfObjectType.CustomWall).setSize(new Vector2d(120, 40)).setResizable(true),
     new GolfObject(golfObjectType.GravityBox).setSize(new Vector2d(80, 80)).setResizable(true),
-    new GolfObject(golfObjectType.Eraser),
     new GolfObject(golfObjectType.DuellHole1).setVisibility(gs => gs.mode == gameMode.Duell),
     new GolfObject(golfObjectType.DuellHole2).setVisibility(gs => gs.mode == gameMode.Duell),
+    new GolfObject(golfObjectType.Eraser),
 ]
+
+const defaultObjects = {
+    [golfObjectType.Start]: placableObjects[0],
+    [golfObjectType.Hole]: placableObjects[1],
+    [golfObjectType.Lava]: placableObjects[2],
+    [golfObjectType.CustomWall]: placableObjects[3],
+    [golfObjectType.GravityBox]: placableObjects[4],
+    [golfObjectType.DuellHole1]: placableObjects[5],
+    [golfObjectType.DuellHole2]: placableObjects[6],
+}

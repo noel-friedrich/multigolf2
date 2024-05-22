@@ -280,7 +280,9 @@ async function onDataMessage(dataMessage) {
     if (dataMessage.type == dataMessageType.PING) {
         // send ping back
         updateDeviceIndex(dataMessage.data.index)
-        rtc.sendMessage(DataMessage.Ping())
+        rtc.sendMessage(DataMessage.Ping({
+            displaySize: new Vector2d(window.innerWidth, window.innerHeight).toObject()
+        }))
 
     } else if (dataMessage.type == dataMessageType.GAMESTATE) {
         gameState = GameState.fromObject(dataMessage.data)
