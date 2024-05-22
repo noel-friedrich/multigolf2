@@ -75,6 +75,10 @@
             <a href="host/" class="linkbutton">Start a Game</a>
         </main>
 
+        <script>
+            window.addEventListener("load", () => setTimeout(() => fetch("api/count_visit.php"), 0))
+        </script>
+
         <!-- BEGIN default_footer -->
         <footer>
             Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
