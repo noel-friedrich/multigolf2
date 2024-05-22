@@ -41,6 +41,7 @@ templates = {
     <a href="$base-path$impressum">Impressum / Contact</a>.
     <a href="$base-path$data-privacy">Data Privacy</a>.
     <a href="$base-path$.">Home</a>.
+    <a href="https://www.instagram.com/multi.golf/">Instagram</a>.
 </footer>"""
 }
 
