@@ -60,6 +60,11 @@
                 </div>
             </fieldset>
 
+            <fieldset id="board-canvas-fieldset" style="display: none;">
+                <legend>Multigolf Board</legend>
+                <canvas id="board-canvas" style="display: none;"></canvas>
+            </fieldset>
+
             <section data-phase="hello">
                 <h2>Welcome to Multigolf!</h2>
                 <p>
@@ -281,24 +286,23 @@
                 <h2>Course Construction</h2>
                 <p>
                     You can either connect phones manually by drawing
-                    connecting lines along borders (as illustrated at the bottom) or by
-                    choosing an existing layout below.
+                    connecting lines along borders or by
+                    choosing a suggested layout at the bottom of this page.
                 </p>
-                <div id="layout-choice-container"></div> 
-                <button onclick="updateConstructionHtml()">Regenerate</button>
                 <p>
                     To connect phones to each other manually,
                     draw lines on both edges on both phones that you want to connect.
                     You can only connect ascending phone numbers to each other: 
                     #1 to #2, #2 to #3, etc. You can see the current board 
-                    status (what the game thinks your board looks like) below.
+                    status (what the game thinks your board looks like) above.
                 </p>
-                <fieldset id="board-canvas-fieldset" style="display: none;">
-                    <legend>Multigolf Board</legend>
-                    <canvas id="board-canvas" style="display: none;"></canvas>
-                </fieldset>
-                <img src="../assets/gifs/building.gif">
                 <button onclick="finishConstruction()">I've connected all phones</button>
+                <img src="../assets/gifs/building.gif">
+                <p>
+                    Alternatively, choose a layout below to copy.
+                </p>
+                <div id="layout-choice-container"></div> 
+                <button onclick="generateBoardTemplates()">Regenerate</button>
             </section>
 
             <section data-phase="placing">

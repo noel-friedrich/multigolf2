@@ -23,10 +23,6 @@ function updateHtmlSection(phase) {
         }
     }
 
-    if (phase == gamePhase.Construction) {
-        updateConstructionHtml()
-    }
-
     if (phase == gamePhase.ConfigGame) {
         updateConfigHtml()
     }
@@ -68,6 +64,10 @@ function changeGamePhase(newPhase, force=false) {
 
     gameState.phase = newPhase
     updateHtmlSection(newPhase)
+
+    if (newPhase == gamePhase.Construction) {
+        generateBoardTemplates()
+    }
 }
 
 function chooseGamemode(mode) {
@@ -244,8 +244,11 @@ async function updateConfigHtml() {
     }
 }
 
-async function updateConstructionHtml() {
-    boardCanvasFieldset.style.display = "grid"
+async function generateBoardTemplates() {
+    if (gameState.phase != gamePhase.Construction) {
+        return
+    }
+    
     layoutChoiceContainer.innerHTML = ""
 
     const displaySizes = rtc.connections.map(r => r.clientDisplaySize).filter(r => r != null)

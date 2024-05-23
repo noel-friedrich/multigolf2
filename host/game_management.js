@@ -23,7 +23,9 @@ function physicsLoop() {
 
 function onDataMessage(dataMessage, rtc) {
     if (dataMessage.type == dataMessageType.PING) {
-        rtc.receivePing(dataMessage)
+        if (rtc.receivePing(dataMessage) && gameState.phase == gamePhase.Construction) {
+            generateBoardTemplates()
+        } 
 
     } else if (
         gameState.phase == gamePhase.Construction &&
@@ -119,6 +121,13 @@ async function startGame() {
 
     if (!renderingIntervalIsSet) {
         setInterval(() => {
+            if (gameState.phase >= gamePhase.Construction) {
+                boardCanvasFieldset.style.display = "grid"
+                BoardRenderer.render(gameState.board, boardContext)
+            } else {
+                boardCanvasFieldset.style.display = "none"
+            }
+
             if (!gameState.board.balls.some(b => b.isMoving())) {
                 syncGamestate()
             }

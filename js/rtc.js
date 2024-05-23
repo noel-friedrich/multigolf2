@@ -341,11 +341,20 @@ class RtcHost extends RtcBase {
     }
 
     receivePing(pingMessage) {
+        // return true when a change has been made so that 
+        // potential GUI changes can be made
+
         this.receivedPing = pingMessage
         
         if (pingMessage.data.displaySize) {
+            const before = this.clientDisplaySize ? this.clientDisplaySize.copy() : null
             this.clientDisplaySize = Vector2d.fromObject(pingMessage.data.displaySize)
+            if (!before || before.x != this.clientDisplaySize.x || before.y != this.clientDisplaySize.y) {
+                return true
+            }
         }
+        
+        return false
     }
 
     async startPinging() {
