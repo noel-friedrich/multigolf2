@@ -618,6 +618,14 @@ class RtcHostManager {
     }
 
     removeLostConnections() {
+        // kill connections
+        for (const connection of this.connections) {
+            if (connection.getStatus().color == "red" && connection.alive) {
+                connection.die()
+            }
+        }
+
+        // removed refrences to them
         this.connections = this.connections.filter(c => c.getStatus().color != "red")
     }
 
