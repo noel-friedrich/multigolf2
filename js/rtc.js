@@ -617,4 +617,8 @@ class RtcHostManager {
         }
     }
 
+    removeLostConnections() {
+        this.connections = this.connections.filter(c => c.getStatus().color != "red")
+    }
+
 }

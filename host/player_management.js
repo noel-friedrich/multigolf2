@@ -97,6 +97,10 @@ function startConnectionProcess() {
     if (!setUpdatePlayerListInterval) {
         setInterval(updatePlayerlist, 1000)
         setUpdatePlayerListInterval = true
+
+        if (rtc && gameState.phase == gamePhase.Connecting) {
+            rtc.removeLostConnections()
+        }
     }
 
     updatePlayerlist()
