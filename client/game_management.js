@@ -71,10 +71,10 @@ function renderLoop() {
     
         try {
             if (rtc && rtc.getStatus().color == "green") {
-                fullscreenCanvas.style.display = "none"
-            } else {
                 fullscreenCanvas.style.display = "block"
                 Renderer.render(gameState, context, touchInfo)
+            } else {
+                fullscreenCanvas.style.display = "none"
             }
         } catch (renderError) {
             logToUser(`[r] ${renderError}`)
