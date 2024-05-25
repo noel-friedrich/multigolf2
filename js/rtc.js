@@ -627,6 +627,7 @@ class RtcHostManager {
 
         // removed refrences to them
         this.connections = this.connections.filter(c => c.getStatus().color != "red")
+        rtc.sortConnections()
     }
 
 }

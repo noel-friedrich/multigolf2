@@ -162,6 +162,12 @@ function finishConstruction() {
         return
     }
 
+    if (gameState.board.course && gameState.board.course.getOverlaps().length > 0) {
+        if (!confirm("Your course has overlapping parts. Try reconnecting the phones in a different way and draw lines in the same directions on connecting phones. Do you still want to proceed?")) {
+            return
+        }
+    } 
+
     changeGamePhase(gamePhase.Placing)
     preparePlacing()
     syncGamestate()
