@@ -46,8 +46,15 @@ header {
     display: flex;
     position: relative;
     border-bottom: 1px solid #ccc;
-    z-index: 40;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    z-index: 102;
+}
+
+body.sticky-header header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 header > .logo {
@@ -93,7 +100,7 @@ header .link-island a:hover {
 .header-drop-menu {
     transition: 300ms;
     max-height: 0;
-    z-index: 30;
+    z-index: 101;
     display: none;
     width: 100%;
     background-color: white;
@@ -102,6 +109,11 @@ header .link-island a:hover {
     gap: .5em;
     transform: translateY(-100%) scaleY(0);
     padding: 0;
+}
+
+body.sticky-header .header-drop-menu {
+    position: fixed;
+    top: 4.5rem;
 }
 
 .header-drop-menu.visible {
@@ -209,6 +221,11 @@ main {
     position: relative;
     z-index: 100;
     transition: 300ms;
+}
+
+body.sticky-header main {
+    /* 2rem default + header size */
+    margin-top: 6.5rem;
 }
 
 main.largebottomgap {
