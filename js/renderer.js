@@ -7,12 +7,14 @@ class Renderer {
             const img = new Image()
             img.onload = () => resolve(img)
             img.src = src
+            img.dataset.sprite = src
         })
     }
 
     static async load() {
-        for (let sprite of Object.values(Sprite)) {
-            this.spriteImgMap[sprite] = await this.loadImg(sprite)
+        const promises = Object.values(Sprite).map(s => this.loadImg(s))
+        for (const img of await Promise.all(promises)) {
+            this.spriteImgMap[img.dataset.sprite] = img
         }
     }
 
