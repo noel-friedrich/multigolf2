@@ -23,10 +23,6 @@ function updateHtmlSection(phase) {
         }
     }
 
-    if (phase == gamePhase.ConfigGame) {
-        updateConfigHtml()
-    }
-
     fillPlaceholders("num-connected-devices", rtc?.connections.length)
 
     fillPlaceholders("tournament-builder-name", gameState.tournamentBuilder?.name)
@@ -67,6 +63,8 @@ function changeGamePhase(newPhase, force=false) {
 
     if (newPhase == gamePhase.Construction) {
         generateBoardTemplates()
+    } else if (phase == gamePhase.ConfigGame) {
+        generateConfigHtml()
     }
 }
 
@@ -171,7 +169,7 @@ const gameConfigSettings = [
     }
 ]
 
-async function updateConfigHtml() {
+async function generateConfigHtml() {
     gameConfigContainer.innerHTML = ""
 
     for (const setting of gameConfigSettings) {

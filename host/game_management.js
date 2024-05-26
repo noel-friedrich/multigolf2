@@ -86,6 +86,7 @@ function onDataMessage(dataMessage, rtc) {
                 gameState.onTournamentKick(ball)
             }
             ball.kick(Vector2d.fromObject(dataMessage.data.direction))
+            updateHtmlSection(gameState.phase)
         } else {
             console.error("Couldn't find ball with id", dataMessage.data.ballUid)
         }
