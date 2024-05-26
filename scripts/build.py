@@ -35,7 +35,18 @@ templates = {
     <a href="$base-path$contact/">Contact</a>
 </div>
 
-<script src="$base-path$js/dom.js"></script>""",
+<script>
+    const header = document.querySelector("header")
+    const hamburger = document.querySelector(".hamburger-icon")
+    const headerDropMenu = document.querySelector(".header-drop-menu")
+
+    hamburger.onclick = () => {
+        header.classList.toggle("expanded")
+        hamburger.classList.toggle("x")
+        headerDropMenu.classList.toggle("visible")
+    }
+</script>""",
+
 "default_footer": """<footer>
     Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
     <a href="$base-path$impressum">Impressum / Contact</a>.
