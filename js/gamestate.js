@@ -280,6 +280,7 @@ class GameState {
             const roundIndex = this.tournamentBuilderIndex
             if (player.roundScores[roundIndex] === undefined) {
                 player.addRound(kicks)
+                madeChange = true
             } else {
                 player.roundScores[roundIndex] = kicks
             }
@@ -293,10 +294,10 @@ class GameState {
             this.tournamentBall.active = false
             this.tournamentBallIndex++
             this.tournamentBall.active = true
+            madeChange = true
 
             if (inHoleCount > this.players.length) {
                 this.endTournamentRound()
-                madeChange = true
                 break
             }
         }
