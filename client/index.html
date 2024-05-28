@@ -52,6 +52,12 @@
         </main>
 
         <canvas style="display: none;" id="fullscreen-canvas"></canvas>
+        
+        <!-- BEGIN default_js -->
+        <script>
+            document.body.dataset.style = localStorage.getItem("style") || "default"
+        </script>
+        <!-- END -->
 
         <!-- SET js_version=22 -->
         <!-- JS_IMPORT js/sprite.js -->

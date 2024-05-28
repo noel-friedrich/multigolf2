@@ -66,7 +66,7 @@ async function finishPlayers() {
     if (gameState.phase != gamePhase.Connecting) return
 
     if (rtc.connections.length == 0) {
-        alert("You connected any devices yet. Connect one and try again!")
+        alert("You haven't connected any devices yet. Connect one and try again!")
         return
     } 
 

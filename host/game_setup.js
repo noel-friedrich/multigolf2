@@ -63,7 +63,7 @@ function changeGamePhase(newPhase, force=false) {
 
     if (newPhase == gamePhase.Construction) {
         generateBoardTemplates()
-    } else if (phase == gamePhase.ConfigGame) {
+    } else if (newPhase == gamePhase.ConfigGame) {
         generateConfigHtml()
     }
 }

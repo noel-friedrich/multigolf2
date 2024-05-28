@@ -43,20 +43,22 @@
         </div>
         
         <script>
-            const header = document.querySelector("header")
-            const hamburger = document.querySelector(".hamburger-icon")
-            const headerDropMenu = document.querySelector(".header-drop-menu")
+            {
+                const header = document.querySelector("header")
+                const hamburger = document.querySelector(".hamburger-icon")
+                const headerDropMenu = document.querySelector(".header-drop-menu")
         
-            hamburger.onclick = () => {
-                header.classList.toggle("expanded")
-                hamburger.classList.toggle("x")
-                headerDropMenu.classList.toggle("visible")
+                hamburger.onclick = () => {
+                    header.classList.toggle("expanded")
+                    hamburger.classList.toggle("x")
+                    headerDropMenu.classList.toggle("visible")
+                }
             }
         </script>
         <!-- END -->
 
         <main>
-            <h1 style="font-weight: normal;">Welcome to <span style="color:rgb(0, 129, 43); font-weight: bolder;">Multigolf</span></h1>
+            <h1 style="font-weight: normal;">Welcome to <span style="font-weight: bolder;">Multigolf</span></h1>
             <p>
                 Multigolf is a cross-device minigolf game. Build digital-reality courses out of 
                 multiple phones, then battle your friends in the available
@@ -67,7 +69,7 @@
                 Sounds good? Then go <a href="host">Start a Game</a>!
             </p>
             <div class="middle-container">
-                <img src="assets/pics/demo-img.jpg" class="smaller middle" alt="Image depicting Multiple Devices playing Multigolf together">
+                <img src="assets/pics/demo-img-transparent.png" class="smaller middle" alt="Image depicting Multiple Devices playing Multigolf together">
             </div>
             <h2>How does it work?</h2>
             <p>
@@ -96,7 +98,26 @@
             <a href="data-privacy">Data Privacy</a>.
             <a href=".">Home</a>.
             <a href="https://www.instagram.com/multi.golf/">Instagram</a>.
+            <a href="" id="change-style-a">Change Theme</a>.
         </footer>
+        
+        <script>
+            document.getElementById("change-style-a").onclick = event => {
+                const styles = ["default", "dark", "flat"]
+                const currStyle = localStorage.getItem("style") || "default"
+                const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
+                localStorage.setItem("style", styles[nextIndex])
+                document.body.dataset.style = localStorage.getItem("style") || "default"
+        
+                event.preventDefault()
+            }
+        </script>
+        <!-- END -->
+
+        <!-- BEGIN default_js -->
+        <script>
+            document.body.dataset.style = localStorage.getItem("style") || "default"
+        </script>
         <!-- END -->
     </body>
 

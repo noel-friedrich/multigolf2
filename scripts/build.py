@@ -36,14 +36,16 @@ templates = {
 </div>
 
 <script>
-    const header = document.querySelector("header")
-    const hamburger = document.querySelector(".hamburger-icon")
-    const headerDropMenu = document.querySelector(".header-drop-menu")
+    {
+        const header = document.querySelector("header")
+        const hamburger = document.querySelector(".hamburger-icon")
+        const headerDropMenu = document.querySelector(".header-drop-menu")
 
-    hamburger.onclick = () => {
-        header.classList.toggle("expanded")
-        hamburger.classList.toggle("x")
-        headerDropMenu.classList.toggle("visible")
+        hamburger.onclick = () => {
+            header.classList.toggle("expanded")
+            hamburger.classList.toggle("x")
+            headerDropMenu.classList.toggle("visible")
+        }
     }
 </script>""",
 
@@ -53,7 +55,24 @@ templates = {
     <a href="$base-path$data-privacy">Data Privacy</a>.
     <a href="$base-path$.">Home</a>.
     <a href="https://www.instagram.com/multi.golf/">Instagram</a>.
-</footer>"""
+    <a href="" id="change-style-a">Change Theme</a>.
+</footer>
+
+<script>
+    document.getElementById("change-style-a").onclick = event => {
+        const styles = ["default", "dark", "flat"]
+        const currStyle = localStorage.getItem("style") || "default"
+        const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
+        localStorage.setItem("style", styles[nextIndex])
+        document.body.dataset.style = localStorage.getItem("style") || "default"
+
+        event.preventDefault()
+    }
+</script>""",
+
+"default_js": """<script>
+    document.body.dataset.style = localStorage.getItem("style") || "default"
+</script>"""
 }
 
 def make_js_imports(js_imports, file_dict):

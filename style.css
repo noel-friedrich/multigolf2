@@ -2,38 +2,73 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
+}
 
+body {
     --header-font: "Quicksand", serif;
     --general-font: system-ui, serif;
     --general-font-size: 1rem;
 
-    font-family: var(--general-font);
-    font-size: var(--general-font-size);
+    --card-background: white;
+    --card-border: none;
+    --card-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    --card-text-color: black;
+
+    --button-background: rgb(244, 244, 244);
+    --button-color: var(--card-text-color);
+    --button-border: 1px solid #a1a1a1;
+
+    --input-background: rgb(251, 251, 251);
+    --input-color: var(--card-text-color);
+
+    --background: url("assets/background.svg");
+}
+
+body[data-style="dark"] {
+    --card-background: black;
+    --card-border: 1px solid rgb(105, 105, 105);
+    --card-shadow: none;
+    --card-text-color: white;
+
+    --button-background: rgb(51, 51, 51);
+    --button-color: var(--card-text-color);
+    --button-border: 1px solid #707070;
+
+    --input-background: rgb(37, 37, 37);
+    --input-color: var(--card-text-color);
+
+    --background: rgb(42, 42, 42);
+}
+
+body[data-style="flat"] {
+    --card-background: white;
+    --card-border: 1px solid #ccc;
+    --card-shadow: none;
+    --card-text-color: black;
+
+    --button-background: rgb(244, 244, 244);
+    --button-color: var(--card-text-color);
+    --button-border: 1px solid #a1a1a1;
+
+    --input-background: rgb(251, 251, 251);
+    --input-color: var(--card-text-color);
+
+    --background: white;
 }
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f2f2f2;
-    background-image: url("assets/background.svg");
+    background: var(--background);
     background-size: 40%;
+    font-family: var(--general-font);
+    font-size: var(--general-font-size);
 }
 
 h1, h2, h3,
 h4, h5, h6 {
     font-family: var(--header-font);
-}
-
-#interactive-background,
-.background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background-color: rgba(0, 0, 0, 0.8);
 }
 
 * {
@@ -42,12 +77,12 @@ h4, h5, h6 {
 
 header {
     padding: 1rem;
-    background-color: rgba(255, 255, 255, 1);
     display: flex;
     position: relative;
-    border-bottom: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    border-bottom: var(--card-border);
+    box-shadow: var(--card-shadow);
     z-index: 102;
+    background: var(--card-background);
 }
 
 body.sticky-header header {
@@ -67,7 +102,7 @@ header > a {
     margin: 0;
     font-size: 1.8em;
     text-decoration: none;
-    color: black;
+    color: var(--card-text-color);
     font-weight: normal;
     display: block;
     text-align: center;
@@ -88,7 +123,7 @@ header .link-island a {
     padding-left: .6em;
     padding-right: .6em;
     text-decoration: none;
-    color: black;
+    color: var(--card-text-color);
     font-family: var(--header-font);
     font-size: 1.3em;
 }
@@ -103,8 +138,8 @@ header .link-island a:hover {
     z-index: 101;
     display: none;
     width: 100%;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    background-color: var(--card-background);
+    box-shadow: var(--card-shadow);
     grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
     gap: .5em;
     transform: translateY(-100%) scaleY(0);
@@ -125,9 +160,9 @@ body.sticky-header .header-drop-menu {
 .header-drop-menu a {
     display: block;
     padding: .5em;
-    border: 1px solid #ccc;
+    border: var(--button-border);
     text-decoration: none;
-    color: black;
+    color: var(--card-text-color);
     border-radius: 5px;
 }
 
@@ -208,7 +243,7 @@ header .hamburger-icon.x .bar:nth-child(3) {
 }
 
 main {
-    background-color: white;
+    background: var(--card-background);
     padding: 2rem;
     width: min(100%, 600px);
     margin: 0 auto;
@@ -217,10 +252,12 @@ main {
     gap: 1em;
     border-radius: 1em;
     margin-top: 2rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    box-shadow: var(--card-shadow);
+    border: var(--card-border);
     position: relative;
     z-index: 100;
-    transition: 300ms;
+    color: var(--card-text-color);
+    transition: margin 300ms;
 }
 
 body.sticky-header main {
@@ -272,7 +309,7 @@ main fieldset {
     display: grid;
     gap: 1em;
     border-radius: .8em;
-    border: 1px solid #ccc;
+    border: var(--button-border);
 }
 
 main .enable-gap {
@@ -299,7 +336,7 @@ main a.linkbutton,
 main input,
 main button {
     text-decoration: none;
-    color: black;
+    color: var(--button-color);
     text-align: center;
     display: block;
     width: 100%;
@@ -308,19 +345,23 @@ main button {
     font-size: 1.2em;
     padding: .8em;
     border-radius: .5em;
-    background-color: rgb(244, 244, 244);
-    border: 1px solid #a1a1a1;
+    background-color: var(--button-background);
+    border: var(--button-border);
     cursor: pointer;
     transition: 100ms;
 }
 
 main input {
-    background-color: white;
+    background-color: var(--input-background);
     font-family: var(--general-font);
     font-weight: normal;
     cursor: initial;
     font-size: 1em;
-    background-color: rgb(251, 251, 251);
+    color: var(--input-color);
+}
+
+main a {
+    color: var(--card-text-color);
 }
 
 main .round-edges {
@@ -346,10 +387,11 @@ main textarea {
     resize: vertical;
     padding: .8em;
     border-radius: .5em;
-    background-color: rgb(251, 251, 251);
-    border: 1px solid #a1a1a1;
+    background-color: var(--input-background);
+    border: var(--button-border);
     font-family: var(--general-font);
     font-size: 1em;
+    color: var(--input-color);
 }
 
 main .custom-form {
@@ -387,11 +429,16 @@ main img.smaller {
 }
 
 footer {
-    border-top: 1px solid #ccc;
-    background-color: white;
+    border-top: var(--card-border);
+    background: var(--card-background);
     margin-top: auto;
     padding: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    box-shadow: var(--card-shadow);
+    color: var(--card-text-color);
+}
+
+footer a {
+    color: var(--card-text-color);
 }
 
 /* non general css for multigolf */
@@ -407,12 +454,10 @@ main .back-button {
     width: fit-content;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-top:   none;
-    border-left:  none;
-    border-right: none;
     padding-left: .8rem;
     padding-right: .8rem;
-    background-color: white;
+    background-color: var(--button-background);
+    color: var(--button-color)
 }
 
 main:has(section.visible .back-button) {
@@ -426,8 +471,8 @@ main .faq-container {
 }
 
 main .faq-container .entry {
-    background-color: rgb(244, 244, 244);
-    border: 1px solid #a1a1a1;
+    background-color: var(--button-background);
+    border: var(--button-border);
     border-radius: .3em;
     padding: .5rem;
     transition: 300ms;
@@ -449,7 +494,8 @@ main .faq-container .question::after {
     position: absolute;
     right: 0;
     top: 0;
-    color:rgba(0, 0, 0, 0.5);
+    color: var(--card-text-color);
+    font-weight: normal;
     transform: rotate(90deg);
     transition: 500ms;
 }
@@ -536,9 +582,9 @@ main .faq-container .entry:not(.unfolded) .answer {
 }
 
 #game-config-container > div {
-    background-color: rgb(245, 245, 245);;
+    background-color: var(--button-background);
     border-radius: .5rem;
-    border: 1px solid #ccc;
+    border: var(--button-border);
     padding: 1rem;
     display: grid;
     grid-template-columns: 1fr;
@@ -638,7 +684,7 @@ main .object-selection-container {
 }
 
 main .object-selection-container .object {
-    border: 1px solid #a1a1a1;
+    border: var(--button-border);
     --object-padding: .6rem;
     --object-border-radius: .5rem;
     padding: var(--object-padding);
@@ -665,7 +711,7 @@ main .object-selection-container .head-img {
     border-radius: var(--object-border-radius);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: 1px solid #a1a1a1;
+    border-bottom: var(--button-border);
     background-image: url("assets/objects/grid.svg");
     background-size: 50%;
 }
@@ -686,13 +732,13 @@ main .object-selection-container .title {
     border-top-left-radius: var(--object-border-radius);
     border-bottom-right-radius: var(--object-border-radius);
     font-family: var(--header-font);
-    border-bottom: 1px solid #a1a1a1;
-    border-right: 1px solid #a1a1a1;
+    border-bottom: var(--button-border);
+    border-right: var(--button-border);
 }
 
 main .scoreboard {
     border-radius: .8em;
-    border: 1px solid #ccc;
+    border: var(--button-border);
     width: auto !important;
     max-width: 100%;
     max-height: 25em;
@@ -711,7 +757,7 @@ main .layout-choice {
     position: relative;
     padding: 1rem;
     border-radius: 1rem;
-    border: 1px solid #ccc;
+    border: var(--button-border);
 }
 
 main .layout-choice canvas {
@@ -725,7 +771,7 @@ main .layout-choice button {
     right: 0;
     bottom: 0;
     font-size: 1em;
-    border: 1px solid #ccc;
+    border: var(--button-border);
     border-bottom: none;
     border-right: none;
     border-radius: 1rem;
