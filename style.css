@@ -144,6 +144,7 @@ header .link-island a:hover {
     gap: .5em;
     transform: translateY(-100%) scaleY(0);
     padding: 0;
+    border-bottom: var(--card-border);
 }
 
 body.sticky-header .header-drop-menu {
@@ -154,6 +155,8 @@ body.sticky-header .header-drop-menu {
 .header-drop-menu.visible {
     max-height: 20em;
     padding: 1rem;
+    padding-top: 1px;
+    margin-top: -1px;
     transform: translateY(0) scaleY(1);
 }
 
@@ -228,6 +231,7 @@ header .hamburger-icon.x .bar:nth-child(3) {
 
     header.expanded {
         box-shadow: none;
+        border-bottom: none;
     }
     
 }
