@@ -5,6 +5,11 @@ html, body {
 }
 
 body {
+    /* this property should be replaced by JS later
+       since 100vh is too tall on mobile browsers that
+       include the address bar in the 100vh */
+    --full-height: 100vh;
+
     --header-font: "Quicksand", serif;
     --general-font: system-ui, serif;
     --general-font-size: 1rem;
@@ -43,7 +48,8 @@ body[data-style="dark"] {
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    width: 100%;
+    min-height: var(--full-height);
     background: var(--background);
     background-size: 40%;
     font-family: var(--general-font);
