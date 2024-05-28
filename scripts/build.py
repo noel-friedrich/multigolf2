@@ -60,18 +60,29 @@ templates = {
 
 <script>
     document.getElementById("change-style-a").onclick = event => {
-        const styles = ["default", "dark", "flat"]
-        const currStyle = localStorage.getItem("style") || "default"
+        const styles = ["light", "dark"]
+        const currStyle = localStorage.getItem("style") || "light"
         const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
         localStorage.setItem("style", styles[nextIndex])
-        document.body.dataset.style = localStorage.getItem("style") || "default"
+        document.body.dataset.style = localStorage.getItem("style") || "light"
 
         event.preventDefault()
     }
 </script>""",
 
 "default_js": """<script>
-    document.body.dataset.style = localStorage.getItem("style") || "default"
+    {
+        if (localStorage.getItem("style") == null) {
+            const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+            if (prefersDarkMode) {
+                localStorage.setItem("style", "dark")
+            } else {
+                localStorage.setItem("style", "light")
+            }
+        }
+
+        document.body.dataset.style = localStorage.getItem("style") || "light"
+    }
 </script>"""
 }
 

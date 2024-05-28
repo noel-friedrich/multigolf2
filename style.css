@@ -40,22 +40,6 @@ body[data-style="dark"] {
     --background: rgb(42, 42, 42);
 }
 
-body[data-style="flat"] {
-    --card-background: white;
-    --card-border: 1px solid #ccc;
-    --card-shadow: none;
-    --card-text-color: black;
-
-    --button-background: rgb(244, 244, 244);
-    --button-color: var(--card-text-color);
-    --button-border: 1px solid #a1a1a1;
-
-    --input-background: rgb(251, 251, 251);
-    --input-color: var(--card-text-color);
-
-    --background: white;
-}
-
 body {
     display: flex;
     flex-direction: column;
