@@ -153,24 +153,33 @@ class GameState {
         this.players.push(player)
     }
 
+    get thisPhone() {
+        return this.board.course.phones[this.deviceIndex - 1]
+    }
+
     screenPosToBoardPos(pos) {
-        return this.board.course.phones[this.deviceIndex - 1].screenPosToBoardPos(pos)
+        if (!this.thisPhone) return pos
+        return this.thisPhone.screenPosToBoardPos(pos)
     }
 
     boardPosToScreenPos(pos) {
-        return this.board.course.phones[this.deviceIndex - 1].boardPosToScreenPos(pos)
+        if (!this.thisPhone) return pos
+        return this.thisPhone.boardPosToScreenPos(pos)
     }
 
     screenAngleToBoardAngle(angle) {
-        return angle + this.board.course.phones[this.deviceIndex - 1].angle
+        if (!this.thisPhone) return angle
+        return angle + this.thisPhone.angle
     }
 
     boardAngleToScreenAngle(angle) {
-        return angle - this.board.course.phones[this.deviceIndex - 1].angle
+        if (!this.thisPhone) return angle
+        return angle - this.thisPhone.angle
     }
 
     get scalingFactor() {
-        return this.board.course.phones[this.deviceIndex - 1].scalar
+        if (!this.thisPhone) return 1
+        return this.thisPhone.scalar
     }
 
     toObject(deviceIndex) {

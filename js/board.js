@@ -309,7 +309,7 @@ class Ball {
 
     physicsStep(board) {
         this.pos.iadd(this.vel)
-        if (this.vel.length < 0.05) {
+        if (this.vel.length < 0.1) {
             this.vel.iscale(0)
         }
 
