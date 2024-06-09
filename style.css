@@ -501,6 +501,7 @@ footer {
     color: var(--footer-text-color);
     width: min(var(--footer-max-width), 100%);
     margin: 0 auto;
+    margin-top: auto;
 }
 
 footer .footer-text {
