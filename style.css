@@ -12,6 +12,9 @@ body {
 
     --glassy-blur: blur(8px);
 
+    --header-max-width: 800px;
+    --footer-max-width: 800px;
+
     --header-background: rgba(243, 249, 243, .8);
     --header-border: none;
     --header-shadow: none;
@@ -92,6 +95,9 @@ header {
     border-bottom: var(--header-border);
     background: var(--header-background);
     box-shadow: var(--header-shadow);
+    
+    width: min(var(--header-max-width), 100%);
+    margin: 0 auto;
 
     backdrop-filter: var(--glassy-blur);
     -webkit-backdrop-filter: var(--glassy-blur);
@@ -100,8 +106,9 @@ header {
 body.sticky-header header {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(800px, 100%);
 }
 
 header > .logo {
@@ -281,8 +288,21 @@ main {
 }
 
 body.sticky-header main {
-    /* 1rem default + header size */
+    /* .1rem default + header size */
     margin-top: 4.6rem;
+}
+
+@media only screen and (min-width: 800px) {
+
+    main {
+        margin-top: 1rem;
+    }
+
+    body.sticky-header main {
+        /* 1rem default + header size */
+        margin-top: 5.5rem;
+    }
+
 }
 
 main.largebottomgap {
@@ -479,7 +499,7 @@ footer {
     padding: 1rem;
     box-shadow: var(--footer-shadow);
     color: var(--footer-text-color);
-    width: min(700px, 100%);
+    width: min(var(--footer-max-width), 100%);
     margin: 0 auto;
 }
 
