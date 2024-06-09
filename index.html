@@ -59,11 +59,13 @@
 
         <main>
             <h1 style="font-weight: normal;">Welcome to <span style="font-weight: bolder;">Multigolf</span></h1>
-            <iframe style="width: 100%; aspect-ratio: 560/315;"  width="560" height="315" src="https://www.youtube.com/embed/6v91nD3gkiY?si=X1et9-EC__vEkYtG"
-                title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-            </iframe>
+            <div class="yt-video-wrapper">
+                <iframe style="width: 100%"  width="560" height="315" src="https://www.youtube.com/embed/6v91nD3gkiY?si=X1et9-EC__vEkYtG"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                </iframe>
+            </div>
             <p>
                 Multigolf is a cross-device minigolf game. Build digital-reality courses out of 
                 multiple phones, then battle your friends in the available
@@ -98,24 +100,48 @@
 
         <!-- BEGIN default_footer -->
         <footer>
-            Made by <a href="https://noel-friedrich.de/">Noel Friedrich</a>.
-            <a href="impressum">Impressum / Contact</a>.
-            <a href="data-privacy">Data Privacy</a>.
-            <a href=".">Home</a>.
-            <a href="https://www.instagram.com/multi.golf/">Instagram</a>.
-            <a href="" id="change-style-a">Change Theme</a>.
+        <div class="link-grid">
+        
+            <div class="link-group">
+                <div class="group-header">Game</div>
+                <a class="group-item" href="host">Start a Game</a>
+                <a class="group-item" href="join">Join a Game</a>
+            </div>
+            <div class="link-group">
+                <div class="group-header">Info</div>
+                <a class="group-item" href="about">About Multigolf</a>
+                <a class="group-item" href="faq">FAQ</a>
+                <a class="group-item" href="contact">Contact Me</a>
+            </div>
+            <div class="link-group">
+                <div class="group-header">Legal</div>
+                <a class="group-item" href="impressum">Impressum</a>
+                <a class="group-item" href="data-privacy">Data Privacy</a>
+            </div>
+            <div class="link-group">
+                <div class="group-header">Socials</div>
+                <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram (Multigolf)</a>
+                <a class="group-item" href="https://www.instagram.com/noel.friedrich/">Instagram (Noel)</a>
+                <a class="group-item" href="https://noel-friedrich.de">Website (Noel)</a>
+            </div>
+        </div>
+        <hr>
+        <div class="footer-text">
+            Made by Noel Friedrich
+            <button class="theme-changer" id="change-style-a">Change Theme</button>
+        </div>
         </footer>
         
         <script>
-            document.getElementById("change-style-a").onclick = event => {
-                const styles = ["light", "dark"]
-                const currStyle = localStorage.getItem("style") || "light"
-                const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
-                localStorage.setItem("style", styles[nextIndex])
-                document.body.dataset.style = localStorage.getItem("style") || "light"
+        document.getElementById("change-style-a").onclick = event => {
+            const styles = ["light", "dark"]
+            const currStyle = localStorage.getItem("style") || "light"
+            const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
+            localStorage.setItem("style", styles[nextIndex])
+            document.body.dataset.style = localStorage.getItem("style") || "light"
         
-                event.preventDefault()
-            }
+            event.preventDefault()
+        }
         </script>
         <!-- END -->
 

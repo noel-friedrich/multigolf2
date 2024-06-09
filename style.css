@@ -10,13 +10,26 @@ body {
        include the address bar in the 100vh */
     --full-height: 100vh;
 
+    --glassy-blur: blur(8px);
+
+    --header-background: rgba(243, 249, 243, .8);
+    --header-border: none;
+    --header-shadow: none;
+    --header-button-background: white;
+    
+    --footer-background: transparent;
+    --footer-border: none;
+    --footer-shadow: none;
+    --footer-hr-color: #f4f4f4;
+    --footer-text-color: #707070;
+    
     --header-font: "Quicksand", serif;
     --general-font: system-ui, serif;
     --general-font-size: 1rem;
 
     --card-background: white;
-    --card-border: none;
-    --card-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    --card-border: 1px solid #ccc;
+    --card-shadow: none;
     --card-text-color: black;
 
     --button-background: rgb(244, 244, 244);
@@ -26,23 +39,29 @@ body {
     --input-background: rgb(251, 251, 251);
     --input-color: var(--card-text-color);
 
-    --background: url("assets/background.svg");
+    --background: rgb(243, 249, 243);
 }
 
 body[data-style="dark"] {
-    --card-background: black;
+    --header-background: rgba(3, 7, 3, 0.8);
+    --header-button-background: black;
+
+    --footer-hr-color: rgb(50, 50, 50);
+    --footer-text-color: rgb(221, 221, 221);
+
+    --card-background: rgb(43, 43, 43);
     --card-border: 1px solid rgb(105, 105, 105);
     --card-shadow: none;
     --card-text-color: white;
 
-    --button-background: rgb(51, 51, 51);
+    --button-background: rgb(61, 61, 61);
     --button-color: var(--card-text-color);
     --button-border: 1px solid #707070;
 
     --input-background: rgb(37, 37, 37);
     --input-color: var(--card-text-color);
 
-    --background: rgb(42, 42, 42);
+    --background: rgb(3, 7, 3);
 }
 
 body {
@@ -69,10 +88,13 @@ header {
     padding: 1rem;
     display: flex;
     position: relative;
-    border-bottom: var(--card-border);
-    box-shadow: var(--card-shadow);
     z-index: 102;
-    background: var(--card-background);
+    border-bottom: var(--header-border);
+    background: var(--header-background);
+    box-shadow: var(--header-shadow);
+
+    backdrop-filter: var(--glassy-blur);
+    -webkit-backdrop-filter: var(--glassy-blur);
 }
 
 body.sticky-header header {
@@ -128,13 +150,16 @@ header .link-island a:hover {
     z-index: 101;
     display: none;
     width: 100%;
-    background-color: var(--card-background);
-    box-shadow: var(--card-shadow);
+    background-color: var(--header-background);
+    box-shadow: var(--header-shadow);
     grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
     gap: .5em;
     transform: translateY(-100%) scaleY(0);
     padding: 0;
-    border-bottom: var(--card-border);
+    border-bottom: var(--header-border);
+
+    backdrop-filter: var(--glassy-blur);
+    -webkit-backdrop-filter: var(--glassy-blur);
 }
 
 body.sticky-header .header-drop-menu {
@@ -157,6 +182,7 @@ body.sticky-header .header-drop-menu {
     text-decoration: none;
     color: var(--card-text-color);
     border-radius: 5px;
+    background: var(--header-button-background);
 }
 
 .header-drop-menu a:hover {
@@ -241,11 +267,11 @@ main {
     padding: 2rem;
     width: min(100%, 600px);
     margin: 0 auto;
-    margin-bottom: 2rem;
     display: grid;
     gap: 1em;
     border-radius: 1em;
-    margin-top: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
     box-shadow: var(--card-shadow);
     border: var(--card-border);
     position: relative;
@@ -255,8 +281,8 @@ main {
 }
 
 body.sticky-header main {
-    /* 2rem default + header size */
-    margin-top: 6.5rem;
+    /* 1rem default + header size */
+    margin-top: 5.5rem;
 }
 
 main.largebottomgap {
@@ -271,6 +297,21 @@ main p {
 main p.error {
     text-align: center;
     color: red;
+}
+
+main .yt-video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+}
+
+main .yt-video-wrapper > iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 main p.error::before {
@@ -291,6 +332,14 @@ main h4, main h5, main h6 {
 
 main h1 {
     text-align: center;
+}
+
+main h2::before {
+    content: "~ ";
+}
+
+main h2::after {
+    content: " ~";
 }
 
 main ol,
@@ -334,8 +383,8 @@ main button {
     text-align: center;
     display: block;
     width: 100%;
-    font-family: var(--header-font);
-    font-weight: bold;
+    font-family: var(--general-font);
+    font-weight: normal;
     font-size: 1.2em;
     padding: .8em;
     border-radius: .5em;
@@ -423,39 +472,74 @@ main img.smaller {
 }
 
 footer {
-    border-top: var(--card-border);
-    background: var(--card-background);
+    border-top: var(--footer-border);
+    background: var(--footer-background);
     margin-top: auto;
     padding: 1rem;
-    box-shadow: var(--card-shadow);
-    color: var(--card-text-color);
+    box-shadow: var(--footer-shadow);
+    color: var(--footer-text-color);
+    width: min(700px, 100%);
+    margin: 0 auto;
 }
 
-footer a {
-    color: var(--card-text-color);
+footer .footer-text {
+    padding-left: 1rem;
+    padding-right: 3rem;
+    position: relative;
+    margin-bottom: 1rem;
 }
 
-/* non general css for multigolf */
-
-main .back-button {
+footer .footer-text .theme-changer {
     position: absolute;
-    top: -2rem;
-    left: 1rem;
-    font-size: 1rem;
-    font-weight: normal;
-    padding: .3rem;
-    height: 2rem;
-    width: fit-content;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    right: 1rem;
+    top: 0;
+    border: var(--button-border);
+    padding: .2rem;
     padding-left: .8rem;
     padding-right: .8rem;
-    background-color: var(--button-background);
-    color: var(--button-color)
+    border-radius: .4rem;
+    background: var(--button-background);
+    color: var(--card-text-color);
+    cursor: pointer;
 }
 
-main:has(section.visible .back-button) {
-    margin-top: 4rem;
+footer hr {
+    border-color: var(--footer-hr-color);
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+footer .link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+footer .link-group {
+    padding: 1rem;
+}
+
+footer .link-group .group-header {
+    font-weight: bold;
+    font-family: var(--header-font);
+    font-size: 1.1em;
+    margin-bottom: .3rem;
+    display: block;
+    color: var(--card-text-color);
+}
+
+footer .link-group .group-item {
+    display: block;
+    text-decoration: none;
+    color: var(--footer-text-color);
+    margin-bottom: .3rem;
+}
+
+footer .link-group .group-item:hover {
+    color: var(--card-text-color);
+}
+
+@media only screen and (max-width: 700px) {
+
 }
 
 main .faq-container {
@@ -508,6 +592,29 @@ main .faq-container .entry:not(.unfolded) .answer {
     transition: 300ms;
     max-height: 0;
     opacity: 0;
+}
+
+/* non general css for multigolf */
+
+main .back-button {
+    position: absolute;
+    top: -2rem;
+    left: 1rem;
+    font-size: 1rem;
+    font-weight: normal;
+    padding: .3rem;
+    height: 2rem;
+    width: fit-content;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-left: .8rem;
+    padding-right: .8rem;
+    background-color: var(--button-background);
+    color: var(--button-color)
+}
+
+main:has(section.visible .back-button) {
+    margin-top: 4rem;
 }
 
 .fullwidth-banner {
