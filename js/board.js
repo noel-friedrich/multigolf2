@@ -561,7 +561,7 @@ class Board {
         
         if (a.deviceIndex < this.currPhoneIndex) {
             // delete all existing connections (after and including the one we are modifying)
-            while (this.course.phones.length > parseInt(a.deviceIndex)) {
+            while (this.course.phones.length > parseInt(a.deviceIndex) && this.courseHistory.length > 1) {
                 this.courseHistory.pop()
                 this.course = this.courseHistory.slice(-1)[0].copy()
             }
