@@ -54,10 +54,20 @@
                 </div>
                 <p>
                     When the game starts, click on the board to enable fullscreen mode. This won't
-                    work on most IPhones and will break the game on most IPads. If you experience problems
+                    work on most iPhones and will break the game on most iPads. If you experience problems
                     when playing the game, (un)check the box above.
                 </p>
             </fieldset>
+
+            <script>
+                document.body.addEventListener("load", () => {
+                    if (navigator.platform == "iPad") {
+                        setTimeout(() => {
+                            document.querySelector("#fullscreen-checkbox").click()
+                        }, 100)
+                    }
+                })
+            </script>
         </main>
 
         <canvas style="display: none;" id="fullscreen-canvas"></canvas>
@@ -87,7 +97,7 @@
         </script>
         <!-- END -->
 
-        <!-- SET js_version=27 -->
+        <!-- SET js_version=28 -->
         <!-- JS_IMPORT js/sprite.js -->
         <!-- JS_IMPORT js/nosleep.js -->
         <!-- JS_IMPORT js/mathutils.js -->
@@ -102,18 +112,18 @@
         <!-- JS_IMPORT client/game_management.js -->
 
         <!-- BEGIN js_imports -->
-        <script src="../js/sprite.js?v26"></script>
-        <script src="../js/nosleep.js?v26"></script>
-        <script src="../js/mathutils.js?v26"></script>
-        <script src="../js/phone_coordinates.js?v26"></script>
-        <script src="../js/board.js?v26"></script>
-        <script src="../js/gamestate.js?v26"></script>
-        <script src="../js/renderer.js?v26"></script>
-        <script src="../js/rtc.js?v26"></script>
-        <script src="../js/objects.js?v26"></script>
-        <script src="../client/credit_card.js?v26"></script>
-        <script src="../client/connection_management.js?v26"></script>
-        <script src="../client/game_management.js?v26"></script>
+        <script src="../js/sprite.js?v28"></script>
+        <script src="../js/nosleep.js?v28"></script>
+        <script src="../js/mathutils.js?v28"></script>
+        <script src="../js/phone_coordinates.js?v28"></script>
+        <script src="../js/board.js?v28"></script>
+        <script src="../js/gamestate.js?v28"></script>
+        <script src="../js/renderer.js?v28"></script>
+        <script src="../js/rtc.js?v28"></script>
+        <script src="../js/objects.js?v28"></script>
+        <script src="../client/credit_card.js?v28"></script>
+        <script src="../client/connection_management.js?v28"></script>
+        <script src="../client/game_management.js?v28"></script>
         <!-- END -->
     </body>
 
