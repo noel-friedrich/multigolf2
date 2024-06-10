@@ -25,13 +25,22 @@
             <h2 id="loading-indicator">
                 Loading...
             </h2>
-
+            <p>
+                Please resize the credit card to be the same size as 
+                a credit card, ID card or gift-card in real life,
+                so that the game knows how large this device is.
+            </p>
+            <div class="credit-card-container">
+                <canvas id="credit-card-canvas"></canvas>
+                <div class="button-grid">
+                    <button id="cc-bigger-button">➕ Bigger</button>
+                    <button id="cc-smaller-button">➖ Smaller</button>
+                </div>
+            </div>
             <h2 id="status-title">Connecting to Host...</h2>
             <p>
-                Welcome to the game! Please keep this tab open and don't 
-                close the page until the game is over. While the game
-                is being setup, you don't need to do anything on this
-                device, except keeping it awake.
+                While the game is running, please try to keep this
+                phone from falling asleep. 
             </p>
             <p>
                 This is Device#<span data-fill="device-index">?</span>.
@@ -44,9 +53,9 @@
                     <label for="fullscreen-check">Request fullscreen when clicking on the Multigolf course</label>
                 </div>
                 <p>
-                    On some phones and especially IPads (depending on browser and version), it makes
-                    sense to disable this fullscreen mode as the browser will force gestures like
-                    pulling a ball to be interpreted as exiting fullscreen mode.
+                    When the game starts, click on the board to enable fullscreen mode. This won't
+                    work on most IPhones and will break the game on most IPads. If you experience problems
+                    when playing the game, (un)check the box above.
                 </p>
             </fieldset>
         </main>
@@ -88,6 +97,7 @@
         <!-- JS_IMPORT js/renderer.js -->
         <!-- JS_IMPORT js/rtc.js -->
         <!-- JS_IMPORT js/objects.js -->
+        <!-- JS_IMPORT client/credit_card.js -->
         <!-- JS_IMPORT client/connection_management.js -->
         <!-- JS_IMPORT client/game_management.js -->
 
@@ -101,6 +111,7 @@
         <script src="../js/renderer.js?v22"></script>
         <script src="../js/rtc.js?v22"></script>
         <script src="../js/objects.js?v22"></script>
+        <script src="../client/credit_card.js?v22"></script>
         <script src="../client/connection_management.js?v22"></script>
         <script src="../client/game_management.js?v22"></script>
         <!-- END -->

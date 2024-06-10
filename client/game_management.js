@@ -283,11 +283,15 @@ async function onConstructionTouchEvent(touchInfo) {
 
 async function onDataMessage(dataMessage) {
     if (dataMessage.type == dataMessageType.PING) {
-        // send ping back
+        // send ping back with displaysize and get deviceindex from ping
         updateDeviceIndex(dataMessage.data.index)
-        rtc.sendMessage(DataMessage.Ping({
-            displaySize: new Vector2d(window.innerWidth, window.innerHeight).toObject()
-        }))
+
+        const displaySize = new Vector2d(window.innerWidth, window.innerHeight)
+        if (window.creditCardPixelHeight) {
+            displaySize.iscale(400 / window.creditCardPixelHeight)
+        }
+
+        rtc.sendMessage(DataMessage.Ping({displaySize: displaySize.toObject()}))
 
     } else if (dataMessage.type == dataMessageType.GAMESTATE) {
         gameState = GameState.fromObject(dataMessage.data)

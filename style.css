@@ -112,8 +112,8 @@ body.sticky-header header {
 }
 
 header > .logo {
-    width: 2.5em;
-    height: 2.5em;
+    width: 2.5rem;
+    height: 2.5rem;
     margin-right: .7em;
 }
 
@@ -133,7 +133,7 @@ header > a {
 header .link-island {
     margin-left: auto;
     display: flex;
-    gap: .5em;
+    gap: .5rem;
 }
 
 header .link-island a {
@@ -165,7 +165,7 @@ header .link-island a.current {
     background-color: var(--header-background);
     box-shadow: var(--header-shadow);
     grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
-    gap: .5em;
+    gap: .5rem;
     transform: translateY(-100%) scaleY(0);
     padding: 0;
     border-bottom: var(--header-border);
@@ -189,7 +189,7 @@ body.sticky-header .header-drop-menu {
 
 .header-drop-menu a {
     display: block;
-    padding: .5em;
+    padding: .5rem;
     border: var(--button-border);
     text-decoration: none;
     color: var(--card-text-color);
@@ -414,7 +414,7 @@ main button {
     font-weight: normal;
     font-size: 1.2em;
     padding: .8em;
-    border-radius: .5em;
+    border-radius: .5rem;
     background-color: var(--button-background);
     border: var(--button-border);
     cursor: pointer;
@@ -456,7 +456,7 @@ main textarea {
     width: 100%;
     resize: vertical;
     padding: .8em;
-    border-radius: .5em;
+    border-radius: .5rem;
     background-color: var(--input-background);
     border: var(--button-border);
     font-family: var(--general-font);
@@ -594,7 +594,7 @@ main .faq-container .question {
 
 main .faq-container .entry.unfolded .question {
     font-weight: bold;
-    margin-bottom: .5em;
+    margin-bottom: .5rem;
 }
 
 main .faq-container .question::after {
@@ -909,4 +909,31 @@ main .layout-choice button {
     border-top-right-radius: 0;
     border-bottom-left-radius: 0;
     padding: 1rem;
+}
+
+.credit-card-container {
+    background: var(--input-background);
+    border: var(--button-border);
+    border-radius: 1rem;
+    padding: .5rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+}
+
+.credit-card-container canvas {
+    background: transparent;
+    width: 100%;
+    margin-bottom: .5rem;
+    transition: 300ms;
+}
+
+.credit-card-container .button-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+}
+
+.credit-card-container .button-grid button {
+    font-size: 1em;
+    padding: .5rem;
 }
