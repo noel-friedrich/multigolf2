@@ -122,6 +122,10 @@ class PhoneCoordinates {
         return rotated2.y - rotated1.y
     }
 
+    creditCardScalingFactor(screenSize) {
+        return this.height / screenSize.y
+    }
+
     screenPosToBoardPos(screenPos, screenSize) {
         const scaledScreenPos = screenPos.copy()
         scaledScreenPos.iscaleX(this.width / screenSize.x)

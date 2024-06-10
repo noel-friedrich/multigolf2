@@ -183,7 +183,8 @@ class Renderer {
                 this.drawCustomWall(gameState, context, screenCorners)
             } else {
                 const screenPos = gameState.boardPosToScreenPos(object.pos)
-                this.drawSprite(context, screenPos, object.size.scale(1 / gameState.scalingFactor),
+                this.drawSprite(context, screenPos,
+                    object.size.scale(1 / gameState.combinedScalingFactor),
                     object.sprite, {angle: gameState.boardAngleToScreenAngle(object.angle)})
             }
 
@@ -208,7 +209,7 @@ class Renderer {
 
         for (let ball of renderBalls) {
             const screenPos = gameState.boardPosToScreenPos(ball.pos)
-            const size = new Vector2d(ball.radius, ball.radius).scale(2 / gameState.scalingFactor)
+            const size = new Vector2d(ball.radius, ball.radius).scale(2 / gameState.combinedScalingFactor)
 
             if (!ball.active && !ball.isMoving()) {
                 context.globalAlpha = 0.5

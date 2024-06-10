@@ -184,6 +184,16 @@ class GameState {
         return this.thisPhone.scalar
     }
 
+    get creditCardScalingFactor() {
+        if (!this.thisPhone) return 1
+        const screenSize = new Vector2d(fullscreenCanvas.width, fullscreenCanvas.height)
+        return this.thisPhone.creditCardScalingFactor(screenSize)
+    }
+
+    get combinedScalingFactor() {
+        return this.creditCardScalingFactor * this.scalingFactor
+    }
+
     toObject(deviceIndex) {
         return {
             phase: this.phase,
