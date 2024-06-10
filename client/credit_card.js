@@ -15,13 +15,19 @@ async function loadCreditCardSizing() {
     
     const biggerButton = document.getElementById("cc-bigger-button")
     const smallerButton = document.getElementById("cc-smaller-button")
+
+    const minCreditCardHeight = 100
+    const maxCreditCardHeight = 1000
     
     let creditCardPixelHeight = 500
     // official credit card size: 2.125in * 3.375in
     const creditCardPixelWidth = () => creditCardPixelHeight * 2.125 / 3.375
 
     if (localStorage.getItem("credit-card-px-height") != null) {
-        creditCardPixelHeight = localStorage.getItem("credit-card-px-height")
+        const height = localStorage.getItem("credit-card-px-height")
+        if (Number.isInteger(height) && height >= minCreditCardHeight && height <= maxCreditCardHeight) {
+            creditCardPixelHeight = height
+        }
     }
 
     window.creditCardPixelHeight = creditCardPixelHeight
@@ -35,8 +41,8 @@ async function loadCreditCardSizing() {
 
     function updateCreditCardSize(increment) {
         const height = creditCardPixelHeight + increment
-        creditCardPixelHeight = Math.max(100, Math.min(1000, height))
-        
+        creditCardPixelHeight = Math.max(minCreditCardHeight, Math.min(maxCreditCardHeight, height))
+
         localStorage.setItem("credit-card-px-height", creditCardPixelHeight)
         window.creditCardPixelHeight = creditCardPixelHeight
     }
