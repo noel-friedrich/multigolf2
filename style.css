@@ -297,6 +297,15 @@ body.sticky-header main {
     margin-top: 4.6rem;
 }
 
+@media only screen and (max-width: 600px) {
+
+    main {
+        border-left: none;
+        border-right: none;
+    }
+
+}
+
 @media only screen and (min-width: 800px) {
 
     main {
