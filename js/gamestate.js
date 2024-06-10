@@ -159,12 +159,14 @@ class GameState {
 
     screenPosToBoardPos(pos) {
         if (!this.thisPhone) return pos
-        return this.thisPhone.screenPosToBoardPos(pos)
+        const screenSize = new Vector2d(fullscreenCanvas.width, fullscreenCanvas.height)
+        return this.thisPhone.screenPosToBoardPos(pos, screenSize)
     }
 
     boardPosToScreenPos(pos) {
         if (!this.thisPhone) return pos
-        return this.thisPhone.boardPosToScreenPos(pos)
+        const screenSize = new Vector2d(fullscreenCanvas.width, fullscreenCanvas.height)
+        return this.thisPhone.boardPosToScreenPos(pos, screenSize)
     }
 
     screenAngleToBoardAngle(angle) {

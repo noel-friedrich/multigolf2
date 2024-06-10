@@ -94,6 +94,14 @@ class Vector2d {
         return new Vector2d(this.x, this.y * y)
     }
 
+    iscaleX(x) {
+        this.x *= x
+    }
+
+    iscaleY(y) {
+        this.y *= y
+    }
+
     lerp(v, t) {
         let delta = v.sub(this)
         return this.add(delta.scale(t))

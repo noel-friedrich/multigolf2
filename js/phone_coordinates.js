@@ -108,14 +108,34 @@ class PhoneCoordinates {
         return PhoneCoordinates.fromObject(this.toObject())
     }
 
-    screenPosToBoardPos(screenPos) {
-        let pos = screenPos.rotate(this.angle)
+    get width() {
+        // unrotated width
+        const rotated1 = this.topLeft.rotate(-this.angle)
+        const rotated2 = this.topRight.rotate(-this.angle)
+        return rotated2.x - rotated1.x
+    }
+
+    get height() {
+        // unrotated height
+        const rotated1 = this.topLeft.rotate(-this.angle)
+        const rotated2 = this.bottomLeft.rotate(-this.angle)
+        return rotated2.y - rotated1.y
+    }
+
+    screenPosToBoardPos(screenPos, screenSize) {
+        const scaledScreenPos = screenPos.copy()
+        scaledScreenPos.iscaleX(this.width / screenSize.x)
+        scaledScreenPos.iscaleY(this.height / screenSize.y)
+        const pos = scaledScreenPos.rotate(this.angle)
         return this.topLeft.add(pos.scale(this.scalar))
     }
 
-    boardPosToScreenPos(boardPos) {
-        let pos = boardPos.sub(this.topLeft).scale(1 / this.scalar)
-        return pos.rotate(-this.angle)
+    boardPosToScreenPos(boardPos, screenSize) {
+        const relativePos = boardPos.sub(this.topLeft).scale(1 / this.scalar)
+        const rawScreenPos = relativePos.rotate(-this.angle)
+        rawScreenPos.iscaleX(screenSize.x / this.width)
+        rawScreenPos.iscaleY(screenSize.y / this.height)
+        return rawScreenPos
     }
 
     containsPos(pos) {

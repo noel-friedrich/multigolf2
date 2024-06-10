@@ -16,10 +16,15 @@ async function loadCreditCardSizing() {
     const biggerButton = document.getElementById("cc-bigger-button")
     const smallerButton = document.getElementById("cc-smaller-button")
     
-    let creditCardPixelHeight = 400
-    window.creditCardPixelHeight = 400
+    let creditCardPixelHeight = 500
     // official credit card size: 2.125in * 3.375in
     const creditCardPixelWidth = () => creditCardPixelHeight * 2.125 / 3.375
+
+    if (localStorage.getItem("credit-card-px-height") != null) {
+        creditCardPixelHeight = localStorage.getItem("credit-card-px-height")
+    }
+
+    window.creditCardPixelHeight = creditCardPixelHeight
     
     function drawCreditCard() {
         creditCardCanvas.height = creditCardPixelHeight
@@ -28,17 +33,21 @@ async function loadCreditCardSizing() {
         context.drawImage(creditCardImg, 0, 0, creditCardPixelWidth(), creditCardPixelHeight)
     }
 
-    biggerButton.addEventListener("click", () => {
-        if (creditCardPixelHeight >= 1000) return
-        creditCardPixelHeight += 10
+    function updateCreditCardSize(increment) {
+        const height = creditCardPixelHeight + increment
+        creditCardPixelHeight = Math.max(100, Math.min(1000, height))
+        
+        localStorage.setItem("credit-card-px-height", creditCardPixelHeight)
         window.creditCardPixelHeight = creditCardPixelHeight
+    }
+
+    biggerButton.addEventListener("click", () => {
+        updateCreditCardSize(10)
         drawCreditCard()
     })
 
     smallerButton.addEventListener("click", () => {
-        if (creditCardPixelHeight <= 100) return
-        creditCardPixelHeight -= 10
-        window.creditCardPixelHeight = creditCardPixelHeight
+        updateCreditCardSize(-10)
         drawCreditCard()
     })
 

@@ -288,7 +288,7 @@ async function onDataMessage(dataMessage) {
 
         const displaySize = new Vector2d(window.innerWidth, window.innerHeight)
         if (window.creditCardPixelHeight) {
-            displaySize.iscale(400 / window.creditCardPixelHeight)
+            displaySize.iscale(500 / window.creditCardPixelHeight)
         }
 
         rtc.sendMessage(DataMessage.Ping({displaySize: displaySize.toObject()}))
