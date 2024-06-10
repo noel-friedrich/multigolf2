@@ -53,7 +53,15 @@ async function shareScoreboard() {
     })
 }
 
+let setBeforeUnloadListener = false
 function changeGamePhase(newPhase, force=false) {
+    if (!setBeforeUnloadListener) {
+        addEventListener("beforeunload", event => {
+            event.preventDefault()
+            return "You're in an active game of multigolf. Leaving this website will break the game!"
+        })
+    }
+
     if (gameState.phase >= newPhase && !force) {
         return
     }
@@ -66,6 +74,8 @@ function changeGamePhase(newPhase, force=false) {
     } else if (newPhase == gamePhase.ConfigGame) {
         generateConfigHtml()
     }
+
+    headerElement.scrollIntoView({behavior: "smooth"})
 }
 
 function chooseGamemode(mode) {

@@ -46,7 +46,7 @@ body {
 }
 
 body[data-style="dark"] {
-    --header-background: rgba(3, 7, 3, 0.8);
+    --header-background: rgba(0, 0, 0, 0.7);
     --header-button-background: black;
 
     --footer-hr-color: rgb(50, 50, 50);
@@ -64,7 +64,7 @@ body[data-style="dark"] {
     --input-background: rgb(37, 37, 37);
     --input-color: var(--card-text-color);
 
-    --background: rgb(3, 7, 3);
+    --background: rgb(0, 0, 0);
 }
 
 body {
@@ -147,8 +147,13 @@ header .link-island a {
     font-size: 1.3em;
 }
 
-header .link-island a:hover {
+header .link-island a:hover,
+header .link-island a.current {
     text-decoration: underline;
+}
+
+header .link-island a.current {
+    cursor: default;
 }
 
 .header-drop-menu {
@@ -355,14 +360,6 @@ main h1 {
     font-size: 1.8em;
 }
 
-main h2::before {
-    content: "~ ";
-}
-
-main h2::after {
-    content: " ~";
-}
-
 main ol,
 main ul {
     margin: 0;
@@ -506,13 +503,14 @@ footer {
 
 footer .footer-text {
     padding-left: 1rem;
-    padding-right: 3rem;
+    padding-right: 1rem;
     position: relative;
     margin-bottom: 1rem;
+    display: flex;
 }
 
 footer .footer-text .theme-changer {
-    position: absolute;
+    margin-left: auto;
     right: 1rem;
     top: 0;
     border: var(--button-border);
@@ -523,6 +521,7 @@ footer .footer-text .theme-changer {
     background: var(--button-background);
     color: var(--card-text-color);
     cursor: pointer;
+    font-family: var(--general-font);
 }
 
 footer hr {

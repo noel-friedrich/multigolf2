@@ -1,8 +1,3 @@
-window.addEventListener("beforeunload", function (e) {
-    e.preventDefault()
-    return "You're in an active game of multigolf. Leaving this website will break the game!"
-})
-
 const logOutput = document.querySelector("#log-output")
 const qrImg = document.querySelector("#qr-img")
 const playerListContainer = document.querySelector("#player-list-container")
@@ -15,6 +10,8 @@ const playerListFieldset = document.querySelector("#player-list-fieldset")
 
 const layoutChoiceContainer = document.querySelector("#layout-choice-container")
 const gameConfigContainer = document.querySelector("#game-config-container")
+
+const headerElement = document.querySelector("header")
 
 function logToConnectionLog(message) {
     if (logOutput.textContent.length > 0) {
@@ -34,9 +31,7 @@ function updatePlayerlist() {
     playerListFieldset.style.display = "grid"
     playerListContainer.innerHTML = ""
     if (rtc.connections.length == 0) {
-        playerListContainer.textContent = ("No players added yet. " 
-            + "To add a new player, click the button below. A QR code will "
-            + "be generated to be scanned by the player and that player only.")
+        playerListContainer.textContent = ("Once you connect players, they will show up here.")
     }
 
     for (let i = 0; i < rtc.connections.length; i++) {

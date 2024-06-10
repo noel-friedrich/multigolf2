@@ -46,6 +46,13 @@ templates = {
             hamburger.classList.toggle("x")
             headerDropMenu.classList.toggle("visible")
         }
+
+        const getLastUrlBit = href => href.split("/").filter(s => s).slice(-1)[0]
+        for (const a of document.querySelectorAll("header .link-island a")) {
+            if (getLastUrlBit(a.href) == getLastUrlBit(location.href)) {
+                a.classList.add("current")
+            }
+        }
     }
 </script>""",
 
@@ -77,7 +84,7 @@ templates = {
 </div>
 <hr>
 <div class="footer-text">
-    Made by Noel Friedrich
+    <span class="text">Made by Noel Friedrich</span>
     <button class="theme-changer" id="change-style-a">Change Theme</button>
 </div>
 </footer>
