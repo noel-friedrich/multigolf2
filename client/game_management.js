@@ -112,7 +112,7 @@ async function onKickBallTouchEvent(touchInfo) {
         return
     }
 
-    const strength = Math.min(touchInfo.lastDownPos.distance(touchInfo.lastUpPos) * 0.3 / gameState.scalingFactor, 70)
+    const strength = Math.min(touchInfo.lastDownPos.distance(touchInfo.lastUpPos) * 0.3 / gameState.combinedScalingFactor, 70)
     const touchUpBoardPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
     const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
     rtc.sendMessage(new DataMessage(dataMessageType.KICK_BALL,
@@ -218,7 +218,7 @@ async function onPlaceTouchMove(touchInfo) {
         const boardAngle = gameState.screenAngleToBoardAngle(angle + angleOffset)
         touchInfo.focusedObject.angle = snapAngle(boardAngle)
         if (touchInfo.focusedObject.resizable) {
-            touchInfo.focusedObject.radius = objectPos.distance(touchInfo.currPos) / 1.2 * gameState.scalingFactor
+            touchInfo.focusedObject.radius = objectPos.distance(touchInfo.currPos) / 1.2 * gameState.combinedScalingFactor
         }
     } else {
         const boardPos = gameState.screenPosToBoardPos(touchInfo.currPos)
