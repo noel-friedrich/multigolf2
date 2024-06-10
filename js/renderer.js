@@ -266,6 +266,9 @@ class Renderer {
                 return this.renderBallInteractions(gameState, context, touchInfo)
             default:
                 document.body.style.overflow = "visible"
+                if (document.fullscreenElement && document.exitFullscreen) {
+                    document.exitFullscreen()
+                }
                 return this.renderNothing(gameState, context, touchInfo)
         }
     }
