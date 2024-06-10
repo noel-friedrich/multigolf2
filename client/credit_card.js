@@ -24,7 +24,7 @@ async function loadCreditCardSizing() {
     const creditCardPixelWidth = () => creditCardPixelHeight * 2.125 / 3.375
 
     if (localStorage.getItem("credit-card-px-height") != null) {
-        const height = localStorage.getItem("credit-card-px-height")
+        const height = parseInt(localStorage.getItem("credit-card-px-height"))
         if (Number.isInteger(height) && height >= minCreditCardHeight && height <= maxCreditCardHeight) {
             creditCardPixelHeight = height
         }
