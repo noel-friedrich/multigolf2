@@ -73,6 +73,11 @@
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                 </iframe>
             </div>
+
+            <a href="https://multigolf.myspreadshop.de" target="_blank" class="annoying-banner">
+                <canvas id="banner-canvas-1"></canvas>
+            </a>
+
             <p>
                 Multigolf is a cross-device minigolf game. Build digital-reality courses out of 
                 multiple phones, then battle your friends in the available
@@ -82,6 +87,7 @@
                 download, players will simply scan a QR code and begin playing.
                 Sounds good? Then go <a href="host">Start a Game</a>!
             </p>
+
             <div class="middle-container">
                 <img src="assets/pics/demo-img-transparent.png" class="smaller middle" alt="Image depicting Multiple Devices playing Multigolf together">
             </div>
@@ -129,7 +135,7 @@
                 <div class="group-header">Socials</div>
                 <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram (Multigolf)</a>
                 <a class="group-item" href="https://www.instagram.com/noel.friedrich/">Instagram (Noel)</a>
-                <a class="group-item" href="https://noel-friedrich.de">Website (Noel)</a>
+                <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
             </div>
         </div>
         <hr>
@@ -176,6 +182,25 @@
             }
         </script>
         <!-- END -->
+
+        <!-- JS_IMPORT js/banner.js -->
+        <!-- BEGIN js_imports -->
+        <script src="js/banner.js?v0"></script>
+        <!-- END -->
+        
+        <script>
+            registerBanner({
+                texts: [
+                    "Buy Merch!!",
+                    "New Merch Shop!",
+                    "Merch??",
+                    "T Shirts!",
+                    "Buy Stickers!",
+                    "Multigolf Merch!"
+                ],
+                context: document.getElementById("banner-canvas-1").getContext("2d"),
+            })
+        </script>
     </body>
 
 </html>
