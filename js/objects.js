@@ -158,6 +158,11 @@ class GolfObject {
         return this
     }
 
+    setAngle(angle) {
+        this.angle = angle
+        return this
+    }
+
     setVisibility(func) {
         this.visibility = func
         return this
@@ -165,6 +170,10 @@ class GolfObject {
 
     get description() {
         return golfObjectTypeDescriptionMap[this.type]
+    }
+
+    static makeDefault(type) {
+        return placableObjects.find(o => o.type == type).copy()
     }
 
 }

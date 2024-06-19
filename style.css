@@ -18,7 +18,7 @@ body {
     --header-max-width: 800px;
     --footer-max-width: 800px;
 
-    --header-background: rgba(243, 249, 243, .8);
+    --header-background: rgba(243, 249, 243, .6);
     --header-border: none;
     --header-shadow: none;
     --header-button-background: white;
@@ -49,7 +49,7 @@ body {
 }
 
 body[data-style="dark"] {
-    --header-background: rgba(0, 0, 0, 0.7);
+    --header-background: rgba(0, 0, 0, 0.6);
     --header-button-background: black;
 
     --footer-hr-color: rgb(50, 50, 50);

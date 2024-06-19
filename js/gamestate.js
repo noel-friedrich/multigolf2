@@ -157,15 +157,19 @@ class GameState {
         return this.board.course.phones[this.deviceIndex - 1]
     }
 
+    getReferenceCanvas() {
+        return fullscreenCanvas
+    }
+
     screenPosToBoardPos(pos) {
         if (!this.thisPhone) return pos
-        const screenSize = new Vector2d(fullscreenCanvas.width, fullscreenCanvas.height)
+        const screenSize = new Vector2d(this.getReferenceCanvas().width, this.getReferenceCanvas().height)
         return this.thisPhone.screenPosToBoardPos(pos, screenSize)
     }
 
     boardPosToScreenPos(pos) {
         if (!this.thisPhone) return pos
-        const screenSize = new Vector2d(fullscreenCanvas.width, fullscreenCanvas.height)
+        const screenSize = new Vector2d(this.getReferenceCanvas().width, this.getReferenceCanvas().height)
         return this.thisPhone.boardPosToScreenPos(pos, screenSize)
     }
 
@@ -186,7 +190,7 @@ class GameState {
 
     get creditCardScalingFactor() {
         if (!this.thisPhone) return 1
-        const screenSize = new Vector2d(fullscreenCanvas.width, fullscreenCanvas.height)
+        const screenSize = new Vector2d(this.getReferenceCanvas().width, this.getReferenceCanvas().height)
         return this.thisPhone.creditCardScalingFactor(screenSize)
     }
 
@@ -352,8 +356,8 @@ class GameState {
         }
     }
 
-    update() {
-        this.updatePhysics()
+    update(hostTime=Date.now()) {
+        this.updatePhysics(hostTime)
 
         if (gamePhase.isPlaying(this.phase)) {
             if (this.mode == gameMode.Tournament) {

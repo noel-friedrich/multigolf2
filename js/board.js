@@ -55,10 +55,14 @@ class Ball {
     }
 
     kick(direction) {
+        if (this.inHole) {
+            return
+        }
+        
         this.vel.iadd(direction.scale(0.6))
         this.kicks++
         this.immobileTickCount = 0
-        this.lastImmobilePos = this.pos.copy( )
+        this.lastImmobilePos = this.pos.copy()
     }
 
     isMoving() {
@@ -190,7 +194,7 @@ class Ball {
     }
 
     readyToCollide(board) {
-        return board.startPos.distance(this.pos) > 2 * this.radius
+        return !this.inHole && board.startPos.distance(this.pos) > 2 * this.radius
     }
 
     calcBallCollisions(board) {
@@ -397,6 +401,17 @@ class Board {
         // (as they are only useful for host)
         this.constructionLineBuffer = []
         this.courseHistory = [this.course.copy()]
+        
+        this.physicsStepCount = 0
+        this.physicsStepEvents = []
+    }
+
+    addPhysicsEvent(callback, relativeStepIndex) {
+        this.physicsStepEvents.push([this.physicsStepCount + relativeStepIndex, callback])
+    }
+
+    clearPhysicsEvents() {
+        this.physicsStepEvents.splice(0, this.physicsStepEvents.length)
     }
 
     get movableThings() {
@@ -474,7 +489,16 @@ class Board {
         let stepCount = 0
         while (stepCount < maxSteps && this.physicsTime < maxTime) {
             this.physicsStep()
+            this.physicsStepCount++
             stepCount++
+
+            for (const [eventIndex, callback] of this.physicsStepEvents) {
+                if (eventIndex == this.physicsStepCount) {
+                    callback()
+                }
+            }
+
+            this.physicsStepEvents = this.physicsStepEvents.filter(([i, _]) => i > this.physicsStepCount)
         }
     }
 
@@ -489,11 +513,14 @@ class Board {
             spriteUrl = AllBallSprites[Math.floor(Math.random() * AllBallSprites.length)]
         }
 
-        this.balls.push(new Ball(
+        const ball = new Ball(
             this.startPos.copy(), new Vector2d(0, 0),
             false, 18, spriteUrl, 0, true,
             Math.random().toString().slice(2), 0
-        ))
+        )
+
+        this.balls.push(ball)
+        return ball
     }
 
     addConstructionLine(line, phone, timestamp, deviceIndex) {

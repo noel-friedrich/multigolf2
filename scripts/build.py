@@ -6,7 +6,8 @@ templates = {
     <meta name="description" content="$description$">
     <meta charset="UTF-8">
     <title>$title$</title>
-    <link rel="icon" type="image/svg" href="$base-path$assets/logo/favicon.ico" />
+    <link rel="manifest" href="$base-path$manifest.json">
+    <link rel="icon" type="image/svg" href="$base-path$assets/logo/favicon.ico">
     <link rel="stylesheet" href="$base-path$style.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>""",
@@ -103,6 +104,7 @@ document.getElementById("change-style-a").onclick = event => {
 
 "default_js": """<script>
     {
+        // update theme
         if (localStorage.getItem("style") == null) {
             const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
             if (prefersDarkMode) {
@@ -121,6 +123,11 @@ document.getElementById("change-style-a").onclick = event => {
         }
         updateInnerHeight()
         addEventListener("resize", updateInnerHeight)
+
+        // register service worker for PWA functionality
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("$base-path$service_worker.js")
+        }
     }
 </script>"""
 }
@@ -199,3 +206,6 @@ import glob
 index_files = glob.glob("./**/index.html", recursive=True)
 for file_path in index_files:
     handle_file(file_path)
+
+from build_service_worker import build_service_worker
+build_service_worker()

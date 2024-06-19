@@ -9,7 +9,8 @@
         <meta name="description" content="Page to start and host a multi.golf game that others can join">
         <meta charset="UTF-8">
         <title>Host | Multigolf</title>
-        <link rel="icon" type="image/svg" href="../assets/logo/favicon.ico" />
+        <link rel="manifest" href="../manifest.json">
+        <link rel="icon" type="image/svg" href="../assets/logo/favicon.ico">
         <link rel="stylesheet" href="../style.css">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
     </head>
@@ -438,6 +439,7 @@
         <!-- BEGIN default_js -->
         <script>
             {
+                // update theme
                 if (localStorage.getItem("style") == null) {
                     const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
                     if (prefersDarkMode) {
@@ -456,6 +458,11 @@
                 }
                 updateInnerHeight()
                 addEventListener("resize", updateInnerHeight)
+        
+                // register service worker for PWA functionality
+                if ("serviceWorker" in navigator) {
+                    navigator.serviceWorker.register("../service_worker.js")
+                }
             }
         </script>
         <!-- END -->
