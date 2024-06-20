@@ -640,6 +640,7 @@ main .back-button {
     width: fit-content;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    border-bottom: var(--card-border);
     padding-left: .8rem;
     padding-right: .8rem;
     background-color: var(--button-background);
