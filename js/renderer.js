@@ -169,7 +169,7 @@ class Renderer {
         drawGravity = true
     }={}) {
         context.canvas.style.display = "block"
-        const backgroundSizePercent = Math.max(Math.round(20 / gameState.scalingFactor), 5)
+        const backgroundSizePercent = Math.max(Math.round(51 / gameState.combinedScalingFactor), 1)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
 
         if (drawGravity) {

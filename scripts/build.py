@@ -12,7 +12,7 @@ templates = {
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>""",
 "default_header": """<header> 
-    <img src="$base-path$assets/logo/logo.svg" class="logo" alt="Multigolf Logo">
+    <img src="$base-path$assets/logo/pride_logo.svg" class="logo" alt="Multigolf Logo">
     <a href="$base-path$">Multigolf</a>
     <div class="link-island">
         <a href="$base-path$host/">Start Game</a>
@@ -78,8 +78,8 @@ templates = {
     </div>
     <div class="link-group">
         <div class="group-header">Socials</div>
-        <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram (Multigolf)</a>
-        <a class="group-item" href="https://www.instagram.com/noel.friedrich/">Instagram (Noel)</a>
+        <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
+        <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
         <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
     </div>
 </div>

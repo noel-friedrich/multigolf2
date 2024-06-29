@@ -5,6 +5,7 @@ class Ball {
         this.vel = vel ?? new Vector2d(0, 0)
 
         this.inHole = inHole ?? false
+            
         this.radius = radius ?? 18
         this.spriteUrl = spriteUrl ?? Sprite.BallWhite
         

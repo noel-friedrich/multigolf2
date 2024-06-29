@@ -1,4 +1,6 @@
 const Sprite = {
+    // PIXELATD SPRITES:
+
     BallBlue:      "../assets/compressed/objects/balls/blue.png",
     BallCyan:      "../assets/compressed/objects/balls/cyan.png",
     BallLightblue: "../assets/compressed/objects/balls/light_blue.png",
