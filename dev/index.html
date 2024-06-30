@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" style="overscroll-behavior: contain;">
+
+    <!-- SET title=Dev | Multigolf -->
+    <!-- SET description=A few useful tools for developers of multi.golf -->
+    <!-- BEGIN default_head -->
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A few useful tools for developers of multi.golf">
+        <meta charset="UTF-8">
+        <title>Dev | Multigolf</title>
+        <link rel="manifest" href="../manifest.json">
+        <link rel="icon" type="image/svg" href="../assets/logo/favicon.ico">
+        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
+    </head>
+    <!-- END -->
+
+    <body class="sticky-header">
+
+        <!-- BEGIN default_header -->
+        <header> 
+            <img src="../assets/logo/pride_logo.svg" class="logo" alt="Multigolf Logo">
+            <a href="../">Multigolf</a>
+            <div class="link-island">
+                <a href="../host/">Start Game</a>
+                <a href="../join/">Join Game</a>
+                <a href="../about/">About</a>
+                <a href="../faq/">FAQ</a>
+                <a href="../contact/">Contact</a>
+            </div>
+            <div class="hamburger-icon" tabindex="0">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </header>
+        
+        <div class="header-drop-menu">
+            <a href="../host/">Start a Game</a>
+            <a href="../join/">Join a Game</a>
+            <a href="../about/">What is Multigolf?</a>
+            <a href="../faq/">FAQ & Help</a>
+            <a href="../contact/">Contact</a>
+        </div>
+        
+        <script>
+            {
+                const header = document.querySelector("header")
+                const hamburger = document.querySelector(".hamburger-icon")
+                const headerDropMenu = document.querySelector(".header-drop-menu")
+        
+                hamburger.onclick = () => {
+                    header.classList.toggle("expanded")
+                    hamburger.classList.toggle("x")
+                    headerDropMenu.classList.toggle("visible")
+                }
+        
+                const getLastUrlBit = href => href.split("/").filter(s => s).slice(-1)[0]
+                for (const a of document.querySelectorAll("header .link-island a")) {
+                    if (getLastUrlBit(a.href) == getLastUrlBit(location.href)) {
+                        a.classList.add("current")
+                    }
+                }
+            }
+        </script>
+        <!-- END -->
+
+        <script>
+            function logToElement(message, element) {
+                element.textContent += message + "\n"
+                element.style.display = "block"
+            }
+        </script>
+        
+        <main>
+            <h1>Developer Centre</h1>
+            <fieldset>
+                <legend>Service Worker Caching</legend>
+                <p>
+                    The website uses a <a href="../service_worker.js">ServiceWorker</a> to
+                    cache pages and assets. Click the button below to manually clear the cache! 
+                </p>
+                <button id="clear-cache-btn" class="smaller">Clear Cache</button>
+                <output class="log-output" style="display: none;" id="clear-cache-log"></output>
+                <script>
+                    document.getElementById("clear-cache-btn").onclick = async () => {
+                        const cacheNames = await self.caches.keys()
+                        const logElement = document.getElementById("clear-cache-log")
+                        for (const cache of cacheNames) {
+                            self.caches.delete(cache)
+                            logToElement(`Deleted "${cache}" Cache.`, logElement)
+                        }
+                        if (cacheNames.length == 0) {
+                            logToElement(`No active cache found.`, logElement)
+                        }
+                    }
+                </script>
+            </fieldset>
+            <fieldset>
+                <legend>Site Views</legend>
+                <p style="text-align: initial;">
+                    <a href="https://multi.golf">https://multi.golf</a> has
+                    <output id="site-visitors-output">&lt;Loading...&gt;</output> site visits.<br>
+                    (Last updated: <output id="site-visitors-time-output">&lt;Loading...&gt;</output>)
+                    <script>
+                        const intervalFunc = async () => {
+                            const visits = await fetch(
+                                "https://www.noel-friedrich.de/terminal/api/get_visit_count.php"
+                            ).then(response => response.json())
+                            const multigolfVisits = visits.find(v => v.url == "https://multi.golf").visits
+                            document.getElementById("site-visitors-output").textContent = multigolfVisits
+                            document.getElementById("site-visitors-time-output").textContent = new Date()
+                        }
+
+                        setInterval(intervalFunc, 10000)
+                        intervalFunc()
+                    </script>
+                </p> 
+            </fieldset>
+        </main>
+
+        <!-- BEGIN default_footer -->
+        <footer>
+        <div class="link-grid">
+        
+            <div class="link-group">
+                <div class="group-header">Game</div>
+                <a class="group-item" href="../host">Start a Game</a>
+                <a class="group-item" href="../join">Join a Game</a>
+            </div>
+            <div class="link-group">
+                <div class="group-header">Info</div>
+                <a class="group-item" href="../about">About Multigolf</a>
+                <a class="group-item" href="../faq">FAQ</a>
+                <a class="group-item" href="../contact">Contact Me</a>
+            </div>
+            <div class="link-group">
+                <div class="group-header">Legal</div>
+                <a class="group-item" href="../impressum">Impressum</a>
+                <a class="group-item" href="../data-privacy">Data Privacy</a>
+            </div>
+            <div class="link-group">
+                <div class="group-header">Socials</div>
+                <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
+                <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
+                <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
+            </div>
+        </div>
+        <hr>
+        <div class="footer-text">
+            <span class="text">Made by Noel Friedrich</span>
+            <button class="theme-changer" id="change-style-a">Change Theme</button>
+        </div>
+        </footer>
+        
+        <script>
+        document.getElementById("change-style-a").onclick = event => {
+            const styles = ["light", "dark"]
+            const currStyle = localStorage.getItem("style") || "light"
+            const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
+            localStorage.setItem("style", styles[nextIndex])
+            document.body.dataset.style = localStorage.getItem("style") || "light"
+        
+            event.preventDefault()
+        }
+        </script>
+        <!-- END -->
+        
+        <!-- BEGIN default_js -->
+        <script>
+            {
+                // update theme
+                if (localStorage.getItem("style") == null) {
+                    const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+                    if (prefersDarkMode) {
+                        localStorage.setItem("style", "dark")
+                    } else {
+                        localStorage.setItem("style", "light")
+                    }
+                }
+        
+                document.body.dataset.style = localStorage.getItem("style") || "light"
+        
+                // replace CSS "100vh" with actual inner height in px
+                // (-1 to prevent inaccuracies in some browsers)
+                const updateInnerHeight = () => {
+                    document.body.style.setProperty("--full-height", `${window.innerHeight - 1}px`)
+                }
+                updateInnerHeight()
+                addEventListener("resize", updateInnerHeight)
+        
+                // register service worker for PWA functionality
+                if ("serviceWorker" in navigator) {
+                    navigator.serviceWorker.register("../service_worker.js")
+                }
+            }
+        </script>
+        <!-- END -->
+    </body>
+
+</html>

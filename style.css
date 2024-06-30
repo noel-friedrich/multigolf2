@@ -150,6 +150,12 @@ header .link-island a {
     font-size: 1.3em;
 }
 
+header .link-island a:nth-child(1) { text-decoration-color: #f04452 !important; }
+header .link-island a:nth-child(2) { text-decoration-color: #eeb506 !important; }
+header .link-island a:nth-child(3) { text-decoration-color: #0bbd33 !important; }
+header .link-island a:nth-child(4) { text-decoration-color: #246ad5 !important; }
+header .link-island a:nth-child(5) { text-decoration-color: #a330d6 !important; }
+
 header .link-island a:hover,
 header .link-island a.current {
     text-decoration: underline;
@@ -222,6 +228,12 @@ header .hamburger-icon .bar {
     background-color: #20b966;
     transition: 300ms;
 }
+
+header .hamburger-icon .bar:nth-child(1) { background-color: #f04452 !important; }
+header .hamburger-icon .bar:nth-child(2) { background-color: #eeb506 !important; }
+header .hamburger-icon .bar:nth-child(2) { background-color: #0bbd33 !important; }
+header .hamburger-icon .bar:nth-child(3) { background-color: #246ad5 !important; }
+header .hamburger-icon .bar:nth-child(5) { background-color: #a330d6 !important; }
 
 header .hamburger-icon:not(.x) .bar:nth-child(2) {
     width: 75%;
@@ -424,6 +436,13 @@ main button {
     transition: 100ms;
 }
 
+main a.linkbutton.smaller,
+main input.smaller,
+main button.smaller {
+    padding: .5em;
+    font-size: 1em;
+}
+
 main input {
     background-color: var(--input-background);
     font-family: var(--general-font);
@@ -444,6 +463,11 @@ main .round-edges {
 main a.linkbutton:hover,
 main button:hover:not(:disabled) {
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
+}
+
+main a.linkbutton.smaller:hover,
+main button.smaller:hover:not(:disabled) {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 main button:disabled {
@@ -829,6 +853,11 @@ main .object-selection-container .object {
 
 main .object-selection-container .object.selected {
     outline: 3px solid blue;
+}
+
+main .log-output {
+    font-family: monospace;
+    white-space: pre;
 }
 
 main .object-selection-container .object:not(.selected) {
