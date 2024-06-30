@@ -178,6 +178,14 @@ const gameConfigSettings = [
         showIf: () => true
     },
     {
+        name: "Read Names",
+        description: "If enabled, the host device will read the name of the player whose turn it is out loud.",
+        getValue: () => AudioPlayer.speechEnabled,
+        setValue: val => AudioPlayer.speechEnabled = val,
+        type: "boolean",
+        showIf: () => gameState.mode == gameMode.Tournament
+    },
+    {
         name: "Maximum Kicks per Round",
         description: "Decide how many kicks each player can have per round before failing and getting a 2 point penalty.",
         getValue: () => gameState.tournamentMaxKicks,

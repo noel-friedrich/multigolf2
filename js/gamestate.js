@@ -294,6 +294,33 @@ class GameState {
         this.tournamentBall.active = false
         this.tournamentBallIndex = ballIndex + 1
         this.tournamentBall.active = true
+
+        this.advanceTournamentBall(true)
+    }
+
+    advanceTournamentBall(forceSpeak=false) {
+        let prevPlayerName = this.tournamentActivePlayer.name
+        let inHoleCount = 0
+        while ((this.tournamentBall.inHole && this.tournamentBall.radius == 0)
+            || (this.tournamentBall.kicks >= this.tournamentMaxKicks && !this.tournamentBall.isMoving())) {
+            inHoleCount++
+
+            this.tournamentBall.active = false
+            this.tournamentBallIndex++
+            this.tournamentBall.active = true
+
+            if (inHoleCount >= this.players.length) {
+                return false
+            }
+        }
+
+        if (prevPlayerName != this.tournamentActivePlayer.name || forceSpeak) {
+            if (window.AudioPlayer && gamePhase.isPlaying(this.phase)) {
+                window.AudioPlayer.say(this.tournamentActivePlayer.name)
+            }
+        }
+
+        return true
     }
 
     updateTournament() {
@@ -311,20 +338,8 @@ class GameState {
             }
         }
 
-        let inHoleCount = 0
-        while ((this.tournamentBall.inHole && this.tournamentBall.radius == 0)
-            || (this.tournamentBall.kicks >= this.tournamentMaxKicks && !this.tournamentBall.isMoving())) {
-            inHoleCount++
-
-            this.tournamentBall.active = false
-            this.tournamentBallIndex++
-            this.tournamentBall.active = true
-            madeChange = true
-
-            if (inHoleCount > this.players.length) {
-                this.endTournamentRound()
-                break
-            }
+        if (!this.advanceTournamentBall()) {
+            this.endTournamentRound()
         }
 
         return madeChange

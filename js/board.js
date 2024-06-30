@@ -379,7 +379,7 @@ class Ball {
         }
 
         if (madeWallCollision && window.AudioPlayer) {
-            window.AudioPlayer.plop()
+            window.AudioPlayer.randomNote()
         }
     }
 

@@ -24,7 +24,28 @@ const Sprite = {
 
 const AudioSprite = {
     Plop: "../assets/audio/plop.mp3",
+    Note1: "../assets/audio/notes/1.mp3",
+    Note2: "../assets/audio/notes/2.mp3",
+    Note3: "../assets/audio/notes/3.mp3",
+    Note4: "../assets/audio/notes/4.mp3",
+    Note5: "../assets/audio/notes/5.mp3",
+    Note6: "../assets/audio/notes/6.mp3",
+    Note7: "../assets/audio/notes/7.mp3",
+    Note8: "../assets/audio/notes/8.mp3",
+    Note9: "../assets/audio/notes/9.mp3",
 }
+
+const allNoteSprites = [
+    AudioSprite.Note1,
+    AudioSprite.Note2,
+    AudioSprite.Note3,
+    AudioSprite.Note4,
+    AudioSprite.Note5,
+    AudioSprite.Note6,
+    AudioSprite.Note7,
+    AudioSprite.Note8,
+    AudioSprite.Note9
+]
 
 const AllBallSprites = [
     Sprite.BallBlue,

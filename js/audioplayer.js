@@ -1,11 +1,20 @@
 class AudioPlayer {
 
     static spriteAudioMap = {}
+    static spriteIndexMap = {}
+
     static soundsEnabled = true
+    static speechEnabled = true
 
-    static plopIndex = 0
-    static plopAudios = []
-
+    static makeAudio(src) {
+        const element = document.createElement("audio")
+        element.style.display = "none"
+        element.preload = "true"
+        element.src = src
+        document.body.appendChild(element)
+        return element
+    }    
+    
     static hasLoaded = false
     static async load() {
         if (this.hasLoaded) {
@@ -13,11 +22,14 @@ class AudioPlayer {
         }
 
         for (const src of Object.values(AudioSprite)) {
-            this.spriteAudioMap[src] = new Audio(src)
-        }
+            this.spriteAudioMap[src] = []
+            this.spriteIndexMap[src] = 0
 
-        for (let i = 0; i < 10; i++) {
-            this.plopAudios.push(new Audio(AudioSprite.Plop))
+            // make 5 audios per source to allow playing
+            // in quick repetition (and simultaneously)
+            for (let i = 0; i < 5; i++) {
+                this.spriteAudioMap[src].push(this.makeAudio(src))
+            }
         }
 
         this.hasLoaded = true
@@ -28,16 +40,33 @@ class AudioPlayer {
             return
         }
 
-        if (sprite == AudioSprite.Plop) {
-            this.plopAudios[(this.plopIndex++) % this.plopAudios.length].play()
-        } else if (this.spriteAudioMap[sprite]) {
+        if (this.spriteAudioMap[sprite]) {
             this.load()
-            this.spriteAudioMap[sprite].play()
+            const audios = this.spriteAudioMap[sprite]
+            const index = (this.spriteIndexMap[sprite]++) % audios.length
+            return audios[index].play()
         }
     }
 
+    static randomNote() {
+        const index = Math.floor(Math.random() * allNoteSprites.length)
+        return this.play(allNoteSprites[index])
+    }
+
     static plop() {
-        this.play(AudioSprite.Plop)
+        return this.play(AudioSprite.Plop)
+    }
+
+    static say(text, {rate = 1., lang="de-DE"}={}) {
+        if (!this.speechEnabled || !window.speechSynthesis) {
+            return
+        }
+
+        const message = new SpeechSynthesisUtterance()
+        message.text = text
+        message.rate = rate
+        message.lang = lang
+        window.speechSynthesis.speak(message)
     }
 
 }
