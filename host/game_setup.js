@@ -170,6 +170,14 @@ const gameConfigSettings = [
         showIf: () => [gameMode.Sandbox, gameMode.Tournament].includes(gameState.mode)
     },
     {
+        name: "Soundeffects",
+        description: "If enabled, the host device will play sound effects when balls collide with something.",
+        getValue: () => AudioPlayer.soundsEnabled,
+        setValue: val => AudioPlayer.soundsEnabled = val,
+        type: "boolean",
+        showIf: () => true
+    },
+    {
         name: "Maximum Kicks per Round",
         description: "Decide how many kicks each player can have per round before failing and getting a 2 point penalty.",
         getValue: () => gameState.tournamentMaxKicks,

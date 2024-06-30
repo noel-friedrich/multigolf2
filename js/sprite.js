@@ -22,6 +22,10 @@ const Sprite = {
     CustomWall:    "../assets/objects/wall.svg",
 }
 
+const AudioSprite = {
+    Plop: "../assets/audio/plop.mp3",
+}
+
 const AllBallSprites = [
     Sprite.BallBlue,
     Sprite.BallRed,

@@ -5,7 +5,7 @@ class Ball {
         this.vel = vel ?? new Vector2d(0, 0)
 
         this.inHole = inHole ?? false
-            
+
         this.radius = radius ?? 18
         this.spriteUrl = spriteUrl ?? Sprite.BallWhite
         
@@ -228,6 +228,10 @@ class Ball {
                 // reset immobileTickCount for both
                 ball.immobileTickCount = 0
                 this.immobileTickCount = 0
+
+                if (window.AudioPlayer) {
+                    window.AudioPlayer.plop()
+                }
             }
         }
     }
@@ -313,6 +317,8 @@ class Ball {
     }
 
     physicsStep(board) {
+        let madeWallCollision = false
+
         this.pos.iadd(this.vel)
         if (this.vel.length < 0.1) {
             this.vel.iscale(0)
@@ -337,6 +343,8 @@ class Ball {
             this.pos.isub(this.vel)
             this.vel.iadd(cornerDir.scale(collisionStrength))
             this.pos.iadd(this.vel.scale(0.95))
+
+            madeWallCollision = true
         }
         
         const collidingWalls = this._getCollidingWalls(board)
@@ -344,6 +352,8 @@ class Ball {
             this.pos.isub(this.vel)
             this.vel = this._reflectAtWall(p1, p2, this.vel)
             this.pos.iadd(this.vel.scale(0.95))
+
+            madeWallCollision = true
         }
 
         if (board.ballCollisionEnabled) {
@@ -366,6 +376,10 @@ class Ball {
             this.vel.iscale(0.8)
         } else {
             this.rotationAngle += this.vel.length / 40
+        }
+
+        if (madeWallCollision && window.AudioPlayer) {
+            window.AudioPlayer.plop()
         }
     }
 

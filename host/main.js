@@ -9,6 +9,9 @@ document.addEventListener("click", function enableNoSleep() {
 
 async function main() {
     await BoardRenderer.load()
+    window.AudioPlayer = AudioPlayer
+    window.AudioPlayer.load()
+    
     document.querySelector("#loading-indicator").style.display = "none"
 }
 

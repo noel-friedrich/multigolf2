@@ -24,6 +24,7 @@ const PRECACHE_URLS = [
     'js/boardgenerator.js',
     'js/board.js',
     'js/banner.js',
+    'js/audioplayer.js',
     'join/index.html',
     'index.html',
     'impressum/index.html',
@@ -113,6 +114,7 @@ const PRECACHE_URLS = [
     'assets/background.svg',
     'assets/background-test.svg',
     'assets/background-pixelated.png',
+    'assets/audio/plop.mp3',
     'about/index.html',
 // UNTIL HERE
 ]
