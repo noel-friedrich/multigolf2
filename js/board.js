@@ -64,6 +64,10 @@ class Ball {
         this.kicks++
         this.immobileTickCount = 0
         this.lastImmobilePos = this.pos.copy()
+
+        if (window.AudioPlayer) {
+            window.AudioPlayer.play(AudioSprite.Shot)
+        }
     }
 
     isMoving() {
@@ -230,7 +234,7 @@ class Ball {
                 this.immobileTickCount = 0
 
                 if (window.AudioPlayer) {
-                    window.AudioPlayer.plop()
+                    window.AudioPlayer.play(AudioSprite.Bonk)
                 }
             }
         }
@@ -328,6 +332,10 @@ class Ball {
             .some(o => o.intersects(this.pos))
 
         if (inLava && !this.inHole) {
+            if (window.AudioPlayer) {
+                window.AudioPlayer.play(AudioSprite.Lava)
+            }
+
             this.pos = board.startPos.copy()
             this.vel.iscale(0)
             return
@@ -366,6 +374,10 @@ class Ball {
             // you may ask why 1.35 and 40? But please don't
             if (distance <= this.radius * 1.35 && this.vel.length < 40) {
                 this.inHole = true
+
+                if (window.AudioPlayer) {
+                    window.AudioPlayer.play(AudioSprite.WinSound)
+                }
             }
         }
 
@@ -379,7 +391,9 @@ class Ball {
         }
 
         if (madeWallCollision && window.AudioPlayer) {
-            window.AudioPlayer.randomNote()
+            window.AudioPlayer.randomNote({
+                volume: Math.min(this.vel.length / 10 * 0.9 + 0.1, 1.)
+            })
         }
     }
 

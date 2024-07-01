@@ -35,7 +35,7 @@ class AudioPlayer {
         this.hasLoaded = true
     }
 
-    static play(sprite) {
+    static play(sprite, {volume=1.}={}) {
         if (!this.soundsEnabled) {
             return
         }
@@ -44,13 +44,15 @@ class AudioPlayer {
             this.load()
             const audios = this.spriteAudioMap[sprite]
             const index = (this.spriteIndexMap[sprite]++) % audios.length
-            return audios[index].play()
+            const audio = audios[index]
+            audio.volume = volume
+            return audio.play()
         }
     }
 
-    static randomNote() {
+    static randomNote({volume=1.}={}) {
         const index = Math.floor(Math.random() * allNoteSprites.length)
-        return this.play(allNoteSprites[index])
+        return this.play(allNoteSprites[index], {volume: volume})
     }
 
     static plop() {

@@ -299,6 +299,10 @@ class GameState {
     }
 
     advanceTournamentBall(forceSpeak=false) {
+        if (this.tournamentBall === undefined) {
+            return false 
+        }
+
         let prevPlayerName = this.tournamentActivePlayer.name
         let inHoleCount = 0
         while ((this.tournamentBall.inHole && this.tournamentBall.radius == 0)
@@ -316,7 +320,11 @@ class GameState {
 
         if (prevPlayerName != this.tournamentActivePlayer.name || forceSpeak) {
             if (window.AudioPlayer && gamePhase.isPlaying(this.phase)) {
-                window.AudioPlayer.say(this.tournamentActivePlayer.name)
+                setTimeout(() => {
+                    if (gamePhase.isPlaying(this.phase)) {
+                        window.AudioPlayer.say(this.tournamentActivePlayer.name)
+                    }
+                }, 1000)
             }
         }
 

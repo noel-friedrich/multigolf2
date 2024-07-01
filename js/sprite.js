@@ -24,6 +24,10 @@ const Sprite = {
 
 const AudioSprite = {
     Plop: "../assets/audio/plop.mp3",
+    WinSound: "../assets/audio/win_sound.mp3",
+    Lava: "../assets/audio/lava.mp3",
+    Bonk: "../assets/audio/bonk.mp3",
+    Shot: "../assets/audio/shot.mp3",
     Note1: "../assets/audio/notes/1.mp3",
     Note2: "../assets/audio/notes/2.mp3",
     Note3: "../assets/audio/notes/3.mp3",
