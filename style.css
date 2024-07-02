@@ -148,6 +148,7 @@ header .link-island a {
     padding: .3em;
     padding-left: .6em;
     padding-right: .6em;
+    padding-top: .4em;
     text-decoration: none;
     color: var(--card-text-color);
     font-family: var(--header-font);
