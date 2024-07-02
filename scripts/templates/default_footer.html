@@ -1,0 +1,44 @@
+<footer>
+    <div class="link-grid">
+    
+        <div class="link-group">
+            <div class="group-header">Game</div>
+            <a class="group-item" href="$base-path$host">Start a Game</a>
+            <a class="group-item" href="$base-path$join">Join a Game</a>
+        </div>
+        <div class="link-group">
+            <div class="group-header">Info</div>
+            <a class="group-item" href="$base-path$about">About Multigolf</a>
+            <a class="group-item" href="$base-path$faq">FAQ</a>
+            <a class="group-item" href="$base-path$contact">Contact Me</a>
+        </div>
+        <div class="link-group">
+            <div class="group-header">Legal</div>
+            <a class="group-item" href="$base-path$impressum">Impressum</a>
+            <a class="group-item" href="$base-path$data-privacy">Data Privacy</a>
+        </div>
+        <div class="link-group">
+            <div class="group-header">Socials</div>
+            <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
+            <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
+            <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
+        </div>
+    </div>
+    <hr>
+    <div class="footer-text">
+        <span class="text">Made by Noel Friedrich</span>
+        <button class="theme-changer" id="change-style-a">Change Theme</button>
+    </div>
+</footer>
+
+<script>
+    document.getElementById("change-style-a").onclick = event => {
+        const styles = ["light", "dark"]
+        const currStyle = localStorage.getItem("style") || "light"
+        const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
+        localStorage.setItem("style", styles[nextIndex])
+        document.body.dataset.style = localStorage.getItem("style") || "light"
+
+        event.preventDefault()
+    }
+</script>

@@ -1,0 +1,28 @@
+<script>
+    {
+        // update theme
+        if (localStorage.getItem("style") == null) {
+            const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+            if (prefersDarkMode) {
+                localStorage.setItem("style", "dark")
+            } else {
+                localStorage.setItem("style", "light")
+            }
+        }
+
+        document.body.dataset.style = localStorage.getItem("style") || "light"
+
+        // replace CSS "100vh" with actual inner height in px
+        // (-1 to prevent inaccuracies in some browsers)
+        const updateInnerHeight = () => {
+            document.body.style.setProperty("--full-height", `${window.innerHeight - 1}px`)
+        }
+        updateInnerHeight()
+        addEventListener("resize", updateInnerHeight)
+
+        // register service worker for PWA functionality
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("$base-path$service_worker.js")
+        }
+    }
+</script>

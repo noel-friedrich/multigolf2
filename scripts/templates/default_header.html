@@ -1,0 +1,48 @@
+<header>
+    <a href="$base-path$" class="logo-container">
+        <img src="$base-path$assets/logo/pride_logo.svg" class="logo" alt="Multigolf Logo" />
+        <div class="logo-text" href="$base-path$">Multigolf</div>
+    </a>
+
+    <div class="link-island">
+        <a href="$base-path$host/">Start Game</a>
+        <a href="$base-path$join/">Join Game</a>
+        <a href="$base-path$about/">About</a>
+        <a href="$base-path$faq/">FAQ</a>
+        <a href="$base-path$contact/">Contact</a>
+    </div>
+    <div class="hamburger-icon" tabindex="0">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+</header>
+
+<div class="header-drop-menu">
+    <a href="$base-path$host/">Start a Game</a>
+    <a href="$base-path$join/">Join a Game</a>
+    <a href="$base-path$about/">What is Multigolf?</a>
+    <a href="$base-path$faq/">FAQ & Help</a>
+    <a href="$base-path$contact/">Contact</a>
+</div>
+
+<script>
+    {
+        const header = document.querySelector("header")
+        const hamburger = document.querySelector(".hamburger-icon")
+        const headerDropMenu = document.querySelector(".header-drop-menu")
+
+        hamburger.onclick = () => {
+            header.classList.toggle("expanded")
+            hamburger.classList.toggle("x")
+            headerDropMenu.classList.toggle("visible")
+        }
+
+        const getLastUrlBit = href => href.split("/").filter(s => s).slice(-1)[0]
+        for (const a of document.querySelectorAll("header .link-island a")) {
+            if (getLastUrlBit(a.href) == getLastUrlBit(location.href)) {
+                a.classList.add("current")
+            }
+        }
+    }
+</script>

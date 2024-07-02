@@ -114,18 +114,22 @@ body.sticky-header header {
     width: min(800px, 100%);
 }
 
-header > .logo {
+header > .logo-container .logo {
     width: 2.5rem;
     height: 2.5rem;
-    margin-right: .7em;
+    margin-right: .4em;
 }
 
-header > a {
+header > .logo-container {
     margin: 0;
     font-size: 1.8em;
     text-decoration: none;
     color: var(--card-text-color);
     font-weight: normal;
+    display: flex;
+}
+
+header > .logo-container .logo-text {
     display: block;
     text-align: center;
     font-family: var(--header-font);

@@ -1,136 +1,17 @@
-import re
+import re, os
 
-templates = {
-"default_head": """<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="$description$">
-    <meta charset="UTF-8">
-    <title>$title$</title>
-    <link rel="manifest" href="$base-path$manifest.json">
-    <link rel="icon" type="image/svg" href="$base-path$assets/logo/favicon.ico">
-    <link rel="stylesheet" href="$base-path$style.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
-</head>""",
-"default_header": """<header> 
-    <img src="$base-path$assets/logo/pride_logo.svg" class="logo" alt="Multigolf Logo">
-    <a href="$base-path$">Multigolf</a>
-    <div class="link-island">
-        <a href="$base-path$host/">Start Game</a>
-        <a href="$base-path$join/">Join Game</a>
-        <a href="$base-path$about/">About</a>
-        <a href="$base-path$faq/">FAQ</a>
-        <a href="$base-path$contact/">Contact</a>
-    </div>
-    <div class="hamburger-icon" tabindex="0">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-    </div>
-</header>
-
-<div class="header-drop-menu">
-    <a href="$base-path$host/">Start a Game</a>
-    <a href="$base-path$join/">Join a Game</a>
-    <a href="$base-path$about/">What is Multigolf?</a>
-    <a href="$base-path$faq/">FAQ & Help</a>
-    <a href="$base-path$contact/">Contact</a>
-</div>
-
-<script>
-    {
-        const header = document.querySelector("header")
-        const hamburger = document.querySelector(".hamburger-icon")
-        const headerDropMenu = document.querySelector(".header-drop-menu")
-
-        hamburger.onclick = () => {
-            header.classList.toggle("expanded")
-            hamburger.classList.toggle("x")
-            headerDropMenu.classList.toggle("visible")
-        }
-
-        const getLastUrlBit = href => href.split("/").filter(s => s).slice(-1)[0]
-        for (const a of document.querySelectorAll("header .link-island a")) {
-            if (getLastUrlBit(a.href) == getLastUrlBit(location.href)) {
-                a.classList.add("current")
-            }
-        }
-    }
-</script>""",
-
-"default_footer": """<footer>
-<div class="link-grid">
-
-    <div class="link-group">
-        <div class="group-header">Game</div>
-        <a class="group-item" href="$base-path$host">Start a Game</a>
-        <a class="group-item" href="$base-path$join">Join a Game</a>
-    </div>
-    <div class="link-group">
-        <div class="group-header">Info</div>
-        <a class="group-item" href="$base-path$about">About Multigolf</a>
-        <a class="group-item" href="$base-path$faq">FAQ</a>
-        <a class="group-item" href="$base-path$contact">Contact Me</a>
-    </div>
-    <div class="link-group">
-        <div class="group-header">Legal</div>
-        <a class="group-item" href="$base-path$impressum">Impressum</a>
-        <a class="group-item" href="$base-path$data-privacy">Data Privacy</a>
-    </div>
-    <div class="link-group">
-        <div class="group-header">Socials</div>
-        <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
-        <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
-        <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
-    </div>
-</div>
-<hr>
-<div class="footer-text">
-    <span class="text">Made by Noel Friedrich</span>
-    <button class="theme-changer" id="change-style-a">Change Theme</button>
-</div>
-</footer>
-
-<script>
-document.getElementById("change-style-a").onclick = event => {
-    const styles = ["light", "dark"]
-    const currStyle = localStorage.getItem("style") || "light"
-    const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
-    localStorage.setItem("style", styles[nextIndex])
-    document.body.dataset.style = localStorage.getItem("style") || "light"
-
-    event.preventDefault()
-}
-</script>""",
-
-"default_js": """<script>
-    {
-        // update theme
-        if (localStorage.getItem("style") == null) {
-            const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-            if (prefersDarkMode) {
-                localStorage.setItem("style", "dark")
-            } else {
-                localStorage.setItem("style", "light")
-            }
-        }
-
-        document.body.dataset.style = localStorage.getItem("style") || "light"
-
-        // replace CSS "100vh" with actual inner height in px
-        // (-1 to prevent inaccuracies in some browsers)
-        const updateInnerHeight = () => {
-            document.body.style.setProperty("--full-height", `${window.innerHeight - 1}px`)
-        }
-        updateInnerHeight()
-        addEventListener("resize", updateInnerHeight)
-
-        // register service worker for PWA functionality
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("$base-path$service_worker.js")
-        }
-    }
-</script>"""
-}
+def get_templates(dir):
+    files = os.listdir(dir)
+    templates = {}
+    for file_name in files:
+        path = f"{dir}/{file_name}"
+        if "." in file_name:
+            name = file_name[::-1].split(".", 1)[1][::-1]
+        else:
+            name = file_name
+        with open(path, "r", encoding="utf-8") as file:
+            templates[name] = file.read()
+    return templates
 
 def make_js_imports(js_imports, file_dict):
     out = ""
@@ -181,6 +62,8 @@ def handle_file(file_path: str):
                 elif name == "js_imports":
                     template_lines = make_js_imports(js_imports, file_dict).split("\n")
                     new_lines.extend([indent + l for l in template_lines])
+                else:
+                    print(f"[{file_path}] unknown template: \"{name}\"")
                 insert_info["found"] = False
             elif (JS_IMPORT_search):
                 js_imports.append(JS_IMPORT_search.group(1))
@@ -202,6 +85,12 @@ def handle_file(file_path: str):
             file.write("\n".join(new_lines))
 
 import glob
+
+template_dir = "scripts/templates"
+templates = get_templates(template_dir)
+
+for file in os.listdir(template_dir):
+    handle_file(f"{template_dir}/{file}")
 
 index_files = glob.glob("./**/index.html", recursive=True)
 for file_path in index_files:

@@ -19,9 +19,12 @@
     <body class="sticky-header">
 
         <!-- BEGIN default_header -->
-        <header> 
-            <img src="../assets/logo/pride_logo.svg" class="logo" alt="Multigolf Logo">
-            <a href="../">Multigolf</a>
+        <header>
+            <a href="../" class="logo-container">
+                <img src="../assets/logo/pride_logo.svg" class="logo" alt="Multigolf Logo" />
+                <div class="logo-text" href="../">Multigolf</div>
+            </a>
+        
             <div class="link-island">
                 <a href="../host/">Start Game</a>
                 <a href="../join/">Join Game</a>
@@ -233,48 +236,48 @@
 
         <!-- BEGIN default_footer -->
         <footer>
-        <div class="link-grid">
-        
-            <div class="link-group">
-                <div class="group-header">Game</div>
-                <a class="group-item" href="../host">Start a Game</a>
-                <a class="group-item" href="../join">Join a Game</a>
+            <div class="link-grid">
+            
+                <div class="link-group">
+                    <div class="group-header">Game</div>
+                    <a class="group-item" href="../host">Start a Game</a>
+                    <a class="group-item" href="../join">Join a Game</a>
+                </div>
+                <div class="link-group">
+                    <div class="group-header">Info</div>
+                    <a class="group-item" href="../about">About Multigolf</a>
+                    <a class="group-item" href="../faq">FAQ</a>
+                    <a class="group-item" href="../contact">Contact Me</a>
+                </div>
+                <div class="link-group">
+                    <div class="group-header">Legal</div>
+                    <a class="group-item" href="../impressum">Impressum</a>
+                    <a class="group-item" href="../data-privacy">Data Privacy</a>
+                </div>
+                <div class="link-group">
+                    <div class="group-header">Socials</div>
+                    <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
+                    <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
+                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
+                </div>
             </div>
-            <div class="link-group">
-                <div class="group-header">Info</div>
-                <a class="group-item" href="../about">About Multigolf</a>
-                <a class="group-item" href="../faq">FAQ</a>
-                <a class="group-item" href="../contact">Contact Me</a>
+            <hr>
+            <div class="footer-text">
+                <span class="text">Made by Noel Friedrich</span>
+                <button class="theme-changer" id="change-style-a">Change Theme</button>
             </div>
-            <div class="link-group">
-                <div class="group-header">Legal</div>
-                <a class="group-item" href="../impressum">Impressum</a>
-                <a class="group-item" href="../data-privacy">Data Privacy</a>
-            </div>
-            <div class="link-group">
-                <div class="group-header">Socials</div>
-                <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
-                <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
-                <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
-            </div>
-        </div>
-        <hr>
-        <div class="footer-text">
-            <span class="text">Made by Noel Friedrich</span>
-            <button class="theme-changer" id="change-style-a">Change Theme</button>
-        </div>
         </footer>
         
         <script>
-        document.getElementById("change-style-a").onclick = event => {
-            const styles = ["light", "dark"]
-            const currStyle = localStorage.getItem("style") || "light"
-            const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
-            localStorage.setItem("style", styles[nextIndex])
-            document.body.dataset.style = localStorage.getItem("style") || "light"
+            document.getElementById("change-style-a").onclick = event => {
+                const styles = ["light", "dark"]
+                const currStyle = localStorage.getItem("style") || "light"
+                const nextIndex = (styles.indexOf(currStyle) + 1) % styles.length
+                localStorage.setItem("style", styles[nextIndex])
+                document.body.dataset.style = localStorage.getItem("style") || "light"
         
-            event.preventDefault()
-        }
+                event.preventDefault()
+            }
         </script>
         <!-- END -->
         

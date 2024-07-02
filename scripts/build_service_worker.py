@@ -1,7 +1,7 @@
 import glob, os
 from pathlib import Path
 
-ignore_folders = {"api", "tiktoks", "CNAME", "manifest.json", "README.md"}
+ignore_folders = {"api", "tiktoks", "CNAME", "manifest.json", "README.md", "scripts"}
 
 service_worker_path = "service_worker.js"
 
@@ -43,7 +43,7 @@ def build_service_worker():
         if before_file_content != after_file_content:
             with open(service_worker_path, "w", encoding="utf-8") as writefile:
                 writefile.write(after_file_content)
-            print(f"Made changes to {service_worker_path}")
+            print(f"made changes to {service_worker_path}")
 
 if __name__ == "__main__":
     build_service_worker()
