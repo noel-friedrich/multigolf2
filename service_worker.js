@@ -1,5 +1,5 @@
-const PRECACHE = "precache-v1"
-const RUNTIME = "runtime"
+const PRECACHE = "precache-v2"
+const RUNTIME = "runtime-v2"
 
 const PRECACHE_URLS = [
 // INSERT CACHE URLS HERE

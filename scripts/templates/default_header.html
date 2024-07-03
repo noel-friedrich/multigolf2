@@ -1,4 +1,4 @@
-<header>
+<header class="at-top">
     <a href="$base-path$" class="logo-container">
         <img src="$base-path$assets/logo/pride_logo.svg" class="logo" alt="Multigolf Logo" />
         <div class="logo-text" href="$base-path$">Multigolf</div>
@@ -44,5 +44,13 @@
                 a.classList.add("current")
             }
         }
+
+        addEventListener("scroll", () => {
+            if (window.scrollY == 0) {
+                header.classList.add("at-top")
+            } else {
+                header.classList.remove("at-top")
+            }
+        })
     }
 </script>

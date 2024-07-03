@@ -20,7 +20,7 @@ body {
 
     --header-background: rgba(243, 249, 243, .6);
     --header-border: none;
-    --header-shadow: none;
+    --header-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     --header-button-background: white;
     
     --footer-background: transparent;
@@ -98,12 +98,24 @@ header {
     border-bottom: var(--header-border);
     background: var(--header-background);
     box-shadow: var(--header-shadow);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
     
     width: min(var(--header-max-width), 100%);
     margin: 0 auto;
 
     backdrop-filter: var(--glassy-blur);
     -webkit-backdrop-filter: var(--glassy-blur);
+
+    transition: box-shadow 300ms;
+}
+
+body:not(.sticky-header) header {
+    box-shadow: none;
+}
+
+body.sticky-header header.at-top {
+    box-shadow: none;
 }
 
 body.sticky-header header {
@@ -301,7 +313,7 @@ main {
     margin: 0 auto;
     display: grid;
     gap: 1em;
-    border-radius: 1em;
+    border-radius: 1rem;
     margin-top: .1rem;
     margin-bottom: 3rem;
     box-shadow: var(--card-shadow);
