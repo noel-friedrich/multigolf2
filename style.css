@@ -107,7 +107,7 @@ header {
     backdrop-filter: var(--glassy-blur);
     -webkit-backdrop-filter: var(--glassy-blur);
 
-    transition: box-shadow 300ms;
+    transition: 300ms;
 }
 
 body:not(.sticky-header) header {
@@ -195,6 +195,9 @@ header .link-island a.current {
     transform: translateY(-100%) scaleY(0);
     padding: 0;
     border-bottom: var(--header-border);
+
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 
     backdrop-filter: var(--glassy-blur);
     -webkit-backdrop-filter: var(--glassy-blur);
@@ -292,6 +295,7 @@ header .hamburger-icon.x .bar:nth-child(3) {
     header.expanded {
         box-shadow: none;
         border-bottom: none;
+        border-radius: 0;
     }
     
 }
