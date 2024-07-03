@@ -203,6 +203,10 @@ header .link-island a.current {
     -webkit-backdrop-filter: var(--glassy-blur);
 }
 
+body:not(.sticky-header) .header-drop-menu {
+    box-shadow: none;
+}
+
 body.sticky-header .header-drop-menu {
     position: fixed;
     top: 4.5rem;

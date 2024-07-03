@@ -46,7 +46,10 @@
         }
 
         addEventListener("scroll", () => {
-            if (window.scrollY == 0) {
+            // on bouncy browser views (e.g. latest safari),
+            // window.scrollY can be negative during the bouncing animation!
+
+            if (window.scrollY <= 0) {
                 header.classList.add("at-top")
             } else {
                 header.classList.remove("at-top")
