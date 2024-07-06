@@ -2,6 +2,7 @@ import glob, os
 from pathlib import Path
 
 ignore_folders = {"api", "tiktoks", "CNAME", "manifest.json", "README.md", "scripts", "assets"}
+ignore_all = True
 
 service_worker_path = "service_worker.js"
 
@@ -34,9 +35,10 @@ def build_service_worker():
             del lines[start_index + 1]
 
         for file_path in files_to_cache:
-            clean_path = str(file_path).replace("\\", "/")[2:]
-            code_line = f"    {clean_path!r},"
-            lines.insert(start_index + 1, code_line)
+            if not ignore_all:
+                clean_path = str(file_path).replace("\\", "/")[2:]
+                code_line = f"    {clean_path!r},"
+                lines.insert(start_index + 1, code_line)
         
         after_file_content = "\n".join(lines)
 
