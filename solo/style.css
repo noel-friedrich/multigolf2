@@ -1,0 +1,43 @@
+.levels-container {
+    --level-size: 4rem;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--level-size), 1fr));
+    gap: .5rem;
+}
+
+.levels-container .level {
+    aspect-ratio: 1 / 1;
+    background-color: aliceblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    color: rgb(83, 83, 83);
+    font-family: var(--header-font);
+    font-weight: bold;
+    transition: 100ms;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+.levels-container .level.completed:hover {
+    transform: scale(1.1);
+}
+
+.levels-container .level:not(.completed) {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.levels-container .level[data-difficulty="easy"] {
+    background-color: rgb(193, 255, 203);
+}
+
+.levels-container .level[data-difficulty="normal"] {
+    background-color: rgb(242, 255, 193);
+}
+
+.levels-container .level[data-difficulty="hard"] {
+    background-color: rgb(255, 193, 193);
+}

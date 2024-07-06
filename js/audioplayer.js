@@ -6,13 +6,18 @@ class AudioPlayer {
     static soundsEnabled = true
     static speechEnabled = true
 
-    static makeAudio(src) {
-        const element = document.createElement("audio")
-        element.style.display = "none"
-        element.preload = "true"
-        element.src = src
-        document.body.appendChild(element)
-        return element
+    static loadAudio(src) {
+        return new Promise(resolve => {
+            const element = document.createElement("audio")
+            element.addEventListener("canplaythrough", resolve)
+    
+            element.style.display = "none"
+            element.preload = "true"
+            element.src = src
+            document.body.appendChild(element)
+
+            this.spriteAudioMap[src].push(element)
+        })
     }    
     
     static hasLoaded = false
@@ -24,30 +29,40 @@ class AudioPlayer {
         for (const src of Object.values(AudioSprite)) {
             this.spriteAudioMap[src] = []
             this.spriteIndexMap[src] = 0
-
-            // make 5 audios per source to allow playing
-            // in quick repetition (and simultaneously)
-            for (let i = 0; i < 5; i++) {
-                this.spriteAudioMap[src].push(this.makeAudio(src))
-            }
         }
+
+        // make 5 audios per source to allow playing
+        // in quick repetition (and simultaneously)
+        const promises = []
+        for (let i = 0; i < 5; i++) {
+            promises.push(...Object.values(AudioSprite).map(s => this.loadAudio(s)))
+        }
+
+        await Promise.all(promises)
 
         this.hasLoaded = true
     }
 
     static play(sprite, {volume=1.}={}) {
-        if (!this.soundsEnabled) {
+        if (!this.soundsEnabled || !this.hasLoaded) {
             return
         }
 
-        if (this.spriteAudioMap[sprite]) {
-            this.load()
-            const audios = this.spriteAudioMap[sprite]
-            const index = (this.spriteIndexMap[sprite]++) % audios.length
-            const audio = audios[index]
-            audio.volume = volume
-            return audio.play()
+        if (!this.spriteAudioMap[sprite]) {
+            return
         }
+
+        this.load()
+        const audios = this.spriteAudioMap[sprite]
+        const index = (this.spriteIndexMap[sprite]++) % audios.length
+        const audio = audios[index]
+
+        if (!audio) {
+            return
+        }
+        
+        audio.volume = volume
+        return audio.play()
     }
 
     static randomNote({volume=1.}={}) {

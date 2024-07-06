@@ -253,12 +253,6 @@ header .hamburger-icon .bar {
     transition: 300ms;
 }
 
-header .hamburger-icon .bar:nth-child(1) { background-color: #f04452 !important; }
-header .hamburger-icon .bar:nth-child(2) { background-color: #eeb506 !important; }
-header .hamburger-icon .bar:nth-child(2) { background-color: #0bbd33 !important; }
-header .hamburger-icon .bar:nth-child(3) { background-color: #246ad5 !important; }
-header .hamburger-icon .bar:nth-child(5) { background-color: #a330d6 !important; }
-
 header .hamburger-icon:not(.x) .bar:nth-child(2) {
     width: 75%;
     margin-left: 25%;
@@ -535,6 +529,12 @@ main .custom-form *:not(:last-child) {
 main img {
     width: 100%;
     object-fit: cover;
+}
+
+main .smooth-jump {
+    display: inline;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 main .middle-container {

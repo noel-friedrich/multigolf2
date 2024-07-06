@@ -1,0 +1,227 @@
+[
+    {
+        "id": 1,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 2,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 3,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 4,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 5,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 6,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 7,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 8,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 9,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 10,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 11,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 12,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 13,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 14,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 15,
+        "difficulty": "easy",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 16,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 17,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 18,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 19,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 20,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 21,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 22,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 23,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 24,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 25,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 26,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 27,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 28,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 29,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 30,
+        "difficulty": "normal",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 31,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 32,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 33,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 34,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 35,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 36,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 37,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 38,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 39,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 40,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 41,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 42,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 43,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 44,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    },
+    {
+        "id": 45,
+        "difficulty": "hard",
+        "gameState": {"phase":12,"mode":"sandbox","board":{"course":{"phones":[{"coords":[{"x":0,"y":0},{"x":360,"y":0},{"x":0,"y":640},{"x":360,"y":640}],"angle":0,"scalar":1,"gravity":{"x":0,"y":0}}]},"objects":[{"type":"Hole","pos":{"x":180,"y":130},"size":{"x":40,"y":40},"angle":0,"uid":"16776223004152624","resizable":false},{"type":"Start","pos":{"x":180,"y":510},"size":{"x":40,"y":40},"angle":0,"uid":"45228438954805084","resizable":false}],"balls":[],"physicsTime":null,"ballCollisionEnabled":true,"deviceGravityEnabled":true},"players":[],"index":1,"placingObjectType":"Start","tournamentBuilderIndex":0,"tournamentBallIndex":0,"duellActivePlayerIndex":0,"duellWinnerIndex":null,"tournamentMaxKicks":10}
+    }
+]

@@ -4,8 +4,15 @@ const RUNTIME = "runtime-v2"
 const PRECACHE_URLS = [
 // INSERT CACHE URLS HERE
     'style.css',
+    'solo/style.css',
+    'solo/load_levels.js',
+    'solo/index.html',
+    'solo/default_levels.json',
     'service_worker.js',
     'robots.txt',
+    'level/style.css',
+    'level/main.js',
+    'level/index.html',
     'js/sprite.js',
     'js/scoreboardmaker.js',
     'js/rtc.js',

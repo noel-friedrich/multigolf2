@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" style="overscroll-behavior: contain;">
 
-    <!-- SET title=Contact | Multigolf -->
-    <!-- SET description=Contact page of multi.golf that contains a contact form to answer questions -->
+    <!-- SET title=Sologolf Home -->
+    <!-- SET description=Sologolf is the Single-Player version of multi.golf. Play levels and unlock new items! -->
+    <!-- SET extra_css=solo/style.css -->
+
     <!-- BEGIN default_head -->
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Contact page of multi.golf that contains a contact form to answer questions">
+        <meta name="description" content="$description$">
         <meta charset="UTF-8">
-        <title>Contact | Multigolf</title>
+        <title>Sologolf Home</title>
         <link rel="manifest" href="../manifest.json">
         <link rel="icon" type="image/svg" href="../assets/logo/favicon.ico">
         <link rel="stylesheet" href="../style.css">
-        <link rel="stylesheet" href="../$extra_css$">
+        <link rel="stylesheet" href="../solo/style.css">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
     </head>
     <!-- END -->
@@ -81,169 +83,27 @@
         <!-- END -->
         
         <main>
-            <h1>Contact Form</h1>
+            <h1>Sologolf Home</h1>
             <p>
-                Before asking a question below, make sure to take a peek
-                at the <a href="../faq/">Frequently asked Questions</a>.
+                Friends make Multigolf great. But sometimes, friends just
+                aren't there for you. But Sologolf is! Play the Sologolf
+                levels below and unlock new items to place in your
+                Multigolf game! <span class="smooth-jump" data-jump-to="#user-created-levels">Click here</span>
+                to jump to user-created levels.
             </p>
-            
+            <div id="levels-container" class="levels-container"></div>
+            <hr>
+            <h2 id="user-created-levels">User-Created Levels</h2>
+            <p>
+                In the future, you will be able to build your own levels and upload them
+                to a level store. You will also be able to browse levels that were
+                created by anyone! This feature is currently in development and will be coming soon.
+            </p>
+            <p>
+                If you have any suggestions or ideas regarding User-Created-Levels,
+                feel free to <a href="../contact/">drop me a message</a>.
+            </p>
         </main>
-
-        <script>
-            const formContainer = document.createElement("div")
-            formContainer.classList.add("custom-form")
-
-            const formWidth = "min(25em, 50vw)"
-
-            let formInfo = {}
-
-            function addInput({
-                type="text",
-                name=null,
-                errorFunc=null,
-                placeholder=null,
-            }={}) {
-                const input = document.createElement("input")
-                input.setAttribute("type", type)
-                if (placeholder) input.setAttribute("placeholder", placeholder)
-
-                if (name) {
-                    input.setAttribute("name", name)
-                    formInfo[name] = {
-                        errorFunc,
-                        input,
-                    }
-                    input.addEventListener("input", validateForm)
-                }
-
-                formContainer.appendChild(input)
-
-                return input
-            }
-
-            const nameInput = addInput({
-                name: "name",
-                placeholder: "Name *",
-                errorFunc: (value) => {
-                    if (!value) return "Please enter a name"
-                    if (value.length > 100) return "Name is too long"
-                    return ""
-                }
-            })
-
-            const emailInput = addInput({
-                type: "email",
-                name: "email",
-                placeholder: "Email *",
-                errorFunc: (value) => {
-                    if (!value) return "Please enter an email"
-                    if (value.length > 100) return "Email is too long"
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                    if (!emailRegex.test(value)) return "Invalid email format"
-                    return ""
-                }
-            })
-
-            const phoneInput = addInput({
-                type: "tel",
-                name: "phone",
-                placeholder: "Phone",
-                errorFunc: (value) => {
-                    if (!value) return ""
-                    if (value.length > 100) return "Phone is too long"
-                    const phoneRegex = /^\+?[0-9\s]+$/
-                    if (!phoneRegex.test(value)) return "Invalid phone format"
-                    return ""
-                }
-            })
-
-            const messageTextarea = document.createElement("textarea")
-            messageTextarea.setAttribute("name", "message")
-            messageTextarea.setAttribute("placeholder", "Message *")
-            formContainer.appendChild(messageTextarea)
-
-            formInfo["message"] = {
-                errorFunc: (value) => {
-                    if (!value) return "Please enter a message"
-                    if (value.length > 1000) return "Message max length is 1000 characters"
-                    return ""
-                },
-                input: messageTextarea
-            }
-
-            messageTextarea.addEventListener("input", validateForm)
-            messageTextarea.rows = 10
-
-            const submitButton = document.createElement("button")
-            submitButton.textContent = "Send Message"
-            formContainer.appendChild(submitButton)
-
-            const errorOutput = document.createElement("div")
-            errorOutput.style.color = "#ff5555"
-            errorOutput.style.textAlign = "center"
-            errorOutput.style.margin = "10px"
-
-            function validateForm() {
-                errorOutput.style.color = "red"
-                for (let [name, info] of Object.entries(formInfo)) {
-                    const { errorFunc, input } = info
-                    if (errorFunc) {
-                        const error = errorFunc(input.value)
-                        errorOutput.textContent = error
-                        if (error) {
-                            return false
-                        }
-                    }
-                }
-                errorOutput.style.color = "green"
-                errorOutput.textContent = "✅ Ready to send"
-                return true
-            }
-
-            validateForm()
-
-            submitButton.addEventListener("click", async () => {
-                if (!validateForm()) {
-                    errorOutput.animate([
-                        { transform: "translateX(-10px)" },
-                        { transform: "translateX(10px)" },
-                        { transform: "translateX(-10px)" },
-                        { transform: "translateX(10px)" },
-                        { transform: "translateX(-10px)" },
-                        { transform: "translateX(10px)" },
-                        { transform: "translateX(-10px)" },
-                        { transform: "translateX(10px)" },
-                        { transform: "translateX(-10px)" },
-                        { transform: "translateX(0px)" },
-                    ], {
-                        duration: 500,
-                        iterations: 1,
-                    })
-                    return
-                }
-
-                let submitUrl = "https://www.noel-friedrich.de/multigolf2/api/contact.php"
-                let formData = new FormData()
-                for (let [name, info] of Object.entries(formInfo)) {
-                    formData.append(name, info.input.value)
-                }
-                const response = await fetch(submitUrl, {
-                    method: "POST",
-                    body: formData,
-                })
-                const data = await response.json()
-                if (data.ok) {
-                    errorOutput.textContent = "Message sent - I'll get back to you as soon as possible!"
-                    errorOutput.style.color = "green"
-                    formContainer.remove()
-                } else {
-                    errorOutput.textContent = data.error
-                }
-            })
-
-            document.querySelector("main").appendChild(formContainer)
-            document.querySelector("main").appendChild(errorOutput)
-        </script>
 
         <!-- BEGIN default_footer -->
         <footer>
@@ -335,6 +195,23 @@
             }
         </script>
         <!-- END -->
+
+        
+        <!-- SET js_version=30 -->
+        <!-- JS_IMPORT solo/load_levels.js -->
+
+        <!-- BEGIN js_imports -->
+        <script src="../solo/load_levels.js?v30"></script>
+        <!-- END -->
+
+        <script>
+            async function main() {
+                await loadLevels("default_levels.json")
+                updateHtmlLevels()
+            }
+
+            main()
+        </script>
     </body>
 
 </html>

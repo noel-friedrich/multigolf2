@@ -21,7 +21,7 @@ def make_js_imports(js_imports, file_dict):
         out += f"<script src=\"{base}{js_import}?v{version}\"></script>\n"
     return out[:-1]
 
-SET_regex = r"^[\s\t]*<!--\s*SET\s+([a-zA-Z0-9_\.]+)\s*=\s*([a-zA-Z0-9_\s\|\.\:\;]+?)\s*-->[\s\t]*$"
+SET_regex = r"^[\s\t]*<!--\s*SET\s+([a-zA-Z0-9_\.]+)\s*=\s*([a-zA-Z0-9_\-\s\|\.\:\;\/\\]+?)\s*-->[\s\t]*$"
 BEGIN_regex = r"^[\s\t]*<!--\s*BEGIN\s+([a-zA-Z0-9_\.]+)\s*-->[\s\t]*$"
 END_regex = r"^([\s\t]*)<!--\s*END\s*-->[\s\t]*$"
 JS_IMPORT_regex = r"^[\s\t]*<!--\s*JS_IMPORT\s+([a-zA-Z0-9_\.\/]+)\s*-->[\s\t]*$"

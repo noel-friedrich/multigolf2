@@ -12,6 +12,7 @@
         <link rel="manifest" href="../manifest.json">
         <link rel="icon" type="image/svg" href="../assets/logo/favicon.ico">
         <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="../$extra_css$">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
     </head>
     <!-- END -->
@@ -99,6 +100,19 @@
                 // register service worker for PWA functionality
                 if ("serviceWorker" in navigator) {
                     navigator.serviceWorker.register("../service_worker.js")
+                }
+        
+                // make smooth jump links work
+                for (const element of document.querySelectorAll(".smooth-jump")) {
+                    console.log(element)
+                    if (!element.dataset.jumpTo) continue
+                    const target = document.querySelector(element.dataset.jumpTo)
+                    if (!target) continue
+                    element.addEventListener("click", () => {
+                        target.scrollIntoView({
+                            behavior: "smooth"
+                        })
+                    })
                 }
             }
         </script>

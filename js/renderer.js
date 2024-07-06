@@ -119,7 +119,7 @@ class Renderer {
 
         context.strokeStyle = "black"
         context.fillStyle = "white"
-        context.lineWidth = 5
+        context.lineWidth = 5 / gameState.combinedScalingFactor
         context.lineCap = "round"
 
         context.fill()
@@ -169,7 +169,7 @@ class Renderer {
         drawGravity = true
     }={}) {
         context.canvas.style.display = "block"
-        const backgroundSizePercent = Math.max(Math.round(51 / gameState.combinedScalingFactor), 1)
+        const backgroundSizePercent = Math.max(Math.round(51 / gameState.scalingFactor), 1)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
 
         if (drawGravity) {

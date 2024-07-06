@@ -382,7 +382,7 @@ class Ball {
         }
 
         if (this.inHole) {
-            this.radius = Math.max(0, this.radius - 0.1)
+            this.radius = Math.max(0, this.radius - 0.13)
             this.pos = this.pos.lerp(endPos, 0.1)
             this.rotationAngle += 0.4
             this.vel.iscale(0.8)

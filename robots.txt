@@ -3,3 +3,4 @@ Disallow: /dev/
 Disallow: /client/
 Disallow: /api/
 Disallow: /scripts/
+Disallow: /solo/level/
