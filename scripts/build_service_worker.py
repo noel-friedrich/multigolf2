@@ -1,7 +1,7 @@
 import glob, os
 from pathlib import Path
 
-ignore_folders = {"api", "tiktoks", "CNAME", "manifest.json", "README.md", "scripts"}
+ignore_folders = {"api", "tiktoks", "CNAME", "manifest.json", "README.md", "scripts", "assets"}
 
 service_worker_path = "service_worker.js"
 
