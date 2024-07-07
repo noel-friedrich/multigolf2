@@ -95,6 +95,7 @@ for file in os.listdir(template_dir):
 index_files = glob.glob("./**/index.html", recursive=True)
 for file_path in index_files:
     handle_file(file_path)
+handle_file("404.html")
 
 from build_service_worker import build_service_worker
 build_service_worker()
