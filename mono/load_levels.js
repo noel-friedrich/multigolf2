@@ -2,7 +2,7 @@ const levelsContainer = document.querySelector("#levels-container")
 
 const levels = []
 
-const levelCompleteLocalStorageKey = "sologolf-completed-levels"
+const levelCompleteLocalStorageKey = "monogolf-completed-levels"
 
 function getCompletedLevels() {
     const item = localStorage.getItem(levelCompleteLocalStorageKey)

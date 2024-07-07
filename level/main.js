@@ -103,7 +103,7 @@ async function main() {
     window.AudioPlayer = AudioPlayer
     await window.AudioPlayer.load()
 
-    await loadLevels("../solo/default_levels.json")
+    await loadLevels("../mono/default_levels.json")
     level = levels.find(l => l.id == levelId)
     if (!level) {
         goBackToLevelChoice()
