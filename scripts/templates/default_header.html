@@ -1,29 +1,30 @@
 <header class="at-top">
-    <a href="$base-path$" class="logo-container">
-        <img src="$base-path$assets/logo/logo.svg" class="logo" alt="Multigolf Logo" />
-        <div class="logo-text" href="$base-path$">Multigolf</div>
-    </a>
-    <div class="link-island">
-        <a href="$base-path$host/">Start Game</a>
-        <a href="$base-path$join/">Join Game</a>
-        <a href="$base-path$about/">About</a>
-        <a href="$base-path$faq/">FAQ</a>
+    <div class="header-content">
+        <a href="$base-path$" class="logo-container">
+            <img src="$base-path$assets/logo/logo.svg" class="logo" alt="Multigolf Logo" />
+            <div class="logo-text" href="$base-path$">Multigolf</div>
+        </a>
+        <div class="link-island">
+            <a href="$base-path$host/">Start Game</a>
+            <a href="$base-path$join/">Join Game</a>
+            <a href="$base-path$about/">About</a>
+            <a href="$base-path$faq/">FAQ</a>
+            <a href="$base-path$contact/">Contact</a>
+        </div>
+        <div class="hamburger-icon" tabindex="0">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+    <div class="header-drop-menu">
+        <a href="$base-path$host/">Start a Game</a>
+        <a href="$base-path$join/">Join a Game</a>
+        <a href="$base-path$about/">What is Multigolf?</a>
+        <a href="$base-path$faq/">FAQ & Help</a>
         <a href="$base-path$contact/">Contact</a>
     </div>
-    <div class="hamburger-icon" tabindex="0">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-    </div>
 </header>
-
-<div class="header-drop-menu">
-    <a href="$base-path$host/">Start a Game</a>
-    <a href="$base-path$join/">Join a Game</a>
-    <a href="$base-path$about/">What is Multigolf?</a>
-    <a href="$base-path$faq/">FAQ & Help</a>
-    <a href="$base-path$contact/">Contact</a>
-</div>
 
 <script>
     {
@@ -50,8 +51,10 @@
 
             if (window.scrollY <= 0) {
                 header.classList.add("at-top")
+                headerDropMenu.classList.add("at-top")
             } else {
                 header.classList.remove("at-top")
+                headerDropMenu.classList.remove("at-top")
             }
         })
     }

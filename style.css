@@ -91,15 +91,14 @@ h4, h5, h6 {
 }
 
 header {
+    --popout-margin: .8rem;
+
     padding: 1rem;
-    display: flex;
-    position: relative;
     z-index: 102;
     border-bottom: var(--header-border);
     background: var(--header-background);
     box-shadow: var(--header-shadow);
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    border-radius: 2.4rem;
     
     width: min(var(--header-max-width), 100%);
     margin: 0 auto;
@@ -110,12 +109,22 @@ header {
     transition: 300ms;
 }
 
+header .header-content {
+    display: flex;
+    position: relative;
+}
+
 body:not(.sticky-header) header {
     box-shadow: none;
 }
 
 body.sticky-header header.at-top {
     box-shadow: none;
+}
+
+body.sticky-header header:not(.at-top) {
+    width: calc(min(var(--header-max-width), 100%) - var(--popout-margin) * 2);
+    top: var(--popout-margin);
 }
 
 body.sticky-header header {
@@ -126,13 +135,13 @@ body.sticky-header header {
     width: min(800px, 100%);
 }
 
-header > .logo-container .logo {
+header .logo-container .logo {
     width: 2.5rem;
     height: 2.5rem;
     margin-right: .4em;
 }
 
-header > .logo-container {
+header .logo-container {
     margin: 0;
     font-size: 1.8em;
     text-decoration: none;
@@ -141,7 +150,7 @@ header > .logo-container {
     display: flex;
 }
 
-header > .logo-container .logo-text {
+header .logo-container .logo-text {
     display: block;
     text-align: center;
     font-family: var(--header-font);
@@ -188,36 +197,23 @@ header .link-island a.current {
     z-index: 101;
     display: none;
     width: 100%;
-    background-color: var(--header-background);
-    box-shadow: var(--header-shadow);
-    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
     gap: .5rem;
-    transform: translateY(-100%) scaleY(0);
-    padding: 0;
+    transform: scaleY(0);
     border-bottom: var(--header-border);
 
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
-
-    backdrop-filter: var(--glassy-blur);
-    -webkit-backdrop-filter: var(--glassy-blur);
 }
 
 body:not(.sticky-header) .header-drop-menu {
     box-shadow: none;
 }
 
-body.sticky-header .header-drop-menu {
-    position: fixed;
-    top: 4.5rem;
-}
-
 .header-drop-menu.visible {
     max-height: 20em;
-    padding: 1rem;
-    padding-top: 1px;
-    margin-top: -1px;
     transform: translateY(0) scaleY(1);
+    margin-top: .8rem;
 }
 
 .header-drop-menu a {
@@ -237,10 +233,11 @@ body.sticky-header .header-drop-menu {
 header .hamburger-icon {
     display: none;
     position: absolute;
-    right: 1rem;
+    right: 0;
+    padding-right: .5rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 2em;
+    width: calc(2em + .5rem);
     grid-template-columns: 1fr;
     grid-template-rows: 5px 5px 5px;
     gap: 5px;
@@ -291,9 +288,19 @@ header .hamburger-icon.x .bar:nth-child(3) {
     }
 
     header.expanded {
-        box-shadow: none;
-        border-bottom: none;
+        border-radius: 1rem;
+    }
+
+    body.sticky-header header.expanded.at-top {
+        box-shadow: var(--header-shadow);
         border-radius: 0;
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+    }
+
+    header.expanded .hamburger-icon {
+        padding-right: 0;
+        width: 2em;
     }
     
 }
