@@ -33,8 +33,23 @@
     </script>
 
     <body>
+        <div class="level-container">
+            <div class="level-header">
+                <a class="menu-link" href="../mono/">&#x25c0; Levels</a>
+                <div class="level-display">
+                    Level <output id="level-id-output">00</output>
+                </div>
+            </div>
+            <div class="level-body">
+                <canvas id="level-canvas"></canvas>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("level-id-output").textContent = levelId.toString().padStart(2, "0")
+        </script>
+
         <img src="../assets/logo/logo.svg" class="logo" alt="Multigolf Logo" style="display: none;" id="logo-img"/>
-        <canvas id="level-canvas"></canvas>
         
         <!-- BEGIN default_js -->
         <script>

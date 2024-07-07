@@ -2,12 +2,29 @@ let level = null
 let gameState = null
 let ball = null
 
+const canvasAspectRatio = 9 / 16
+const displayAspectRatio = 9 / 17
+const directionLoopLengthMs = 2000
+
 const levelCanvas = document.querySelector("#level-canvas")
+const levelBody = document.querySelector(".level-body")
+const levelHeader = document.querySelector(".level-header")
+const levelContainer = document.querySelector(".level-container")
 const levelContext = levelCanvas.getContext("2d")
-const displayAspectRatio = 9 / 16
 const logoImg = document.querySelector("#logo-img")
 
-const directionLoopLengthMs = 2000
+if (!hasUnlockedLevel(levelId)) {
+    goBackToLevelChoice()
+}
+
+function goToNextLevel() {
+    const nextLevelId = parseInt(levelId) + 1
+    if (levels.find(l => l.id == nextLevelId) && hasUnlockedLevel(nextLevelId)) {
+        window.location.href = `?id=${encodeURIComponent(nextLevelId)}`
+    } else {
+        goBackToLevelChoice()
+    }
+}
 
 function resizeCanvas() {
     let canvasPadding = 5
@@ -16,12 +33,10 @@ function resizeCanvas() {
         canvasPadding = Math.round(5 / gameState.combinedScalingFactor)
     }
 
-    levelCanvas.style.outline = `${canvasPadding}px solid black`
-
     const displaySize = new Vector2d(100 * displayAspectRatio, displayAspectRatio)
 
-    const maxWidth = window.innerWidth - canvasPadding * 2
-    const maxHeight = window.innerHeight - canvasPadding * 2
+    const maxWidth = window.innerWidth
+    const maxHeight = window.innerHeight
     const realSizeRatio = maxWidth / maxHeight
 
     if (realSizeRatio < displayAspectRatio) {
@@ -32,8 +47,19 @@ function resizeCanvas() {
         displaySize.x = maxHeight * displayAspectRatio
     }
 
+    const canvasBodyHeight = displayAspectRatio / canvasAspectRatio * displaySize.y
+    const canvasHeaderHeight = displaySize.y - canvasBodyHeight
+
+    levelContainer.style.width = `${displaySize.x}px`
+    levelContainer.style.height = `${displaySize.y}px`
+    levelContainer.style.gridTemplateRows = `${canvasHeaderHeight}px ${canvasBodyHeight}px`
+
     levelCanvas.style.width = `${displaySize.x}px`
-    levelCanvas.style.height = `${displaySize.y}px`
+    levelCanvas.style.height = `${canvasBodyHeight}px`
+
+    levelHeader.style.width = `${displaySize.x}px`
+    levelHeader.style.height = `${canvasHeaderHeight}px`
+    levelHeader.style.setProperty("--height", `${canvasHeaderHeight}px`)
 }
 
 let isLoading = true
@@ -89,7 +115,7 @@ function gameLoop() {
 
     if (ball && ball.inHole && ball.radius == 0) {
         completeLevel(level.id)
-        goBackToLevelChoice()
+        goToNextLevel()
     }
 
     window.requestAnimationFrame(gameLoop)

@@ -55,11 +55,11 @@ function updateHtmlLevels() {
         element.classList.add("level")
         if (i == 0 || hasUnlockedLevel(level.id)) {
             element.classList.add("completed")
+            element.href = `../level?id=${encodeURIComponent(level.id)}`
         }
 
         element.dataset.difficulty = level.difficulty
         element.textContent = level.id
-        element.href = `../level?id=${encodeURIComponent(level.id)}`
         levelsContainer.appendChild(element)
         i++
     }
