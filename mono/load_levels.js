@@ -25,6 +25,7 @@ function resetCompletedLevels() {
 }
 
 function hasUnlockedLevel(id) {
+    if (id <= 1) return true
     const completed = getCompletedLevels()
     const numericId = parseInt(id)
     return completed.has(numericId) || completed.has(numericId - 1)
@@ -49,11 +50,10 @@ function updateHtmlLevels() {
     }
 
     // (re)add (new) levels
-    let i = 0
     for (const level of levels) {
         const element = document.createElement("a")
         element.classList.add("level")
-        if (i == 0 || hasUnlockedLevel(level.id)) {
+        if (hasUnlockedLevel(level.id)) {
             element.classList.add("completed")
             element.href = `../level?id=${encodeURIComponent(level.id)}`
         }
@@ -61,6 +61,5 @@ function updateHtmlLevels() {
         element.dataset.difficulty = level.difficulty
         element.textContent = level.id
         levelsContainer.appendChild(element)
-        i++
     }
 }
