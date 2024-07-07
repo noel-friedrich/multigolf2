@@ -21,7 +21,7 @@
 
     <script>
         const urlSearchParams = new URLSearchParams(window.location.search)
-        const levelId = urlSearchParams.get("id")
+        let levelId = urlSearchParams.get("id")
         
         function goBackToLevelChoice() {
             window.location.href = "../mono/"
@@ -35,7 +35,7 @@
     <body>
         <div class="level-container">
             <div class="level-header">
-                <a class="menu-link" href="../mono/">&#x25c0; Levels</a>
+                <a class="menu-link" href="../mono/">To Levels</a>
                 <div class="level-display">
                     Level <output id="level-id-output">00</output>
                 </div>

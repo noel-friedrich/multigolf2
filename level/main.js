@@ -12,23 +12,28 @@ const levelHeader = document.querySelector(".level-header")
 const levelContainer = document.querySelector(".level-container")
 const levelContext = levelCanvas.getContext("2d")
 const logoImg = document.querySelector("#logo-img")
+const levelIdOutput = document.querySelector("#level-id-output")
 
 if (!hasUnlockedLevel(levelId)) {
     goBackToLevelChoice()
 }
 
+let hasGoneToNextLevel = false
 function goToNextLevel() {
+    if (hasGoneToNextLevel) {
+        return
+    }
+
+    hasGoneToNextLevel = true
     const nextLevelId = parseInt(levelId) + 1
     if (levels.find(l => l.id == nextLevelId) && hasUnlockedLevel(nextLevelId)) {
-        window.location.href = `?id=${encodeURIComponent(nextLevelId)}`
+        loadLevel(nextLevelId)
     } else {
         goBackToLevelChoice()
     }
 }
 
 function resizeCanvas() {
-    let canvasPadding = 5
-
     if (gameState) {
         canvasPadding = Math.round(5 / gameState.combinedScalingFactor)
     }
@@ -121,6 +126,28 @@ function gameLoop() {
     window.requestAnimationFrame(gameLoop)
 }
 
+function loadLevel(id) {
+    level = levels.find(l => l.id == id)
+    levelId = id
+    levelIdOutput.textContent = levelId.toString().padStart(2, "0")
+
+    if (!level) {
+        goBackToLevelChoice()
+    }
+    
+    gameState = GameState.fromObject(level.gameState)
+    gameState.getReferenceCanvas = () => levelCanvas
+    gameState.board.physicsTime = Date.now()
+
+    ball = gameState.board.spawnBall({spriteUrl: Sprite.BallWhite})
+
+    const url = new URL(window.location.href)
+    url.searchParams.set("id", levelId)
+    window.history.pushState(null, "", url.toString())
+
+    hasGoneToNextLevel = false
+}
+
 async function main() {
     resizeCanvas()
     drawLoading()
@@ -130,20 +157,11 @@ async function main() {
     await window.AudioPlayer.load()
 
     await loadLevels("../mono/default_levels.json")
-    level = levels.find(l => l.id == levelId)
-    if (!level) {
-        goBackToLevelChoice()
-    }
-
-    gameState = GameState.fromObject(level.gameState)
-    gameState.getReferenceCanvas = () => levelCanvas
-    gameState.board.physicsTime = Date.now()
+    loadLevel(levelId)
 
     isLoading = false
     resizeCanvas()
     gameLoop()
-
-    ball = gameState.board.spawnBall({spriteUrl: Sprite.BallWhite})
 
     addEventListener("resize", resizeCanvas)
     addEventListener("keydown", event => {
