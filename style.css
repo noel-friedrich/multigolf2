@@ -96,17 +96,20 @@ header {
     padding: 1rem;
     z-index: 102;
     border-bottom: var(--header-border);
-    background: var(--header-background);
     box-shadow: var(--header-shadow);
     border-radius: 2.4rem;
     
     width: min(var(--header-max-width), 100%);
     margin: 0 auto;
 
+    transition: 300ms;
+}
+
+header:is(:not(.at-top)),
+header.expanded {
+    background: var(--header-background);
     backdrop-filter: var(--glassy-blur);
     -webkit-backdrop-filter: var(--glassy-blur);
-
-    transition: 300ms;
 }
 
 header .header-content {

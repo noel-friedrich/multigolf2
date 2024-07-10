@@ -24,7 +24,7 @@ def make_js_imports(js_imports, file_dict):
 SET_regex = r"^[\s\t]*<!--\s*SET\s+([a-zA-Z0-9_\.]+)\s*=\s*([a-zA-Z0-9_\-\s\|\.\:\;\/\\]+?)\s*-->[\s\t]*$"
 BEGIN_regex = r"^[\s\t]*<!--\s*BEGIN\s+([a-zA-Z0-9_\.]+)\s*-->[\s\t]*$"
 END_regex = r"^([\s\t]*)<!--\s*END\s*-->[\s\t]*$"
-JS_IMPORT_regex = r"^[\s\t]*<!--\s*JS_IMPORT\s+([a-zA-Z0-9_\.\/]+)\s*-->[\s\t]*$"
+JS_IMPORT_regex = r"^[\s\t]*<!--\s*JS_IMPORT\s+([a-zA-Z0-9_\.\/\\\-]+)\s*-->[\s\t]*$"
 
 def handle_file(file_path: str):
     file_dict = {}

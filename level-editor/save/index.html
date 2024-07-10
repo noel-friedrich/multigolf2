@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" style="overscroll-behavior: contain;">
 
-    <!-- SET title=About | Multigolf -->
-    <!-- SET description=Explanation of what multi.golf is and how the game works technically and how to play -->
+    <!-- SET title=Level Editor: Save | Multigolf -->
+    <!-- SET description=Monogolf is the Single-Player version of multi.golf. Play levels and unlock new items -->
     <!-- BEGIN default_head -->
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Explanation of what multi.golf is and how the game works technically and how to play">
+        <meta name="description" content="Monogolf is the Single-Player version of multi.golf. Play levels and unlock new items">
         <meta charset="UTF-8">
-        <title>About | Multigolf</title>
-        <link rel="manifest" href="../manifest.json">
-        <link rel="icon" type="image/svg" href="../assets/logo/favicon.ico">
-        <link rel="stylesheet" href="../style.css">
-        <link rel="stylesheet" href="../$extra_css$">
+        <title>Level Editor: Save | Multigolf</title>
+        <link rel="manifest" href="../../manifest.json">
+        <link rel="icon" type="image/svg" href="../../assets/logo/favicon.ico">
+        <link rel="stylesheet" href="../../style.css">
+        <link rel="stylesheet" href="../../$extra_css$">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
     </head>
     <!-- END -->
@@ -22,16 +22,16 @@
         <!-- BEGIN default_header -->
         <header class="at-top">
             <div class="header-content">
-                <a href="../" class="logo-container">
-                    <img src="../assets/logo/logo.svg" class="logo" alt="Multigolf Logo" />
-                    <div class="logo-text" href="../">Multigolf</div>
+                <a href="../../" class="logo-container">
+                    <img src="../../assets/logo/logo.svg" class="logo" alt="Multigolf Logo" />
+                    <div class="logo-text" href="../../">Multigolf</div>
                 </a>
                 <div class="link-island">
-                    <a href="../host/">Start Game</a>
-                    <a href="../join/">Join Game</a>
-                    <a href="../about/">About</a>
-                    <a href="../faq/">FAQ</a>
-                    <a href="../contact/">Contact</a>
+                    <a href="../../host/">Start Game</a>
+                    <a href="../../join/">Join Game</a>
+                    <a href="../../about/">About</a>
+                    <a href="../../faq/">FAQ</a>
+                    <a href="../../contact/">Contact</a>
                 </div>
                 <div class="hamburger-icon" tabindex="0">
                     <div class="bar"></div>
@@ -40,11 +40,11 @@
                 </div>
             </div>
             <div class="header-drop-menu">
-                <a href="../host/">Start a Game</a>
-                <a href="../join/">Join a Game</a>
-                <a href="../about/">What is Multigolf?</a>
-                <a href="../faq/">FAQ & Help</a>
-                <a href="../contact/">Contact</a>
+                <a href="../../host/">Start a Game</a>
+                <a href="../../join/">Join a Game</a>
+                <a href="../../about/">What is Multigolf?</a>
+                <a href="../../faq/">FAQ & Help</a>
+                <a href="../../contact/">Contact</a>
             </div>
         </header>
         
@@ -84,7 +84,7 @@
         <!-- END -->
         
         <main>
-            <h1>About Multigolf</h1>
+            <h1>Level Editor: Save</h1>
             <p>
                 Multigolf is a fun and unique tabletop game that doesn't require any
                 preparation, sets or extra materials. By using the participants phones
@@ -131,19 +131,19 @@
             
                 <div class="link-group">
                     <div class="group-header">Game</div>
-                    <a class="group-item" href="../host">Start a Game</a>
-                    <a class="group-item" href="../join">Join a Game</a>
+                    <a class="group-item" href="../../host">Start a Game</a>
+                    <a class="group-item" href="../../join">Join a Game</a>
                 </div>
                 <div class="link-group">
                     <div class="group-header">Info</div>
-                    <a class="group-item" href="../about">About Multigolf</a>
-                    <a class="group-item" href="../faq">FAQ</a>
-                    <a class="group-item" href="../contact">Contact Me</a>
+                    <a class="group-item" href="../../about">About Multigolf</a>
+                    <a class="group-item" href="../../faq">FAQ</a>
+                    <a class="group-item" href="../../contact">Contact Me</a>
                 </div>
                 <div class="link-group">
                     <div class="group-header">Legal</div>
-                    <a class="group-item" href="../impressum">Impressum</a>
-                    <a class="group-item" href="../data-privacy">Data Privacy</a>
+                    <a class="group-item" href="../../impressum">Impressum</a>
+                    <a class="group-item" href="../../data-privacy">Data Privacy</a>
                 </div>
                 <div class="link-group">
                     <div class="group-header">Socials</div>
@@ -193,7 +193,7 @@
         
                 // register service worker for PWA functionality
                 if ("serviceWorker" in navigator) {
-                    navigator.serviceWorker.register("../service_worker.js")
+                    navigator.serviceWorker.register("../../service_worker.js")
                 }
         
                 // make smooth jump links work
@@ -208,166 +208,6 @@
                         })
                     })
                 }
-            }
-        </script>
-        <!-- END -->
-
-        <!-- BEGIN interactive_background -->
-        <div class="interactive-background">
-            <div class="ball white"></div>
-            <div class="ball red"></div>
-            <div class="ball blue"></div>
-            <div class="ball orange"></div>
-            <div class="ball violet"></div>
-        </div>
-        
-        <style>
-            .interactive-background {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
-            }
-        
-            .interactive-background .ball {
-                position: absolute;
-                --size: 30px;
-                --animation: spin 2s linear infinite;
-        
-                width: var(--size);
-                height: var(--size);
-                image-rendering: pixelated;
-                background-size: 100%;
-        
-                -webkit-animation: var(--animation);
-                -moz-animation: var(--animation);
-                animation: var(--animation);
-        
-                opacity: 1;
-            }
-        
-            @-moz-keyframes spin { 
-                100% { -moz-transform: rotate(360deg); } 
-            }
-        
-            @-webkit-keyframes spin { 
-                100% { -webkit-transform: rotate(360deg); } 
-            }
-        
-            @keyframes spin { 
-                100% { 
-                    -webkit-transform: rotate(360deg); 
-                    transform:rotate(360deg); 
-                } 
-            }
-        
-            .interactive-background .ball.white {
-                background-image: url("../assets/compressed/objects/balls/white.png");
-            }
-        
-            .interactive-background .ball.red {
-                background-image: url("../assets/compressed/objects/balls/red.png");
-            }
-        
-            .interactive-background .ball.blue {
-                background-image: url("../assets/compressed/objects/balls/blue.png");
-            }
-        
-            .interactive-background .ball.orange {
-                background-image: url("../assets/compressed/objects/balls/orange.png");
-            }
-        
-            .interactive-background .ball.violet {
-                background-image: url("../assets/compressed/objects/balls/violet.png");
-            }
-        </style>
-        
-        <script>
-            function makeBallFollowCursor(ballElement) {
-                let cursorX = null
-                let cursorY = null
-        
-                const angle = Math.random() * Math.PI * 2
-                let ballX = Math.cos(angle) * Math.max(window.innerWidth, window.innerHeight) / 2
-                let ballY = Math.cos(angle) * Math.max(window.innerWidth, window.innerHeight) / 2
-                let ballVelX = 0
-                let ballVelY = 0
-        
-                const gravityScale = Math.random() * 0.1 + 0.95
-                
-                const ballStyle = getComputedStyle(ballElement)
-                const ballRadius = ballStyle.getPropertyValue("--size").slice(0, -2) * 0.5
-        
-                function updateBallPos() {
-                    ballElement.style.left = `${ballX - ballRadius}px`
-                    ballElement.style.top = `${ballY - ballRadius}px`
-                }
-        
-                let lastFrameTime = performance.now()
-                function loop() {
-                    const dt = performance.now() - lastFrameTime
-                    lastFrameTime = performance.now()
-        
-                    if (cursorX !== null && cursorY !== null) {
-                        const distSquared = (cursorX - ballX) ** 2 + (cursorY - ballY) ** 2
-                        const gravityStrength = Math.min(gravityScale / 10 / Math.sqrt(distSquared), 0.01)
-                        const angle = Math.atan2(cursorY - ballY, cursorX - ballX)
-            
-                        ballVelX += Math.cos(angle) * gravityStrength * dt
-                        ballVelY += Math.sin(angle) * gravityStrength * dt
-                        ballX += ballVelX * dt
-                        ballY += ballVelY * dt
-            
-                        if (ballX < 0) {
-                            ballX = 0
-                            ballVelX = 0
-                        }
-            
-                        if (ballY < 0) {
-                            ballY = 0
-                            ballVelY = 0
-                        }
-            
-                        if (ballX > window.innerWidth) {
-                            ballX = window.innerWidth
-                            ballVelX = 0
-                        }
-            
-                        if (ballY > window.innerHeight) {
-                            ballY = window.innerHeight
-                            ballVelY = 0
-                        }
-            
-                        updateBallPos()
-                    }
-        
-                    requestAnimationFrame(loop)
-                }
-        
-                requestAnimationFrame(loop)
-        
-                document.addEventListener("mousemove", event => {
-                    cursorX = event.clientX
-                    cursorY = event.clientY
-                })
-        
-                document.addEventListener("touchstart", event => {
-                    cursorX = event.touches[0].clientX
-                    cursorY = event.touches[0].clientY
-                })
-        
-                document.addEventListener("touchmove", event => {
-                    cursorX = event.touches[0].clientX
-                    cursorY = event.touches[0].clientY
-                })
-        
-                updateBallPos()
-            }
-        
-            for (const ballElement of document.querySelectorAll(".interactive-background .ball")) {
-                makeBallFollowCursor(ballElement)
             }
         </script>
         <!-- END -->

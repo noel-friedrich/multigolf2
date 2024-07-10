@@ -1,0 +1,157 @@
+<div class="interactive-background">
+    <div class="ball white"></div>
+    <div class="ball red"></div>
+    <div class="ball blue"></div>
+    <div class="ball orange"></div>
+    <div class="ball violet"></div>
+</div>
+
+<style>
+    .interactive-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .interactive-background .ball {
+        position: absolute;
+        --size: 30px;
+        --animation: spin 2s linear infinite;
+
+        width: var(--size);
+        height: var(--size);
+        image-rendering: pixelated;
+        background-size: 100%;
+
+        -webkit-animation: var(--animation);
+        -moz-animation: var(--animation);
+        animation: var(--animation);
+
+        opacity: 1;
+    }
+
+    @-moz-keyframes spin { 
+        100% { -moz-transform: rotate(360deg); } 
+    }
+
+    @-webkit-keyframes spin { 
+        100% { -webkit-transform: rotate(360deg); } 
+    }
+
+    @keyframes spin { 
+        100% { 
+            -webkit-transform: rotate(360deg); 
+            transform:rotate(360deg); 
+        } 
+    }
+
+    .interactive-background .ball.white {
+        background-image: url("$base-path$assets/compressed/objects/balls/white.png");
+    }
+
+    .interactive-background .ball.red {
+        background-image: url("$base-path$assets/compressed/objects/balls/red.png");
+    }
+
+    .interactive-background .ball.blue {
+        background-image: url("$base-path$assets/compressed/objects/balls/blue.png");
+    }
+
+    .interactive-background .ball.orange {
+        background-image: url("$base-path$assets/compressed/objects/balls/orange.png");
+    }
+
+    .interactive-background .ball.violet {
+        background-image: url("$base-path$assets/compressed/objects/balls/violet.png");
+    }
+</style>
+
+<script>
+    function makeBallFollowCursor(ballElement) {
+        let cursorX = null
+        let cursorY = null
+
+        const angle = Math.random() * Math.PI * 2
+        let ballX = Math.cos(angle) * Math.max(window.innerWidth, window.innerHeight) / 2
+        let ballY = Math.cos(angle) * Math.max(window.innerWidth, window.innerHeight) / 2
+        let ballVelX = 0
+        let ballVelY = 0
+
+        const gravityScale = Math.random() * 0.1 + 0.95
+        
+        const ballStyle = getComputedStyle(ballElement)
+        const ballRadius = ballStyle.getPropertyValue("--size").slice(0, -2) * 0.5
+
+        function updateBallPos() {
+            ballElement.style.left = `${ballX - ballRadius}px`
+            ballElement.style.top = `${ballY - ballRadius}px`
+        }
+
+        let lastFrameTime = performance.now()
+        function loop() {
+            const dt = performance.now() - lastFrameTime
+            lastFrameTime = performance.now()
+
+            if (cursorX !== null && cursorY !== null) {
+                const distSquared = (cursorX - ballX) ** 2 + (cursorY - ballY) ** 2
+                const gravityStrength = Math.min(gravityScale / 10 / Math.sqrt(distSquared), 0.01)
+                const angle = Math.atan2(cursorY - ballY, cursorX - ballX)
+    
+                ballVelX += Math.cos(angle) * gravityStrength * dt
+                ballVelY += Math.sin(angle) * gravityStrength * dt
+                ballX += ballVelX * dt
+                ballY += ballVelY * dt
+    
+                if (ballX < 0) {
+                    ballX = 0
+                    ballVelX = 0
+                }
+    
+                if (ballY < 0) {
+                    ballY = 0
+                    ballVelY = 0
+                }
+    
+                if (ballX > window.innerWidth) {
+                    ballX = window.innerWidth
+                    ballVelX = 0
+                }
+    
+                if (ballY > window.innerHeight) {
+                    ballY = window.innerHeight
+                    ballVelY = 0
+                }
+    
+                updateBallPos()
+            }
+
+            requestAnimationFrame(loop)
+        }
+
+        requestAnimationFrame(loop)
+
+        document.addEventListener("mousemove", event => {
+            cursorX = event.clientX
+            cursorY = event.clientY
+        })
+
+        document.addEventListener("touchstart", event => {
+            cursorX = event.touches[0].clientX
+            cursorY = event.touches[0].clientY
+        })
+
+        document.addEventListener("touchmove", event => {
+            cursorX = event.touches[0].clientX
+            cursorY = event.touches[0].clientY
+        })
+
+        updateBallPos()
+    }
+
+    for (const ballElement of document.querySelectorAll(".interactive-background .ball")) {
+        makeBallFollowCursor(ballElement)
+    }
+</script>

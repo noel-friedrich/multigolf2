@@ -254,12 +254,8 @@
             {
                 // update theme
                 if (localStorage.getItem("style") == null) {
-                    const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-                    if (prefersDarkMode) {
-                        localStorage.setItem("style", "dark")
-                    } else {
-                        localStorage.setItem("style", "light")
-                    }
+                    // const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+                    localStorage.setItem("style", "light")
                 }
         
                 document.body.dataset.style = localStorage.getItem("style") || "light"
