@@ -261,6 +261,10 @@ class GameState {
     }
 
     endTournamentRound() {
+        if (this.board.balls.length == 0) {
+            return
+        }
+
         this.phase = gamePhase.TournamentExplanation
 
         // penalize balls that haven't reached goal in time 
@@ -348,6 +352,7 @@ class GameState {
 
         if (!this.advanceTournamentBall()) {
             this.endTournamentRound()
+            madeChange = true
         }
 
         return madeChange

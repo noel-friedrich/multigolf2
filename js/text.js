@@ -238,7 +238,7 @@ const Text = {
     },
     ObjectHoleDescription: {
         [Lang.EN]: "Goal that all balls must reach",
-        [Lang.DE]: "Ziel welches alle Bälle erreichen müssen"
+        [Lang.DE]: "Ziel, welches alle Bälle erreichen müssen"
     },
     ObjectLavaDescription: {
         [Lang.EN]: "Balls falling into Lava are reset to the start",

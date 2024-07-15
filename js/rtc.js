@@ -505,7 +505,7 @@ class RtcClient extends RtcBase {
                         await this.peerConnection.setLocalDescription(answer)
                         this.uploadToServer(rtcDataType.Answer, {
                             sdp: this.peerConnection.localDescription
-                        }, "Connection Answer")
+                        }, Text.ConnectionAnswer)
                     }
                 }
             },
@@ -605,9 +605,21 @@ class RtcHostManager {
         while (this.polling) {
             const updates = await this.baseConnection.getFromServer(rtcDataType.joinPool)
             for (let update of updates) {
-                const deviceIndex = update.data.deviceIndex
+                let deviceIndex = update.data.deviceIndex
                 const signalingUid = update.data.signalingUid
+
+                // check if there is already a connection with that deviceIndex.
+                // if there is, we ignore their wish and give them a new one (by
+                // passing _null_ to this.makeConnection)
+                if (deviceIndex == null
+                    && this.connections[deviceIndex - 1]
+                    && this.connections[deviceIndex - 1].getStatus().color !== "red"
+                ) {
+                    deviceIndex = null
+                }
+
                 const connection = this.makeConnection(deviceIndex)
+
                 connection.start(signalingUid).then(() => {
                     connection.startPinging()
                 })
