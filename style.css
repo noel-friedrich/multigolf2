@@ -101,6 +101,8 @@ body {
     font-family: var(--header-font);
     font-size: var(--huge-text-size);
     padding: .5em;
+    padding-right: 0;
+    padding-left: 0;
     margin-bottom: -.5em;
 }
 
