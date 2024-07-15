@@ -27,11 +27,24 @@
                     <div class="logo-text" href="../">Multigolf</div>
                 </a>
                 <div class="link-island">
-                    <a href="../host/">Start Game</a>
-                    <a href="../join/">Join Game</a>
-                    <a href="../about/">About</a>
-                    <a href="../faq/">FAQ</a>
-                    <a href="../contact/">Contact</a>
+                    <a href="../host/">
+                        <span lang="en">Start Game</span>
+                        <span lang="de">Spiel Starten</span>
+                    </a>
+                    <a href="../join/">
+                        <span lang="en">Join Game</span>
+                        <span lang="de">Spiel Beitreten</span>
+                    </a>
+                    <a href="../about/">
+                        <span lang="en">About</span>
+                        <span lang="de">Info</span>
+                    </a>
+                    <a href="../faq/">
+                        <span lang="en">FAQ</span>
+                        <span lang="de">FAQ</span>
+                    </a>
+        
+                    <a class="change-lang-button"></a>
                 </div>
                 <div class="hamburger-icon" tabindex="0">
                     <div class="bar"></div>
@@ -40,16 +53,48 @@
                 </div>
             </div>
             <div class="header-drop-menu">
-                <a href="../host/">Start a Game</a>
-                <a href="../join/">Join a Game</a>
-                <a href="../about/">What is Multigolf?</a>
-                <a href="../faq/">FAQ & Help</a>
-                <a href="../contact/">Contact</a>
+                <a lang="en" href="../host/">Start a Game</a>
+                <a lang="en" href="../join/">Join a Game</a>
+                <a lang="en" href="../about/">What is Multigolf?</a>
+                <a lang="en" href="../faq/">FAQ & Help</a>
+                <a lang="en" href="../contact/">Contact</a>
+        
+                <a lang="de" href="../host/">Spiel Starten</a>
+                <a lang="de" href="../join/">Spiel Beitreten</a>
+                <a lang="de" href="../about/">Was ist Multigolf?</a>
+                <a lang="de" href="../faq/">FAQ & Hilfe</a>
+                <a lang="de" href="../contact/">Kontakt</a>
+        
+                <a class="change-lang-button"></a>
             </div>
         </header>
+        <div class="header-placeholder"></div>
         
         <script>
             {
+                const changeLangButtons = document.querySelectorAll(".change-lang-button")
+                for (const changeLangButton of changeLangButtons) {
+                    changeLangButton.onclick = event => {
+                        const languages = ["en", "de"]
+                        const currStyle = localStorage.getItem("lang") || languages[0]
+                        const nextIndex = (languages.indexOf(currStyle) + 1) % languages.length
+                        const nextNextIndex = (languages.indexOf(currStyle) + 2) % languages.length
+                        localStorage.setItem("lang", languages[nextIndex])
+                        document.documentElement.lang = localStorage.getItem("lang")
+        
+                        changeLangButton.animate([
+                            { transform: "rotateX(0deg)" },
+                            { transform: "rotateX(360deg)" }
+                        ], {
+                            easing: "ease-in-out",
+                            duration: 350,
+                            fill: "forwards"
+                        })
+        
+                        event.preventDefault()
+                    }
+                }
+        
                 const header = document.querySelector("header")
                 const hamburger = document.querySelector(".hamburger-icon")
                 const headerDropMenu = document.querySelector(".header-drop-menu")
@@ -85,41 +130,73 @@
         
         <main>
             <h2 id="loading-indicator">
-                Loading...
+                <span lang="en">Loading...</span>
+                <span lang="de">Wird geladen...</span>
             </h2>
 
             <fieldset style="gap: .2em; display: none;" id="player-list-fieldset">
-                <legend>Connected Players</legend>
+                <legend>
+                    <span lang="en">Connected Players</span>
+                    <span lang="de">Verbundene Spieler</span>
+                </legend>
                 <div id="player-list-container" style="margin-top: -.5em">
-                    Once you connect players, they will show up here.
+                    <span lang="en">Once you connect players, they will show up here.</span>
+                    <span lang="de">Sobald du Spieler verbindest tauchen sie hier auf.</span>
                 </div>
             </fieldset>
 
             <fieldset id="board-canvas-fieldset" style="display: none;">
-                <legend>Multigolf Board</legend>
+                <legend>
+                    <span lang="en">Multigolf Board</span>
+                    <span lang="de">Multigolf Kurs</span>
+                </legend>
                 <canvas id="board-canvas" style="display: none;"></canvas>
             </fieldset>
 
             <section data-phase="hello">
-                <h2>Welcome to Multigolf!</h2>
+                <h2>
+                    <span lang="en">Welcome to Multigolf!</span>
+                    <span lang="de">Willkommen bei Multigolf!</span>
+                </h2>
                 <p>
-                    Good morning! You're the host of this fantastic
-                    new session of Multigolf! Gather your friends,
-                    steal peoples phones and have a good time!
+                    <span lang="en">
+                        Good morning! You're the host of this fantastic
+                        new game of Multigolf. Gather some pals,
+                        steal some phones and have a good time!
+                    </span>
+                    <span lang="de">
+                        Guten Morgen! Du bist hiermit das Server-Gerät
+                        dieser fantastischen neuen Runde Multigolf. Hol' n' paar 
+                        Freunde, stiehl ein paar Handys und habt ne gute Zeit!
+                    </span>
                 </p>
-                <h3>You need</h3>
+                <h3>
+                    <span lang="en">You need</span>
+                    <span lang="de">Ihr braucht</span>
+                </h3>
                 <ol>
-                    <li>At least 2 phones (including this one)</li>
+                    <li>
+                        <span lang="en">At least 2 devices (including this one)</span>
+                        <span lang="de">Mindestens 2 Geräte (dieses mit eingerechnet)</span>
+                    </li>
                     <ul>
-                        <li>The more, the better.</li>
+                        <li>
+                            <span lang="en">it begins being more fun with 4</span>
+                            <span lang="de">es macht viel mehr Spaß mit mindestens 4</span>
+                        </li>
                     </ul>
-                    <li>1 to 8 Players depending on the game mode you choose soon</li>
+                    <li>
+                        <span lang="en">1 to 8 players depending on the game mode you will choose</span>
+                        <span lang="de">1 bis 8 Spieler, je nach Spielmodus den du gleich auswählst</span>
+                    </li>
                     <ul>
-                        <li>Available game modes: Tournament, Duell, Sandbox</li>
+                        <li>
+                            <span lang="en">available game modes: Tournament, Duel, Sandbox</span>
+                            <span lang="de">verfügbare Spielmodi: Turnier, Duell, Freies Spiel</span>
+                        </li>
                     </ul>
-                    <li>A good mood</li>
                 </ol>
-                <p>
+                <p lang="en">
                     <span style="color: red">Warning!</span>
                     Do not close this page while the game is
                     running or being configured. While other
@@ -128,97 +205,186 @@
                     the entire game state; you will have to 
                     restart from Scratch.
                 </p>
+                <p lang="de">
+                    <span style="color: red">Warnung!</span>
+                    Schließe diese Seite während des ganzen Spiels
+                    auf keinen Fall. Während andere Geräte 
+                    wiederverbunden werden können, wird das 
+                    gesamte Spiel enden, wenn dieses Gerät ausgeht oder
+                    abstürzt (hast du genug Akku?)
+                </p>
                 <p>
-                    If you're ready, click the button below
-                    to start your Multigolf adventure.
+                    <span lang="en">
+                        If you're ready, click the button below
+                        to start your Multigolf adventure.
+                    </span>
+                    <span lang="de">
+                        Wenn du bereit bist, clicke auf "Spiel Starten",
+                        um das Multigolf Abenteuer zu starten.
+                    </span>
                 </p>
                 <button onclick="changeGamePhase(gamePhase.ModeChoice)">
-                    Start the Game
+                    <span lang="en">
+                        Start the Game
+                    </span>
+                    <span lang="de">
+                        Spiel Starten
+                    </span>
                 </button>
             </section>
 
             <section data-phase="mode-choice">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Choose your Gamemode</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Choose your Gamemmode</span>
+                    <span lang="de">Spielmodus wählen</span>
+                </h2>
                 <p>
-                    To start, choose a Gamemode. The number of players
-                    does not have to match the number of phones. You can
-                    play a Tournament with only one more phone
-                    (maybe not a very interesting one). You can only
-                    choose one mode, which cannot be changed without
-                    restarting the game.
+                    <span lang="en">
+                        To start, choose a Gamemode. The number of players
+                        does not have to match the number of phones. You can
+                        play a Tournament with only one more phone
+                        (maybe not a very interesting one).
+                    </span>
+                    <span lang="de">
+                        Die Anzahl der Spielerinnen und Spieler muss nicht der Anzahl
+                        der Geräte entsprechen. Du kannst zum Beispiel ein Turnier mit 
+                        nur einem Gerät spielen (ein sehr langweiliges Turnier).
+                    </span>
                 </p>
-                <h3>🏆 Tournament (1-8 Players)</h3>
+                <h3>
+                    <span lang="en">🏆 Tournament (1-8 Players)</span>
+                    <span lang="de">🏆 Turnier (1-8 Spielerinnen/Spieler)</span>
+                </h3>
                 <p>
-                    Introducing Tournament mode - the ultimate party-friendly
-                    showdown! In this classic mode, each player takes turns
-                    crafting a course for all to play. The game tracks scores
-                    across all boards, culminating in the crowning of the
-                    Multigolf Queen! Will you rise to the challenge and
-                    claim the title?
+                    <span lang="en">
+                        Introducing Tournament mode - the ultimate party-friendly
+                        showdown! In this classic mode, each player takes turns
+                        crafting a course for all to play. The game tracks scores
+                        across all boards, culminating in the crowning of the
+                        Multigolf Master!
+                    </span>
+                    <span lang="de">
+                        Der ultimative Party-freundliche Showdown! Die Multigolfer müssen
+                        nacheinander Kurse bauen, die anschließend von allen gespielt
+                        werden. Die Punktzahl wird tabellarisch gespeichert und am Spielende
+                        wird ein Sieger oder eine Siegerin gekürt!
+                    </span>
                 </p>
                 <button onclick="chooseGamemode(gameMode.Tournament)">
-                    Begin the Tournament
+                    <span lang="en">Begin a Tournament</span>
+                    <span lang="de">Fang ein Turnier an </span>
                 </button>
-                <h3>🔫 Duell (2 Players)</h3>
+                <h3>
+                    <span lang="en">🔫 Duel (2 Players)</span>
+                    <span lang="de">🔫 Duell (2 Spielerinnen/Spieler)</span>
+                </h3>
                 <p>
-                    In Duell mode, both players collaborate
-                    to build a course and place their opponent's hole. Using
-                    the same ball, players take turns hitting it in their
-                    chosen direction, aiming to reach their opponent's hole.
-                    It's a game of skill and strategy where each shot counts,
-                    and the player who sinks their opponent's hole first claims
-                    victory. Are you ready to tee off against your friend using
-                    the same ball?
-                </p>
-                <p>
-                    <span style="color: red">Warning!</span>
-                    This mode is best with more phones, as courses get
-                    much more insteresting. With only one other phone,
-                    the game will likely end in a single hit.
+                    <span lang="en">
+                        In Duell mode, both players collaborate
+                        to build a course and place their opponent's hole. Using
+                        the same ball, players take turns hitting it in their
+                        chosen direction, aiming to reach their opponent's hole.
+                        It's a game of skill and strategy where each shot counts,
+                        and the player who sinks their opponent's hole first claims
+                        victory.
+                    </span>
+                    <span lang="de">
+                        Im Duellmodus bauen zwei Spieler/innen zusammen einen Kurs.
+                        Im Kurs werden dabei zwei Löcher verbaut, sodass jeder
+                        sein eigenes Loch hat, in das getroffenen werden muss.
+                        Der Twist: beide spielen abwechselnd mit dem gleichen Ball!
+                        Dieser Modus funktioniert am Besten mit möglichst vielen Geräten.
+                    </span>
                 </p>
                 <button onclick="chooseGamemode(gameMode.Duell)">
-                    Initiate the Duell
+                    <span lang="en">Initiate the Duel</span>
+                    <span lang="de">Initiiere das Duell</span>
                 </button>
-                <h3>🐔 Sandbox mode (1+ Players)</h3>
+                <h3>
+                    <span lang="en">🐔 Sandbox mode (1+ Players)</span>
+                    <span lang="de">🐔 Freies Spiel (1+ Spielerinnen/Spieler)</span>
+                </h3>
                 <p>
-                    Last but <span style="text-decoration: line-through;">not</span>
-                    least: Sandbox mode. This mode isn't as competitive and great
-                    for testing the concept or really anything you like. Spawn
-                    as many balls as you want and let the chaos arrive.
-                    There is no player limit, as there are no scores that
-                    are tracked automatically.
+                    <span lang="en">
+                        Last but <span style="text-decoration: line-through;">not</span>
+                        least: Sandbox mode. This mode isn't as competitive and great
+                        for testing the concept or really anything you like. Spawn
+                        as many balls as you want and let the chaos arrive.
+                        There is no player limit, as there are no scores that
+                        are tracked automatically.
+                    </span>
+                    <span lang="de">
+                        In diesem Modus gibt es keine Gewinner, keine Wettkämpfe oder
+                        festen Ziele. Du kannst einen Kurs bauen, beliebig viele 
+                        Bälle erzeugen und kreative Kursideen testen.
+                    </span>
                 </p>
                 <button onclick="chooseGamemode(gameMode.Sandbox)">
-                    Dive into the Sandbox
+                    <span lang="en">Dive into the Sandbox</span>
+                    <span lang="de">Starte das Freie Spiel</span>
                 </button>
             </section>
 
             <section data-phase="player-setup-duell">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Player Registration!</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Player Registration</span>
+                    <span lang="de">Registrierung</span>
+                </h2>
                 <p>
-                    I need to know the name of the two duellists.
+                    <span lang="en">
+                        I need to know the name of the two duellists.
+                    </span>
+                    <span lang="de">
+                        Jetzt brauche ich die Namen der zwei Spielerinnen und Spieler.
+                    </span>
                 </p>
                 <fieldset style="gap: .2em">
-                    <legend>Player Names</legend>
+                    <legend>
+                        <span lang="en">Player Names</span>
+                        <span lang="de">Spielernamen</span>
+                    </legend>
                     <input type="text" placeholder="Name 1" data-game-mode="duell" data-name-index="0">
                     <input type="text" placeholder="Name 2" data-game-mode="duell" data-name-index="1">
                 </fieldset>
                 <button onclick="registerPlayers()">
-                    I'm finished!
+                    <span lang="en">I'm finished!</span>
+                    <span lang="de">Fertig!</span>
                 </button>
             </section>
 
             <section data-phase="player-setup-tournament">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Player Registration!</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Player Registration</span>
+                    <span lang="de">Registrierung</span>
+                </h2>
                 <p>
-                    I need the participants names! Leave names empty to
-                    play with less than 8 players.
+                    <span lang="en">
+                        I need the participants names! Leave names empty to
+                        play with less than 8 players.
+                    </span>
+                    <span lang="de">
+                        Jetzt brauche ich die Namen! Du kannst Felder frei
+                        lassen, um das Spiel mit weniger als 8 Spielerinnen und
+                        Spielern anzufangen.
+                    </span>
                 </p>
                 <fieldset class="many-inputs">
-                    <legend>Player Names</legend>
+                    <legend>
+                        <span lang="en">Player Names</span>
+                        <span lang="de">Spielernamen</span>
+                    </legend>
                     <input type="text" placeholder="Name 1" data-game-mode="tournament" data-name-index="0">
                     <input type="text" placeholder="Name 2" data-game-mode="tournament" data-name-index="1">
                     <input type="text" placeholder="Name 3" data-game-mode="tournament" data-name-index="2">
@@ -229,30 +395,63 @@
                     <input type="text" placeholder="Name 8" data-game-mode="tournament" data-name-index="7">
                 </fieldset>
                 <button onclick="registerPlayers()">
-                    I'm finished!
+                    <span lang="en">I'm finished!</span>
+                    <span lang="de">Fertig!</span>
                 </button>
             </section>
 
             <section data-phase="loading">
-                <h2>Loading...</h2>
+                <h2>
+                    <span lang="en">Loading...</span>
+                    <span lang="en">Wird geladen...</span>
+                </h2>
                 <p>
-                    I'm currently loading all connected devices. This won't
-                    take long. I promise.
+                    <span lang="en">
+                        I'm currently loading all connected devices. This won't
+                        take long. I promise.
+                    </span>
+                    <span lang="de">
+                        Ich lade aktuell die verbunden Geräte. Das wird nicht lange
+                        dauern, versprochen.
+                    </span>
                 </p>
             </section>
 
             <section data-phase="connecting">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Device Connections</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Device Connections</span>
+                    <span lang="de">Geräte Verbinden</span>
+                </h2>
                 <p>
-                    Tell everyone to scan the QR code below! You do not
-                    need to download anything to play.
+                    <span lang="en">
+                        Tell everyone to scan the QR code below! You do not
+                        need to download anything to play.
+                    </span>
+                    <span lang="de">
+                        Jetzt muss jede Person den QR Code unten scannen. Es
+                        muss dafür nichts installiert werden - mit den meisten Geräten
+                        kann einfach die Kamera-App genutzt werden. Alternativ
+                        kannst du auch zu <a href="../join">www.multi.golf/join/</a>
+                        gehen und die Spiel-ID unten manuell eingeben.
+                    </span>
                 </p>
                 <p>
-                    <span style="color: blue;">Important</span>: it's likely that you will
-                    experience connection problems between devices that are in different
-                    networks. For best results, connect all devices to a local hotspot,
-                    ideally created by this device.
+                    <span lang="en">
+                        <span style="color: blue;">Important</span>: it's likely that you will
+                        experience connection problems between devices that are in different
+                        networks. For best results, connect all devices to a local hotspot,
+                        ideally created by this device.
+                    </span>
+                    <span lang="de">
+                        <span style="color: blue;">Wichtig</span>: es kann immer zu
+                        Verbindungsproblemen kommen. Für die besten Verbindungen befinden
+                        sich alle Geräte im gleichen Netzwerk, z.B. in einem Hotspot, der
+                        von dem Server-Gerät gehostet wird oder einem lokalen Wlan.
+                    </span>
                 </p>
 
                 <div id="qr-img">
@@ -260,183 +459,369 @@
                 </div>
                 
                 <button id="finish-players-button" onclick="finishPlayers()">
-                    I've connected all Devices!
+                    <span lang="en">I've connected all Devices!</span>
+                    <span lang="de">Ich habe alle Geräte hinzugefügt!</span>
                 </button>
 
                 <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left"></p>
             </section>
 
             <section data-phase="config-game">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Game Configuration</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Game Configuration</span>
+                    <span lang="de">Optionen</span>
+                </h2>
                 <p>
-                    You have successfully connected <span data-fill="num-connected-devices">?</span>
-                    device(s). You're now able to configure a few settings about the game.
+                    <span lang="en">
+                        You have successfully connected <span data-fill="num-connected-devices">?</span>
+                        device(s). You're now able to configure a few settings about the game.
+                    </span>
+                    <span lang="de">
+                        Du hast erfolgreich <span data-fill="num-connected-devices">?</span>
+                        Gerät(e) verbunden. Hier kannst du jetzt ein paar Einstellungen zum Spiel bearbeiten.
+                    </span>
                 </p>
                 <div id="game-config-container"></div>
                 <button onclick="finishConfig()">
-                    Start Playing
+                    <span lang="en">Continue</span>
+                    <span lang="de">Weiter</span>
                 </button>
             </section>
         
             <section data-phase="tournament-explanation">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Let the games begin!</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
                 <p>
-                    <span data-fill="tournament-builder-name">NAME</span>
-                    is the course constructor now. Click on the button
-                    below to start layouting the phones to your liking.
-                    It would probably benefit everyone if you made a course
-                    that's actually possible. Have fun!
+                    <span lang="en">
+                        <span data-fill="tournament-builder-name">NAME</span>
+                        is the course constructor now.
+                    </span>
+                    <span lang="de">
+                        <span data-fill="tournament-builder-name">NAME</span>
+                        ist jetzt dran, einen Kurs zu bauen. 
+                    </span>
                 </p>
                 <p>
-                    After having constructed your course, everyone 
-                    (including <span data-fill="tournament-builder-name">NAME</span>)
-                    will play the course. Once everyone is finished, the next
-                    person will construct a course. Once everyone has been
-                    constructor, the game will end and the Multigolf Queen will be chosen!
+                    <span lang="en">
+                        After having constructed your course, everyone 
+                        (including <span data-fill="tournament-builder-name">NAME</span>)
+                        will play the course. Once everyone is finished, the next
+                        person will construct a course.
+                    </span>
+                    <span lang="de">
+                        Nachdem der Kurs fertig ist, wird jeder
+                        (inklusive <span data-fill="tournament-builder-name">NAME</span>)
+                        ihn spielen. Wenn jeder fertig ist wird die nächste Person den Kurs bauen.
+                    </span>
                 </p>
-                <button onclick="startGame()">Begin Constructing</button>
+                <button onclick="startGame()">
+                    <span lang="en">Begin Constructing</span>
+                    <span lang="de">Kurs bauen</span>
+                </button>
             </section>
 
             <section data-phase="duell-explanation">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Let the Duell begin!</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Let the duel begin!</span>
+                    <span lang="de">Lass das Duell beginnen!</span>
+                </h2>
                 <p>
-                    Welcome to the Duell! You will now have to construct your course.
-                    You both need to do this together. You also both decide the end
-                    position together, however you will have to place your 
-                    opponents hole (as there are two holes in this mode!).
+                    <span lang="en">
+                        Welcome to the duel! You will now have to construct your course.
+                        You both need to do this together. You also both decide the end
+                        position together, however you will have to place your 
+                        opponents hole (as there are two holes in this mode!).
+                    </span>
+                    <span lang="de">
+                        Willkommen zum Duell-Modus. Ihr werdet gleich zusammen
+                        den Kurs bauen. Nachdem ihr zufrieden mit dem Kurs und den Hindernissen 
+                        seid, könnt ihr eure Löcher platzieren.<br>
+                        <span style="color: blue;">Wichtig</span>: Euer jeweiliges
+                        Loch muss von eurem Gegner platziert werden.
+                    </span>
                 </p>
-                <button onclick="startGame()">Begin Constructing</button>
+                <button onclick="startGame()">
+                    <span lang="en">Begin Constructing</span>
+                    <span lang="de">Weiter</span>
+                </button>
             </section>
 
             <section data-phase="construction">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Course Construction</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Course Construction</span>
+                    <span lang="de">Kursbau</span>
+                </h2>
                 <p>
-                    You can either connect phones manually by drawing
-                    connecting lines along borders or by
-                    choosing a suggested layout at the bottom of this page.
+                    <span lang="en">
+                        You can either connect phones manually by drawing
+                        connecting lines along borders or by
+                        choosing a suggested layout at the bottom of this page.
+                    </span>
+                    <span lang="de">
+                        Du kannst entweder die Geräte manuell miteinander verbinden
+                        oder ein vorgeschlagenes Layout benutzen. Die vorgeschlagenen
+                        Layouts sind ganz unten.
+                    </span>
                 </p>
                 <p>
-                    To connect phones to each other manually,
-                    draw lines on both edges on both phones that you want to connect.
-                    You can only connect ascending phone numbers to each other: 
-                    #1 to #2, #2 to #3, etc. You can see the current board 
-                    status (what the game thinks your board looks like) above.
+                    <span lang="en">
+                        To connect phones to each other manually,
+                        draw lines on both edges on both phones that you want to connect.
+                        You can only connect ascending phone numbers to each other: 
+                        #1 to #2, #2 to #3, etc. You can see the current board 
+                        status (what the game thinks your board looks like) above.
+                    </span>
+                    <span lang="de">
+                        Du kannst die Geräte manuell miteinander verbinden, indem
+                        du eine Linie entlang der gewünschten Kante auf beiden Geräten
+                        (ungefähr) gleichzeitig malst (siehe GIF unten). Bitte verbinde
+                        Gerät #1 mit #2, #2 mit #3 usw. Du kannst oben sehen, wie der
+                        Computer deine Linien bisher interpretiert hat.
+                    </span>
                 </p>
-                <button onclick="finishConstruction()">I've connected all phones</button>
                 <img src="../assets/gifs/building.gif">
+                <button onclick="finishConstruction()">
+                    <span lang="en">I've connected all phones!</span>
+                    <span lang="de">Ich habe alle Geräte verbunden!</span>
+                </button>
                 <p>
-                    Alternatively, choose a layout below to copy.
+                    <span lang="en">
+                        Alternatively, choose a layout below to copy.
+                    </span>
+                    <span lang="de">
+                        Alternativ kannst du auch ein vorgeschlagenes Layout unten akzeptieren.
+                    </span>
                 </p>
                 <div id="layout-choice-container"></div> 
-                <button onclick="generateBoardTemplates()">Regenerate</button>
+                <button onclick="generateBoardTemplates()">
+                    <span lang="en">Regenerate</span>
+                    <span lang="de">Regenerieren</span>
+                </button>
             </section>
 
             <section data-phase="placing">
-                <button class="back-button" onclick="back()">&#x25c0; Back</button>
-                <h2>Placing Items</h2>
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Placing Objects</span>
+                    <span lang="de">Objekte Platzieren</span>
+                </h2>
                 <p>
-                    Select an object below and click anywhere on the course to place it.
-                    Every course must have at least a start and a hole. You can move
-                    existing items around by dragging and pinching. Remove items using
-                    the eraser.
+                    <span lang="en">
+                        Select an object below and click anywhere on the course to place it.
+                        Every course must have at least a start and a hole. You can move
+                        existing items around by dragging and pinching. Remove items using
+                        the eraser.
+                    </span>
+                    <span lang="de">
+                        Wähle ein Objekt aus und tippe irgendwo auf dem Kurs um es zu platzieren.
+                        Ein Kurs braucht mindestens einen Start und ein Loch. Du kannst 
+                        platzierte Objekte bewegen und vergrößern/drehen, indem du sie
+                        auswählst und an der markierten Ecke ziehst. Benutze den Radierer, um
+                        Objekte zu löschen.
+                    </span>
                 </p>
                 <div class="object-selection-container"></div>
-                <button onclick="finishPlacing()">I'm finished.</button>
+                <button onclick="finishPlacing()">
+                    <span lang="en">I'm finished.</span>
+                    <span lang="de">Fertig!</span>
+                </button>
             </section>
 
             <section data-phase="playing-tournament">
-                <h2><span data-fill="tournament-active-name">NAME</span>s Turn</h2>
+                <h2>
+                    <span lang="en">
+                        <span data-fill="tournament-active-name">NAME</span>'s Turn
+                    </span>
+                    <span lang="de">
+                        <span data-fill="tournament-active-name">NAME</span>'s Zug
+                    </span>
+                </h2>
                 <img class="scoreboard">
                 <p>
-                    You're currently playing the course built by
-                    <span data-fill="tournament-builder-name">NAME</span>.
-                    Currently, it's <span data-fill="tournament-active-name">NAME</span>s
-                    turn to kick the ball. 
-                    You can make a maximum of <span data-fill="tournament-max-kicks">#</span> kicks,
-                    after which the round will be over.
+                    <span lang="en">
+                        You're currently playing the course built by
+                        <span data-fill="tournament-builder-name">NAME</span>.
+                        Currently, it's <span data-fill="tournament-active-name">NAME</span>'s
+                        turn to kick the ball. 
+                        You can make a maximum of <span data-fill="tournament-max-kicks">#</span> kicks,
+                        after which the round will be over.
+                    </span>
+                    <span lang="de">
+                        Ihr spielt gerade den Kurs von <span data-fill="tournament-builder-name">NAME</span>.
+                        Es ist gerade <span data-fill="tournament-active-name">NAME</span>'s Zug den Ball 
+                        zu schießen. Wenn ihr nach <span data-fill="tournament-max-kicks">#</span> Schlägen
+                        nicht im Loch seid, bekommt ihr 2 Strafpunkte.
+                    </span>
                 </p>
             </section>
 
             <section data-phase="playing-duell">
-                <h2>Duell</h2>
+                <h2>
+                    <span lang="en">Duel</span>
+                    <span lang="de">Duell</span>
+                </h2>
                 <p>
-                    Take turns kicking the ball. <span data-fill="duell-active-name"></span>
-                    starts. Once the ball reaches a hole, the winner will be chosen!
+                    <span lang="en">
+                        Take turns kicking the ball. <span data-fill="duell-active-name"></span>
+                        starts. Once the ball reaches a hole, the winner will be chosen!
+                    </span>
+                    <span lang="de">
+                        Wechselt euch ab, den Ball zu schlagen. 
+                        <span data-fill="duell-active-name"></span> fängt an. Wenn der
+                        Ball in ein Loch fällt wird der Gewinner / die Gewinnerin gekrönt.
+                    </span>
                 </p>
             </section>
 
             <section data-phase="playing-sandbox">
-                <h2>Sandbox Options</h2>
-                <button onclick="gameState.board.spawnBall()">Spawn a new Ball</button>
+                <h2>
+                    <span lang="en">Sandbox</span>
+                    <span lang="de">Freies Spiel</span>
+                </h2>
+                <button onclick="gameState.board.spawnBall()">
+                    <span lang="en">Spawn a new Ball</span>
+                    <span lang="de">Ball hinzufügen</span>
+                </button>
                 <hr>
-                <button onclick="playNewGame()">Play a new Gamemode</button>
+                <button onclick="playNewGame()">
+                    <span lang="en">Play a new Gamemode</span>
+                    <span lang="de">Spielmodus wechseln</span>
+                </button>
             </section>
 
             <section data-phase="showing-results-of-tournament">
-                <h2>Tournament Results</h2>
-                <p>
-                    You can see the results below.
-                </p>
+                <h2>
+                    <span lang="en">Tournament Results</span>
+                    <span lang="de">Turnier Resultate</span>
+                </h2>
                 <img class="scoreboard">
-                <button onclick="shareScoreboard()">🎈 Share Scores</button>
+                <button onclick="shareScoreboard()">
+                    <span lang="en">🎈 Share Scores</span>
+                    <span lang="de">🎈 Ergebnisse teilen</span>
+                </button>
                 <p>
-                    Thank you very much for playing. If you want to
-                    share these results with your friends, make sure
-                    to click the share button above. 
+                    <span lang="en">
+                        Thank you very much for playing. If you want to
+                        share these results with your friends, make sure
+                        to click the share button above. 
+                    </span>
+                    <span lang="de">
+                        Vielen Dank fürs Spielen. Wenn es euch gefallen hat,
+                        kannst du über den "Ergebnisse teilen"-Button 
+                        die Ergbnisse mit deinen Freunden teilen.
+                    </span>
                 </p>
-                <p>
-                    To play another game (perhaps a new gamemode?),
-                    press the button below. 
-                </p>
-                <button onclick="playNewGame()">Play a new Game</button>
+                <button onclick="playNewGame()">
+                    <span lang="en">Play a new Game</span>
+                    <span lang="de">Neues Spiel anfangen</span>
+                </button>
             </section>
 
             <section data-phase="showing-results-of-duell">
-                <h2><span data-fill="duell-winner-name"></span> won the Duell!</h2>
+                <h2>
+                    <span lang="en">
+                        <span data-fill="duell-winner-name"></span> won the Duel!
+                    </span>
+                    <span lang="de">
+                        <span data-fill="duell-winner-name"></span> hat das Duell gewonnen!
+                    </span>
+                </h2>
                 <p>
-                    Well. The duel is over and the winner was determined! You can play
-                    another game mode or another Duell by clicking the button below.
-                    Thank you for playing!
+                    <span lang="en">
+                        Well. The duel is over and the winner was determined! You can play
+                        another game mode or another Duell by clicking the button below.
+                        Thank you for playing!
+                    </span>
+                    <span lang="de">
+                        Das Duell ist vorbei! Vielen Dank fürs Spielen! Benutze den Button unten,
+                        um ein neues Spiel (vielleicht ein anderer Spielmodus?) anzufangen.
+                    </span>
                 </p>
-                <button onclick="playNewGame()">Play a new Game</button>
+                <button onclick="playNewGame()">
+                    <span lang="en">Play a new Game</span>
+                    <span lang="de">Neues Spiel anfangen</span>
+                </button>
             </section>
         </main>
 
         <!-- BEGIN default_footer -->
         <footer>
             <div class="link-grid">
-            
                 <div class="link-group">
                     <div class="group-header">Game</div>
-                    <a class="group-item" href="../host">Start a Game</a>
-                    <a class="group-item" href="../join">Join a Game</a>
+                    <a class="group-item" href="../host">
+                        <span lang="en">Start a Game</span>
+                        <span lang="de">Spiel Starten</span>
+                    </a>
+                    <a class="group-item" href="../join">
+                        <span lang="en">Join a Game</span>
+                        <span lang="de">Spiel Beitreten</span>
+                    </a>
                 </div>
                 <div class="link-group">
                     <div class="group-header">Info</div>
-                    <a class="group-item" href="../about">About Multigolf</a>
+                    <a class="group-item" href="../about">
+                        <span lang="en">About Multigolf</span>
+                        <span lang="de">Über Multigolf</span>
+                    </a>
                     <a class="group-item" href="../faq">FAQ</a>
-                    <a class="group-item" href="../contact">Contact Me</a>
+                    <a class="group-item" href="../contact">
+                        <span lang="en">Contact Me</span>
+                        <span lang="de">Kontakt</span>
+                    </a>
                 </div>
                 <div class="link-group">
-                    <div class="group-header">Legal</div>
-                    <a class="group-item" href="../impressum">Impressum</a>
-                    <a class="group-item" href="../data-privacy">Data Privacy</a>
+                    <div class="group-header">
+                        <span lang="en">Legal</span>
+                        <span lang="de">Legales</span>
+                    </div>
+                    <a class="group-item" href="../impressum">
+                        <span lang="en">Imprint</span>
+                        <span lang="de">Impressum</span>
+                    </a>
+                    <a class="group-item" href="../data-privacy">
+                        <span lang="en">Data Privacy</span>
+                        <span lang="de">Datenschutz</span>
+                    </a>
                 </div>
                 <div class="link-group">
-                    <div class="group-header">Socials</div>
+                    <div class="group-header">
+                        <span lang="en">Socials</span>
+                        <span lang="de">Links</span>
+                    </div>
                     <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
                     <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
-                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
+                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">
+                        <span lang="en">Merch Shop</span>
+                        <span lang="de">Fan-Shop</span>
+                    </a>
                 </div>
             </div>
             <hr>
             <div class="footer-text">
-                <span class="text">Made by Noel Friedrich</span>
-                <button class="theme-changer" id="change-style-a">Change Theme</button>
+                <span lang="en" class="text">Made by Noel Friedrich</span>
+                <span lang="de" class="text">Erstellt von Noel Friedrich</span>
+                <button class="theme-changer" id="change-style-a">
+                    <span lang="en">Change Theme</span>
+                    <span lang="de">Hell/Dunkel</span>
+                </button>
             </div>
         </footer>
         
@@ -461,8 +846,19 @@
                     // const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
                     localStorage.setItem("style", "light")
                 }
+                document.body.dataset.style = localStorage.getItem("style")
         
-                document.body.dataset.style = localStorage.getItem("style") || "light"
+                // update language
+                if (localStorage.getItem("lang") == null) {
+                    const userDefaultLang = navigator.language || navigator.userLanguage
+                    if (userDefaultLang.startsWith("de")) {
+                        localStorage.setItem("lang", "de")
+                    } else {
+                        localStorage.setItem("lang", "en")
+                    }
+                }
+                document.documentElement.lang = localStorage.getItem("lang")
+        
         
                 // replace CSS "100vh" with actual inner height in px
                 // (-1 to prevent inaccuracies in some browsers)
@@ -494,6 +890,7 @@
         <!-- END -->
 
         <!-- SET js_version=28 -->
+        <!-- JS_IMPORT js/text.js -->
         <!-- JS_IMPORT js/qrcode.js -->
         <!-- JS_IMPORT js/sprite.js -->
         <!-- JS_IMPORT js/nosleep.js -->
@@ -513,6 +910,7 @@
         <!-- JS_IMPORT host/main.js -->
 
         <!-- BEGIN js_imports -->
+        <script src="../js/text.js?v28"></script>
         <script src="../js/qrcode.js?v28"></script>
         <script src="../js/sprite.js?v28"></script>
         <script src="../js/nosleep.js?v28"></script>

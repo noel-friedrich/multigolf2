@@ -26,11 +26,24 @@
                     <div class="logo-text" href="">Multigolf</div>
                 </a>
                 <div class="link-island">
-                    <a href="host/">Start Game</a>
-                    <a href="join/">Join Game</a>
-                    <a href="about/">About</a>
-                    <a href="faq/">FAQ</a>
-                    <a href="contact/">Contact</a>
+                    <a href="host/">
+                        <span lang="en">Start Game</span>
+                        <span lang="de">Spiel Starten</span>
+                    </a>
+                    <a href="join/">
+                        <span lang="en">Join Game</span>
+                        <span lang="de">Spiel Beitreten</span>
+                    </a>
+                    <a href="about/">
+                        <span lang="en">About</span>
+                        <span lang="de">Info</span>
+                    </a>
+                    <a href="faq/">
+                        <span lang="en">FAQ</span>
+                        <span lang="de">FAQ</span>
+                    </a>
+        
+                    <a class="change-lang-button"></a>
                 </div>
                 <div class="hamburger-icon" tabindex="0">
                     <div class="bar"></div>
@@ -39,16 +52,48 @@
                 </div>
             </div>
             <div class="header-drop-menu">
-                <a href="host/">Start a Game</a>
-                <a href="join/">Join a Game</a>
-                <a href="about/">What is Multigolf?</a>
-                <a href="faq/">FAQ & Help</a>
-                <a href="contact/">Contact</a>
+                <a lang="en" href="host/">Start a Game</a>
+                <a lang="en" href="join/">Join a Game</a>
+                <a lang="en" href="about/">What is Multigolf?</a>
+                <a lang="en" href="faq/">FAQ & Help</a>
+                <a lang="en" href="contact/">Contact</a>
+        
+                <a lang="de" href="host/">Spiel Starten</a>
+                <a lang="de" href="join/">Spiel Beitreten</a>
+                <a lang="de" href="about/">Was ist Multigolf?</a>
+                <a lang="de" href="faq/">FAQ & Hilfe</a>
+                <a lang="de" href="contact/">Kontakt</a>
+        
+                <a class="change-lang-button"></a>
             </div>
         </header>
+        <div class="header-placeholder"></div>
         
         <script>
             {
+                const changeLangButtons = document.querySelectorAll(".change-lang-button")
+                for (const changeLangButton of changeLangButtons) {
+                    changeLangButton.onclick = event => {
+                        const languages = ["en", "de"]
+                        const currStyle = localStorage.getItem("lang") || languages[0]
+                        const nextIndex = (languages.indexOf(currStyle) + 1) % languages.length
+                        const nextNextIndex = (languages.indexOf(currStyle) + 2) % languages.length
+                        localStorage.setItem("lang", languages[nextIndex])
+                        document.documentElement.lang = localStorage.getItem("lang")
+        
+                        changeLangButton.animate([
+                            { transform: "rotateX(0deg)" },
+                            { transform: "rotateX(360deg)" }
+                        ], {
+                            easing: "ease-in-out",
+                            duration: 350,
+                            fill: "forwards"
+                        })
+        
+                        event.preventDefault()
+                    }
+                }
+        
                 const header = document.querySelector("header")
                 const hamburger = document.querySelector(".hamburger-icon")
                 const headerDropMenu = document.querySelector(".header-drop-menu")
@@ -82,8 +127,18 @@
         </script>
         <!-- END -->
 
+        <div class="huge-text-container">
+            <div class="headline">
+                <span lang="en">Minigolf, but Multiscreen.</span>
+                <span lang="de">Minigolf, aber cooler.</span>
+            </div>
+            <div class="subtitle">
+                <span lang="en">a party board game that doesn't require any preparation.</span>
+                <span lang="de">ein Minigolf-Brettspiel ganz ohne nervige Vorbereitung</span>
+            </div>
+        </div>
+
         <main>
-            <h1 style="font-weight: normal;">Welcome to <span style="font-weight: bolder;">Multigolf</span></h1>
             <div class="yt-video-wrapper">
                 <iframe style="width: 100%"  width="560" height="315" src="https://www.youtube.com/embed/6v91nD3gkiY?si=X1et9-EC__vEkYtG"
                     title="YouTube video player" frameborder="0"
@@ -97,32 +152,60 @@
             </a>-->
 
             <p>
-                Multigolf is a cross-device minigolf game. Build digital-reality courses out of 
-                multiple phones, then battle your friends in the available
-                game-modes. Meet some people, steal their phones and begin
-                building complex minigolf courses on any tabletop anywhere. 
-                It's extremely simple to setup and doesn't require any
-                download, players will simply scan a QR code and begin playing.
-                Sounds good? Then go <a href="host">Start a Game</a>!
+                <span lang="en">
+                    Welcome to Multigolf, the ultimate cross-device minigolf game!
+                    Turn any tabletop into a thrilling course using your phones.
+                    No downloads needed—just scan a QR code and start playing.
+                    Grab your friends, snag their phones, and start the battle.
+                    Sounds good? Then go <a href="host">Start a Game</a>!
+                </span>
+                <span lang="de">
+                    Willkommen zu Multigolf, dem ultimativen multi-Gerät Minigolf Spiel!
+                    Verwandle jeden Tisch in einen aufregenden Multigolf-Kurs -
+                    es ist weder Download noch große Vorbereitung nötig.
+                    Nimm deine Freunde, klau die Handys und starte den Wettkampf.
+                    Klingt gut? Dann <a href="host">Starte ein Spiel</a>!
+                </span>
             </p>
 
             <div class="middle-container">
                 <img src="assets/pics/demo-img-transparent.png" class="smaller middle" alt="Image depicting Multiple Devices playing Multigolf together">
             </div>
-            <h2>How does it work?</h2>
+            <h2>
+                <span lang="en">How does it work?</span>
+                <span lang="de">Wie funktionierts?</span>
+            </h2>
             <p>
-                By creating a game, your device will become the server. This server
-                will not be able to show the course, but will rather function as a
-                control center and will show you what to do. After configuring
-                the game (choosing gamemode, entering names of
-                everybody...) you'll begin designing your course! You'll have
-                to tell the phones how they are arranged physically by drawing
-                lines along the connected edges. Once set up, the game is afoot!
-                Some gamemodes require multiple people to design their own
-                unique courses, so make sure to be creative with your course 
-                design!
+                <span lang="en">
+                    By creating a game, your device will become the server. This server
+                    will not be able to show the course, but will rather function as a
+                    control center and will show you what to do. After configuring
+                    the game (choosing gamemode, entering names of
+                    everybody...) you'll begin designing your course! You'll have
+                    to tell the phones how they are arranged physically by drawing
+                    lines along the connected edges. Once set up, the game is afoot!
+                    Some gamemodes require multiple people to design their own
+                    unique courses, so make sure to be creative with your course 
+                    design!
+                </span>
+                <span lang="de">
+                    Wenn du das Spiel startest wird dein Gerät zum Spielserver. Dein Gerät
+                    wird zwar nicht Teil des Kurses, dafür aber als Kontrollzentrum
+                    fungieren, mit dem das Spiel geleitet und konfiguriert wird. 
+                    Nach dem Spielaufbau geht es damit los, einen Kurs zu bauen! Du kannst
+                    Geräte miteinander verbinden und Hindernisse platzieren, um einen 
+                    möglichst coolen/schwierigen Kurs zu bauen. Es gibt außerdem
+                    verschiedene Spielmodi, dein Multigolf-Erlebnis wird also nie langweilig :)
+                </span>
             </p>
-            <a href="host/" class="linkbutton">Start a Game</a>
+            <a href="host/" class="linkbutton">
+                <span lang="en">
+                    Start a Game
+                </span>
+                <span lang="de">
+                    Starte ein Spiel
+                </span>
+            </a>
         </main>
 
         <script>
@@ -132,34 +215,64 @@
         <!-- BEGIN default_footer -->
         <footer>
             <div class="link-grid">
-            
                 <div class="link-group">
                     <div class="group-header">Game</div>
-                    <a class="group-item" href="host">Start a Game</a>
-                    <a class="group-item" href="join">Join a Game</a>
+                    <a class="group-item" href="host">
+                        <span lang="en">Start a Game</span>
+                        <span lang="de">Spiel Starten</span>
+                    </a>
+                    <a class="group-item" href="join">
+                        <span lang="en">Join a Game</span>
+                        <span lang="de">Spiel Beitreten</span>
+                    </a>
                 </div>
                 <div class="link-group">
                     <div class="group-header">Info</div>
-                    <a class="group-item" href="about">About Multigolf</a>
+                    <a class="group-item" href="about">
+                        <span lang="en">About Multigolf</span>
+                        <span lang="de">Über Multigolf</span>
+                    </a>
                     <a class="group-item" href="faq">FAQ</a>
-                    <a class="group-item" href="contact">Contact Me</a>
+                    <a class="group-item" href="contact">
+                        <span lang="en">Contact Me</span>
+                        <span lang="de">Kontakt</span>
+                    </a>
                 </div>
                 <div class="link-group">
-                    <div class="group-header">Legal</div>
-                    <a class="group-item" href="impressum">Impressum</a>
-                    <a class="group-item" href="data-privacy">Data Privacy</a>
+                    <div class="group-header">
+                        <span lang="en">Legal</span>
+                        <span lang="de">Legales</span>
+                    </div>
+                    <a class="group-item" href="impressum">
+                        <span lang="en">Imprint</span>
+                        <span lang="de">Impressum</span>
+                    </a>
+                    <a class="group-item" href="data-privacy">
+                        <span lang="en">Data Privacy</span>
+                        <span lang="de">Datenschutz</span>
+                    </a>
                 </div>
                 <div class="link-group">
-                    <div class="group-header">Socials</div>
+                    <div class="group-header">
+                        <span lang="en">Socials</span>
+                        <span lang="de">Links</span>
+                    </div>
                     <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
                     <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
-                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
+                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">
+                        <span lang="en">Merch Shop</span>
+                        <span lang="de">Fan-Shop</span>
+                    </a>
                 </div>
             </div>
             <hr>
             <div class="footer-text">
-                <span class="text">Made by Noel Friedrich</span>
-                <button class="theme-changer" id="change-style-a">Change Theme</button>
+                <span lang="en" class="text">Made by Noel Friedrich</span>
+                <span lang="de" class="text">Erstellt von Noel Friedrich</span>
+                <button class="theme-changer" id="change-style-a">
+                    <span lang="en">Change Theme</span>
+                    <span lang="de">Hell/Dunkel</span>
+                </button>
             </div>
         </footer>
         
@@ -184,8 +297,19 @@
                     // const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
                     localStorage.setItem("style", "light")
                 }
+                document.body.dataset.style = localStorage.getItem("style")
         
-                document.body.dataset.style = localStorage.getItem("style") || "light"
+                // update language
+                if (localStorage.getItem("lang") == null) {
+                    const userDefaultLang = navigator.language || navigator.userLanguage
+                    if (userDefaultLang.startsWith("de")) {
+                        localStorage.setItem("lang", "de")
+                    } else {
+                        localStorage.setItem("lang", "en")
+                    }
+                }
+                document.documentElement.lang = localStorage.getItem("lang")
+        
         
                 // replace CSS "100vh" with actual inner height in px
                 // (-1 to prevent inaccuracies in some browsers)

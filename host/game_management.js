@@ -164,7 +164,7 @@ function finishConstruction() {
     }
 
     if (gameState.board.course && gameState.board.course.getOverlaps().length > 0) {
-        if (!confirm("Your course has overlapping parts. Try reconnecting the phones in a different way and draw lines in the same directions on connecting phones. Do you still want to proceed?")) {
+        if (!confirm(Text.CourseHasOverlap)) {
             return
         }
     } 
@@ -194,7 +194,7 @@ function preparePlacing() {
             headImg.classList.add("head-img")
             description.classList.add("description")
 
-            title.textContent = obj.type
+            title.textContent = obj.name
             objectImg.src = obj.sprite
             description.textContent = gameState.replaceText(obj.description)
 
@@ -229,23 +229,23 @@ function finishPlacing() {
     }
 
     if (!gameState.board.startPos) {
-        alert("You haven't placed a start yet. Place one and try again.")
+        alert(Text.NoStartYet)
         return
     }
 
     if (gameState.board.endPositions.length == 0) {
-        alert("You haven't placed a hole yet. Place one and try again.")
+        alert(Text.NoHoleYet)
         return
     }
 
     if (gameState.mode == gameMode.Duell) {
         if (!gameState.board.objects.find(o => o.type == golfObjectType.DuellHole1)) {
-            alert(gameState.replaceText("You haven't placed a hole for <duell-player-1> yet."))
+            alert(Text.HaventPlacedHoleFor(gameState.replaceText("<duell-player-1>")))
             return
         }
 
         if (!gameState.board.objects.find(o => o.type == golfObjectType.DuellHole2)) {
-            alert(gameState.replaceText("You haven't placed a hole for <duell-player-2> yet."))
+            alert(Text.HaventPlacedHoleFor(gameState.replaceText("<duell-player-2>")))
             return
         }
     }

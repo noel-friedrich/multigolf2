@@ -27,11 +27,24 @@
                     <div class="logo-text" href="../">Multigolf</div>
                 </a>
                 <div class="link-island">
-                    <a href="../host/">Start Game</a>
-                    <a href="../join/">Join Game</a>
-                    <a href="../about/">About</a>
-                    <a href="../faq/">FAQ</a>
-                    <a href="../contact/">Contact</a>
+                    <a href="../host/">
+                        <span lang="en">Start Game</span>
+                        <span lang="de">Spiel Starten</span>
+                    </a>
+                    <a href="../join/">
+                        <span lang="en">Join Game</span>
+                        <span lang="de">Spiel Beitreten</span>
+                    </a>
+                    <a href="../about/">
+                        <span lang="en">About</span>
+                        <span lang="de">Info</span>
+                    </a>
+                    <a href="../faq/">
+                        <span lang="en">FAQ</span>
+                        <span lang="de">FAQ</span>
+                    </a>
+        
+                    <a class="change-lang-button"></a>
                 </div>
                 <div class="hamburger-icon" tabindex="0">
                     <div class="bar"></div>
@@ -40,16 +53,48 @@
                 </div>
             </div>
             <div class="header-drop-menu">
-                <a href="../host/">Start a Game</a>
-                <a href="../join/">Join a Game</a>
-                <a href="../about/">What is Multigolf?</a>
-                <a href="../faq/">FAQ & Help</a>
-                <a href="../contact/">Contact</a>
+                <a lang="en" href="../host/">Start a Game</a>
+                <a lang="en" href="../join/">Join a Game</a>
+                <a lang="en" href="../about/">What is Multigolf?</a>
+                <a lang="en" href="../faq/">FAQ & Help</a>
+                <a lang="en" href="../contact/">Contact</a>
+        
+                <a lang="de" href="../host/">Spiel Starten</a>
+                <a lang="de" href="../join/">Spiel Beitreten</a>
+                <a lang="de" href="../about/">Was ist Multigolf?</a>
+                <a lang="de" href="../faq/">FAQ & Hilfe</a>
+                <a lang="de" href="../contact/">Kontakt</a>
+        
+                <a class="change-lang-button"></a>
             </div>
         </header>
+        <div class="header-placeholder"></div>
         
         <script>
             {
+                const changeLangButtons = document.querySelectorAll(".change-lang-button")
+                for (const changeLangButton of changeLangButtons) {
+                    changeLangButton.onclick = event => {
+                        const languages = ["en", "de"]
+                        const currStyle = localStorage.getItem("lang") || languages[0]
+                        const nextIndex = (languages.indexOf(currStyle) + 1) % languages.length
+                        const nextNextIndex = (languages.indexOf(currStyle) + 2) % languages.length
+                        localStorage.setItem("lang", languages[nextIndex])
+                        document.documentElement.lang = localStorage.getItem("lang")
+        
+                        changeLangButton.animate([
+                            { transform: "rotateX(0deg)" },
+                            { transform: "rotateX(360deg)" }
+                        ], {
+                            easing: "ease-in-out",
+                            duration: 350,
+                            fill: "forwards"
+                        })
+        
+                        event.preventDefault()
+                    }
+                }
+        
                 const header = document.querySelector("header")
                 const hamburger = document.querySelector(".hamburger-icon")
                 const headerDropMenu = document.querySelector(".header-drop-menu")
@@ -84,61 +129,94 @@
         <!-- END -->
         
         <main>
-            <h1>FAQ and Help</h1>
-            <p>
+            <h1>
+                <span lang="en">FAQ and Help</span>
+                <span lang="de">FAQ und Hilfe</span>
+            </h1>
+            <p lang="en">
                 Below are some <b>F</b>requently <b>A</b>sked <b>Q</b>uestions.
                 If you have any other questions, feel free to contact me
-                <a href="../contact">here</a>.
+                <a href="../contact">here</a>!
+            </p>
+            <p lang="de">
+                Unten sind ein paar Häufig gestellte Fragen (FAQs). 
+                Wenn andere Fragen bestehen bin ich über das
+                <a href="../contact">Kontaktformular</a> erreichbar!
             </p>
             <div class="faq-container">
                 <div class="entry">
-                    <div class="question">Can I use the host device for the course?</div>
-                    <div class="answer">
+                    <div class="question" lang="en">
+                        Can I use the host device for the course?
+                    </div>
+                    <div class="answer" lang="en">
                         <b>No</b>. The host phone display's useful information
                         for the game like status, scores and who's turn it is 
                         and cannot participate as a device in the Multigolf course.
                         Thus, when you're playing with 5 phones, only 4 can be used
                         for the course itself while one must play host.
                     </div>
+
+                    <div class="question" lang="de">
+                        Kann das Server-Gerät für den Kurs benutzt werden?
+                    </div>
+                    <div class="answer" lang="de">
+                        <b>Nein</b>. Das Server-Gerät zeigt wichtige Informationen,
+                        den Spielstatus und Anleitungen an. Wenn also z.B. insgesamt
+                        5 Geräte verfügbar sind können nur 4 davon für den Kurs benutzt werden.
+                        Es eignet sich gut, einen Laptop oder PC als Server-Gerät zu verwenden.
+                    </div>
                 </div>
                 <div class="entry">
-                    <div class="question">Can I use an IPad/a Tablet/a Laptop?</div>
-                    <div class="answer">
+                    <div class="question" lang="en">Can I use an iPad/a Tablet/a Laptop?</div>
+                    <div class="answer" lang="en">
                         <b>Yes</b>! You may use any device with a touch screen
                         for the course. The host device does not need to have a touch
                         screen: it makes sense to use a laptop or computer as the 
                         host to increase the number of phones to build the course.
                     </div>
+
+                    <div class="question" lang="de">Kann ich ein iPad/ein Tablet/einen Laptop benutzen?</div>
+                    <div class="answer" lang="de">
+                        <b>Ja</b>! Du kannst jedes Gerät mit Touch-Screen als Kurs benutzen.
+                        Wenn du ein Gerät ohne Touch-Screen benutzen willst kannst du es
+                        stattdessen als Server-Gerät verwenden.
+                    </div>
                 </div>
                 <div class="entry">
-                    <div class="question">How many devices to I need to play?</div>
-                    <div class="answer">
+                    <div class="question" lang="en">How many devices to I need to play?</div>
+                    <div class="answer" lang="en">
                         A good Multigolf course is made up of at least 3 devices plus 
                         a host device. You can start games with only two devices
                         (one host, one course), but that won't be much fun.
                     </div>
+
+                    <div class="question" lang="de">Wieviele Geräte brauche ich zum Spielen?</div>
+                    <div class="answer" lang="de">
+                        Ein guter Multigolf Kurs besteht aus mindestens 3 Geräten (und einem
+                        Server-Gerät). Es können auch Kurse mit nur einem Gerät gestartet werden,
+                        die aber nicht besonders aufregend sind.
+                    </div>
                 </div>
                 <div class="entry">
-                    <div class="question">Is there a maximum number of devices?</div>
-                    <div class="answer">
+                    <div class="question" lang="en">Is there a maximum number of devices?</div>
+                    <div class="answer" lang="en">
                         <b>No</b>. You can theoretically add hundreds of phones, although
                         the rounds might take a while to setup and play. The ideal number of
                         devices might be ~6, since a course that is too big get's boring,
                         especially if you're just waiting for others to finish a round.
                     </div>
-                </div>
-                <div class="entry">
-                    <div class="question">How do the phones know where they are?</div>
-                    <div class="answer">
-                        While constructing a course, you will be prompted to connect
-                        the phones by drawing a line with your finger along the edges that
-                        connect phones together. The host device then does some math and
-                        figures out how the course looks!
+
+                    <div class="question" lang="de">Gibt es eine maximale Anzahl von Geräten?</div>
+                    <div class="answer" lang="de">
+                        <b>Nein</b>. Du kannst theoretisch hunderte von Geräten hinzufügen,
+                        jedoch werden die Runden wahrscheinlich zu lange dauern um in irgend einer
+                        Hinsicht Spaß zu machen. Die ideale Anzahl an Geräten liegt wahrscheinlich bei
+                        etwa ~6 Geräten.
                     </div>
                 </div>
                 <div class="entry">
-                    <div class="question">Why can't I build a circular course?</div>
-                    <div class="answer">
+                    <div class="question" lang="en">Why can't I build a circular course?</div>
+                    <div class="answer" lang="en">
                         Most phones have much smaller display's than physical sizes
                         (they have bezels around the display). However, the game does 
                         not know how large these are. Thus, the shape of the digital course
@@ -146,14 +224,33 @@
                         it only approximates it. This makes it nearly impossible to 
                         align devices to both form a circular path digitally and physically.
                     </div>
+
+                    <div class="question" lang="de">Wieso kann ich einen Kreis-Kurs bauen?</div>
+                    <div class="answer" lang="de">
+                        Die meisten Handys haben ein kleines Display als physikalische Größe
+                        (sie haben Ränder). Dieser Rand kann vom Spiel nicht mit einberechnet werden,
+                        da das Spiel keine Informationen hat, wie dick dieser Rand bei jedem
+                        Handy ist. Es kann also kein realitätsgetreues Abbild des Kurses digital 
+                        repliziert werden, stattdessen wird es nur approximiert. Das führt dazu,
+                        dass ein in realität kreisförmiger Kurs (ein Kurs, dessen "Ende" zum "Anfang" verbunden ist)
+                        nicht im digitalen Abbild kreisförmig sein wird.
+                    </div>
                 </div>
                 <div class="entry">
-                    <div class="question">What happens when a device disconnects ingame?</div>
-                    <div class="answer">
+                    <div class="question" lang="en">What happens when a device disconnects ingame?</div>
+                    <div class="answer" lang="en">
                         If the host device fails, the game stops. Try to keep it alive!
                         If a device is a part of the course and disconnects, you can simply
                         reconnect it mid-game. If it fails permanently (battery dead?),
                         you'll have to restart the game. 
+                    </div>
+
+                    <div class="question" lang="de">Was passiert wenn ein Gerät im Spiel ausgeht oder das Spiel verlässt?</div>
+                    <div class="answer" lang="de">
+                        Wenn sich das Server-Gerät abschaltet endet das Spiel. Wenn ein anderes
+                        Gerät im Kurs die Verbindung abbricht kann es neu verbunden werden. Wenn
+                        es permanent den Kurs verlassen muss, muss ein neues Spiel
+                        angefangen werden.
                     </div>
                 </div>
             </div>
@@ -162,9 +259,10 @@
         <script>
             const faqEntries = document.querySelectorAll(".faq-container > .entry")
             for (const entry of faqEntries) {
-                const question = entry.querySelector(".question")
-                question.onclick = () => {
-                    entry.classList.toggle("unfolded")
+                for (const question of entry.querySelectorAll(".question")) {
+                    question.onclick = () => {
+                        entry.classList.toggle("unfolded")
+                    }
                 }
             }
         </script>
@@ -172,34 +270,64 @@
         <!-- BEGIN default_footer -->
         <footer>
             <div class="link-grid">
-            
                 <div class="link-group">
                     <div class="group-header">Game</div>
-                    <a class="group-item" href="../host">Start a Game</a>
-                    <a class="group-item" href="../join">Join a Game</a>
+                    <a class="group-item" href="../host">
+                        <span lang="en">Start a Game</span>
+                        <span lang="de">Spiel Starten</span>
+                    </a>
+                    <a class="group-item" href="../join">
+                        <span lang="en">Join a Game</span>
+                        <span lang="de">Spiel Beitreten</span>
+                    </a>
                 </div>
                 <div class="link-group">
                     <div class="group-header">Info</div>
-                    <a class="group-item" href="../about">About Multigolf</a>
+                    <a class="group-item" href="../about">
+                        <span lang="en">About Multigolf</span>
+                        <span lang="de">Über Multigolf</span>
+                    </a>
                     <a class="group-item" href="../faq">FAQ</a>
-                    <a class="group-item" href="../contact">Contact Me</a>
+                    <a class="group-item" href="../contact">
+                        <span lang="en">Contact Me</span>
+                        <span lang="de">Kontakt</span>
+                    </a>
                 </div>
                 <div class="link-group">
-                    <div class="group-header">Legal</div>
-                    <a class="group-item" href="../impressum">Impressum</a>
-                    <a class="group-item" href="../data-privacy">Data Privacy</a>
+                    <div class="group-header">
+                        <span lang="en">Legal</span>
+                        <span lang="de">Legales</span>
+                    </div>
+                    <a class="group-item" href="../impressum">
+                        <span lang="en">Imprint</span>
+                        <span lang="de">Impressum</span>
+                    </a>
+                    <a class="group-item" href="../data-privacy">
+                        <span lang="en">Data Privacy</span>
+                        <span lang="de">Datenschutz</span>
+                    </a>
                 </div>
                 <div class="link-group">
-                    <div class="group-header">Socials</div>
+                    <div class="group-header">
+                        <span lang="en">Socials</span>
+                        <span lang="de">Links</span>
+                    </div>
                     <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
                     <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
-                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
+                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">
+                        <span lang="en">Merch Shop</span>
+                        <span lang="de">Fan-Shop</span>
+                    </a>
                 </div>
             </div>
             <hr>
             <div class="footer-text">
-                <span class="text">Made by Noel Friedrich</span>
-                <button class="theme-changer" id="change-style-a">Change Theme</button>
+                <span lang="en" class="text">Made by Noel Friedrich</span>
+                <span lang="de" class="text">Erstellt von Noel Friedrich</span>
+                <button class="theme-changer" id="change-style-a">
+                    <span lang="en">Change Theme</span>
+                    <span lang="de">Hell/Dunkel</span>
+                </button>
             </div>
         </footer>
         
@@ -224,8 +352,19 @@
                     // const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
                     localStorage.setItem("style", "light")
                 }
+                document.body.dataset.style = localStorage.getItem("style")
         
-                document.body.dataset.style = localStorage.getItem("style") || "light"
+                // update language
+                if (localStorage.getItem("lang") == null) {
+                    const userDefaultLang = navigator.language || navigator.userLanguage
+                    if (userDefaultLang.startsWith("de")) {
+                        localStorage.setItem("lang", "de")
+                    } else {
+                        localStorage.setItem("lang", "en")
+                    }
+                }
+                document.documentElement.lang = localStorage.getItem("lang")
+        
         
                 // replace CSS "100vh" with actual inner height in px
                 // (-1 to prevent inaccuracies in some browsers)

@@ -29,11 +29,24 @@
                     <div class="logo-text" href="../">Multigolf</div>
                 </a>
                 <div class="link-island">
-                    <a href="../host/">Start Game</a>
-                    <a href="../join/">Join Game</a>
-                    <a href="../about/">About</a>
-                    <a href="../faq/">FAQ</a>
-                    <a href="../contact/">Contact</a>
+                    <a href="../host/">
+                        <span lang="en">Start Game</span>
+                        <span lang="de">Spiel Starten</span>
+                    </a>
+                    <a href="../join/">
+                        <span lang="en">Join Game</span>
+                        <span lang="de">Spiel Beitreten</span>
+                    </a>
+                    <a href="../about/">
+                        <span lang="en">About</span>
+                        <span lang="de">Info</span>
+                    </a>
+                    <a href="../faq/">
+                        <span lang="en">FAQ</span>
+                        <span lang="de">FAQ</span>
+                    </a>
+        
+                    <a class="change-lang-button"></a>
                 </div>
                 <div class="hamburger-icon" tabindex="0">
                     <div class="bar"></div>
@@ -42,16 +55,48 @@
                 </div>
             </div>
             <div class="header-drop-menu">
-                <a href="../host/">Start a Game</a>
-                <a href="../join/">Join a Game</a>
-                <a href="../about/">What is Multigolf?</a>
-                <a href="../faq/">FAQ & Help</a>
-                <a href="../contact/">Contact</a>
+                <a lang="en" href="../host/">Start a Game</a>
+                <a lang="en" href="../join/">Join a Game</a>
+                <a lang="en" href="../about/">What is Multigolf?</a>
+                <a lang="en" href="../faq/">FAQ & Help</a>
+                <a lang="en" href="../contact/">Contact</a>
+        
+                <a lang="de" href="../host/">Spiel Starten</a>
+                <a lang="de" href="../join/">Spiel Beitreten</a>
+                <a lang="de" href="../about/">Was ist Multigolf?</a>
+                <a lang="de" href="../faq/">FAQ & Hilfe</a>
+                <a lang="de" href="../contact/">Kontakt</a>
+        
+                <a class="change-lang-button"></a>
             </div>
         </header>
+        <div class="header-placeholder"></div>
         
         <script>
             {
+                const changeLangButtons = document.querySelectorAll(".change-lang-button")
+                for (const changeLangButton of changeLangButtons) {
+                    changeLangButton.onclick = event => {
+                        const languages = ["en", "de"]
+                        const currStyle = localStorage.getItem("lang") || languages[0]
+                        const nextIndex = (languages.indexOf(currStyle) + 1) % languages.length
+                        const nextNextIndex = (languages.indexOf(currStyle) + 2) % languages.length
+                        localStorage.setItem("lang", languages[nextIndex])
+                        document.documentElement.lang = localStorage.getItem("lang")
+        
+                        changeLangButton.animate([
+                            { transform: "rotateX(0deg)" },
+                            { transform: "rotateX(360deg)" }
+                        ], {
+                            easing: "ease-in-out",
+                            duration: 350,
+                            fill: "forwards"
+                        })
+        
+                        event.preventDefault()
+                    }
+                }
+        
                 const header = document.querySelector("header")
                 const hamburger = document.querySelector(".hamburger-icon")
                 const headerDropMenu = document.querySelector(".header-drop-menu")
@@ -111,34 +156,64 @@
         <!-- BEGIN default_footer -->
         <footer>
             <div class="link-grid">
-            
                 <div class="link-group">
                     <div class="group-header">Game</div>
-                    <a class="group-item" href="../host">Start a Game</a>
-                    <a class="group-item" href="../join">Join a Game</a>
+                    <a class="group-item" href="../host">
+                        <span lang="en">Start a Game</span>
+                        <span lang="de">Spiel Starten</span>
+                    </a>
+                    <a class="group-item" href="../join">
+                        <span lang="en">Join a Game</span>
+                        <span lang="de">Spiel Beitreten</span>
+                    </a>
                 </div>
                 <div class="link-group">
                     <div class="group-header">Info</div>
-                    <a class="group-item" href="../about">About Multigolf</a>
+                    <a class="group-item" href="../about">
+                        <span lang="en">About Multigolf</span>
+                        <span lang="de">Über Multigolf</span>
+                    </a>
                     <a class="group-item" href="../faq">FAQ</a>
-                    <a class="group-item" href="../contact">Contact Me</a>
+                    <a class="group-item" href="../contact">
+                        <span lang="en">Contact Me</span>
+                        <span lang="de">Kontakt</span>
+                    </a>
                 </div>
                 <div class="link-group">
-                    <div class="group-header">Legal</div>
-                    <a class="group-item" href="../impressum">Impressum</a>
-                    <a class="group-item" href="../data-privacy">Data Privacy</a>
+                    <div class="group-header">
+                        <span lang="en">Legal</span>
+                        <span lang="de">Legales</span>
+                    </div>
+                    <a class="group-item" href="../impressum">
+                        <span lang="en">Imprint</span>
+                        <span lang="de">Impressum</span>
+                    </a>
+                    <a class="group-item" href="../data-privacy">
+                        <span lang="en">Data Privacy</span>
+                        <span lang="de">Datenschutz</span>
+                    </a>
                 </div>
                 <div class="link-group">
-                    <div class="group-header">Socials</div>
+                    <div class="group-header">
+                        <span lang="en">Socials</span>
+                        <span lang="de">Links</span>
+                    </div>
                     <a class="group-item" href="https://www.instagram.com/multi.golf/">Instagram</a>
                     <a class="group-item" href="https://www.tiktok.com/@multi.golf">TikTok</a>
-                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">Merch Shop</a>
+                    <a class="group-item" href="https://multigolf.myspreadshop.de/" target="_blank">
+                        <span lang="en">Merch Shop</span>
+                        <span lang="de">Fan-Shop</span>
+                    </a>
                 </div>
             </div>
             <hr>
             <div class="footer-text">
-                <span class="text">Made by Noel Friedrich</span>
-                <button class="theme-changer" id="change-style-a">Change Theme</button>
+                <span lang="en" class="text">Made by Noel Friedrich</span>
+                <span lang="de" class="text">Erstellt von Noel Friedrich</span>
+                <button class="theme-changer" id="change-style-a">
+                    <span lang="en">Change Theme</span>
+                    <span lang="de">Hell/Dunkel</span>
+                </button>
             </div>
         </footer>
         
@@ -163,8 +238,19 @@
                     // const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
                     localStorage.setItem("style", "light")
                 }
+                document.body.dataset.style = localStorage.getItem("style")
         
-                document.body.dataset.style = localStorage.getItem("style") || "light"
+                // update language
+                if (localStorage.getItem("lang") == null) {
+                    const userDefaultLang = navigator.language || navigator.userLanguage
+                    if (userDefaultLang.startsWith("de")) {
+                        localStorage.setItem("lang", "de")
+                    } else {
+                        localStorage.setItem("lang", "en")
+                    }
+                }
+                document.documentElement.lang = localStorage.getItem("lang")
+        
         
                 // replace CSS "100vh" with actual inner height in px
                 // (-1 to prevent inaccuracies in some browsers)

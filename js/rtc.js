@@ -105,7 +105,7 @@ class RtcBase {
     initDatachannelListeners() {
         this.dataChannel.onopen = (e) => {
             if (!this.alive) return
-            this.logFunction("✅ Connection established.")
+            this.logFunction(Text.ConnectionEstablished)
             this.dataChannelOpen = true
         }
 
@@ -123,7 +123,7 @@ class RtcBase {
 
         this.dataChannel.onclose = (e) => {
             if (!this.alive) return
-            this.logFunction("❌ Connection died")
+            this.logFunction(Text.ConnectionDied)
             this.dataChannelOpen = false
             this.die()
             this.onDataClose()
@@ -136,7 +136,7 @@ class RtcBase {
         }
 
         if (new URLSearchParams(location.search).has("debug")) {
-            this.logFunction("🫂 Initializing Peer-To-Peer...")
+            this.logFunction(Text.InitializingPeerToPeer)
         }
         this.hasInitted = true
 
@@ -220,14 +220,14 @@ class RtcBase {
     
             if (textResponse == "worked like a charm") {
                 if (logSuccess) {
-                    this.logFunction(`✅ ${objectName} successfully sent.`)
+                    this.logFunction(Text.SuccessfullySentObject(objectName))
                 }
                 return true
             } else {
                 throw new Error(`Unknown Server Response: ${textResponse}`)
             }
         } catch (err) {
-            this.logFunction(`⚠️ Couldn't upload ${objectName}: ${err.message}`)
+            this.logFunction(Text.FailedSendingObject(objectName, err.message))
             throw err
         }
     }
@@ -256,7 +256,7 @@ class RtcBase {
 
             return rows
         } catch (err) {
-            this.logFunction(`❌ Couldn't fetch Server: ${err.message}`)
+            this.logFunction(Text.CouldntFetchServer(err.message))
             throw err
         }
     }
@@ -319,21 +319,21 @@ class RtcHost extends RtcBase {
 
     getStatus() {
         let color = "green"
-        let message = "Good Connection"
+        let message = Text.GoodConnection
 
         if (!this.lastDataMessageTime) {
             color = "blue"
-            message = "Connection is being initialized"
+            message = Text.ConnectionBeingInitialized
         } else if (Date.now() - this.lastDataMessageTime > RtcBase.pingPeriod * 2) {
             color = "red"
-            message = "Connection timed out"
+            message = Text.ConnectionTimedOut
         }
 
         if (this.lastDataMessage && color == "green") {
             // phone clocks are very out of sync
             if (this.delayMs > 500) {
                 color = "orange"
-                message = `Connection is slow (${Math.round(this.delayMs * 2)}ms Ping)`
+                message = Text.ConnectionIsSlow(Math.round(this.delayMs * 2))
             }
         }
 
@@ -429,11 +429,11 @@ class RtcHost extends RtcBase {
                         // server and not himself, so mask it to be an "rtcDataType.Offer"
                         this.uploadToServer(rtcDataType.Offer, {
                             sdp: this.peerConnection.localDescription
-                        }, "Connection Answer")
+                        }, Text.ConnectionAnswer)
                     }
                 }
             },
-            "RTC Answer",
+            Text.RTCAnswer,
             {timeoutPeriod: RtcBase.hostTimeoutPeriod}
         )
     }
@@ -444,14 +444,14 @@ class RtcClient extends RtcBase {
 
     getStatus() {
         let color = "green"
-        let message = "Good Connection"
+        let message = Text.GoodConnection
 
         if (!this.lastDataMessageTime) {
             color = "blue"
-            message = "Connection is being initialized"
+            message = Text.ConnectionBeingInitialized
         } else if (Date.now() - this.lastDataMessageTime > RtcBase.pingPeriod * 2) {
             color = "red"
-            message = "Connection timed out"
+            message = Text.ConnectionTimedOut
         }
 
         return {color, message}
@@ -460,7 +460,7 @@ class RtcClient extends RtcBase {
     async joinPool(deviceIndex) {
         await this.uploadToServer(rtcDataType.joinPool, {
             signalingUid: this.signalingUid, deviceIndex
-        }, "Connection Invitation")
+        }, Text.ConnectionInvitation)
     }
 
     async start(deviceIndex=null) {
@@ -590,7 +590,7 @@ class RtcHostManager {
     async start() {
         this.poolUid = await this.openPool()
         this.onClientUrlAvailable(this.makeClientUrl())
-        this.logFunction(`✅ Created Pool (${this.poolUid})`)
+        this.logFunction(Text.CreatedPool(this.poolUid))
 
         // the baseConnection is just used to get updates from
         // the signalling server, not to form a peer-to-peer

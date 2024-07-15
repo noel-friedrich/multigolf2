@@ -117,14 +117,14 @@ async function main() {
             onDataMessage(dataMessage)
         },
         onDataClose: () => {
-            statusTitle.textContent = "Connection failed."
-            logToUser("⌛ Trying again in 5 seconds.")
+            statusTitle.textContent = Text.ConnectionFailed
+            logToUser(Text.TryingAgainInSeconds(5))
             setTimeout(main, 1 * 2 * 3 * 4 * 5 * 6 * 7) // 7! ~ 5000
         },
         poolUid: urlParams.get("p"),
     })
 
-    statusTitle.textContent = "Connecting to Host..."
+    statusTitle.textContent = Text.ConnectingToHost
     
     if (localStorage.getItem("multigolf-poolUid") == rtc.poolUid) {
         if (localStorage.getItem("multigolf-deviceIndex") != null) {
@@ -139,13 +139,13 @@ async function main() {
 
     try {
         await rtc.start(deviceIndex)
-        statusTitle.textContent = "Connected to Host."
+        statusTitle.textContent = Text.ConnectedToHost
         startGame()
     } catch (err) {
-        logToUser("❌ Could not connect to Host.")
+        logToUser(Text.CouldNotConnect)
         logToUser(`Error-Message: ${err.message}`)
-        logToUser("⌛ Trying again in 10 seconds.")
-        statusTitle.textContent = "Connection failed."
+        logToUser(Text.TryingAgainInSeconds(10))
+        statusTitle.textContent = Text.ConnectionFailed
         return setTimeout(main, 10 * 1000)
     }
 }

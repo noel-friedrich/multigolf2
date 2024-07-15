@@ -5,8 +5,19 @@
             // const prefersDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
             localStorage.setItem("style", "light")
         }
+        document.body.dataset.style = localStorage.getItem("style")
 
-        document.body.dataset.style = localStorage.getItem("style") || "light"
+        // update language
+        if (localStorage.getItem("lang") == null) {
+            const userDefaultLang = navigator.language || navigator.userLanguage
+            if (userDefaultLang.startsWith("de")) {
+                localStorage.setItem("lang", "de")
+            } else {
+                localStorage.setItem("lang", "en")
+            }
+        }
+        document.documentElement.lang = localStorage.getItem("lang")
+
 
         // replace CSS "100vh" with actual inner height in px
         // (-1 to prevent inaccuracies in some browsers)

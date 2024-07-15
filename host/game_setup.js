@@ -47,8 +47,8 @@ async function shareScoreboard() {
     const file = new File([blob], 'multigolf2-scoreboard.png', {type: blob.type})
 
     navigator.share({
-        title: "Multigolf Scoreboard!",
-        text: "Look! Scores! We played Multigolf! You should too!",
+        title: Text.MultigolfScoreboard,
+        text: Text.ShareText,
         files: [file],
     })
 }
@@ -58,7 +58,7 @@ function changeGamePhase(newPhase, force=false) {
     if (!setBeforeUnloadListener) {
         addEventListener("beforeunload", event => {
             event.preventDefault()
-            return "You're in an active game of multigolf. Leaving this website will break the game!"
+            return Text.LeavingWarning
         })
     }
 
@@ -106,7 +106,7 @@ function registerPlayers() {
 
     const isValidName = name => {
         if (name.length > 30) {
-            alert(`Name "${name.slice(0, 30)}..." is too long.`)
+            alert(Text.NameTooLong(name.slice(0, 30)))
             return false
         }
 
@@ -128,12 +128,12 @@ function registerPlayers() {
     }
 
     if (gameState.mode == gameMode.Duell && players.length != 2) {
-        alert("Please fill out all fields.")
+        alert(Text.PleaseFillOutFields)
         return
     }
 
     if (gameState.mode == gameMode.Tournament && players.length == 0) {
-        alert("Fill out at least one name to continue")
+        alert(Text.FilloutOneName)
         return
     }
 
@@ -141,7 +141,7 @@ function registerPlayers() {
     for (let player of players) {
         const n = player.name.toLowerCase()
         if (playerNames.has(player.name)) {
-            alert("Two players cannot have the same name")
+            alert(Text.TwoPlayersSameName)
             return
         }
         playerNames.add(n)
@@ -153,41 +153,41 @@ function registerPlayers() {
 
 const gameConfigSettings = [
     {
-        name: "Device Gravity",
-        description: "If enabled, phones that are tilted in real life will apply a gravity effect on balls.",
-        warning: "Only works for phones with accelorometers.",
+        name: Text.DeviceGravity,
+        description: Text.DeviceGravityDescription,
+        warning: Text.DeviceGravityWarning,
         getValue: () => gameState.board.deviceGravityEnabled,
         setValue: val => gameState.board.deviceGravityEnabled = val,
         type: "boolean",
         showIf: () => true
     },
     {
-        name: "Ball Collisions",
-        description: "If enabled, balls can kick each other. If disabled, balls will fly over each other.",
+        name: Text.BallCollisions,
+        description: Text.BallCollisionsDescription,
         getValue: () => gameState.board.ballCollisionEnabled,
         setValue: val => gameState.board.ballCollisionEnabled = val,
         type: "boolean",
         showIf: () => [gameMode.Sandbox, gameMode.Tournament].includes(gameState.mode)
     },
     {
-        name: "Soundeffects",
-        description: "If enabled, the host device will play sound effects when balls collide with something.",
+        name: Text.Soundeffects,
+        description: Text.SoundeffectsDescription,
         getValue: () => AudioPlayer.soundsEnabled,
         setValue: val => AudioPlayer.soundsEnabled = val,
         type: "boolean",
         showIf: () => true
     },
     {
-        name: "Read Names",
-        description: "If enabled, the host device will read the name of the player whose turn it is out loud.",
+        name: Text.ReadNames,
+        description: Text.ReadNamesDescription,
         getValue: () => AudioPlayer.speechEnabled,
         setValue: val => AudioPlayer.speechEnabled = val,
         type: "boolean",
         showIf: () => gameState.mode == gameMode.Tournament
     },
     {
-        name: "Maximum Kicks per Round",
-        description: "Decide how many kicks each player can have per round before failing and getting a 2 point penalty.",
+        name: Text.MaximumKicksPerRound,
+        description: Text.MaximumKicksPerRoundDescription,
         getValue: () => gameState.tournamentMaxKicks,
         setValue: val => gameState.tournamentMaxKicks = val,
         type: "integer", min: 1, max: 100,

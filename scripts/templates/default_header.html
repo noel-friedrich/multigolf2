@@ -5,11 +5,24 @@
             <div class="logo-text" href="$base-path$">Multigolf</div>
         </a>
         <div class="link-island">
-            <a href="$base-path$host/">Start Game</a>
-            <a href="$base-path$join/">Join Game</a>
-            <a href="$base-path$about/">About</a>
-            <a href="$base-path$faq/">FAQ</a>
-            <a href="$base-path$contact/">Contact</a>
+            <a href="$base-path$host/">
+                <span lang="en">Start Game</span>
+                <span lang="de">Spiel Starten</span>
+            </a>
+            <a href="$base-path$join/">
+                <span lang="en">Join Game</span>
+                <span lang="de">Spiel Beitreten</span>
+            </a>
+            <a href="$base-path$about/">
+                <span lang="en">About</span>
+                <span lang="de">Info</span>
+            </a>
+            <a href="$base-path$faq/">
+                <span lang="en">FAQ</span>
+                <span lang="de">FAQ</span>
+            </a>
+
+            <a class="change-lang-button"></a>
         </div>
         <div class="hamburger-icon" tabindex="0">
             <div class="bar"></div>
@@ -18,16 +31,48 @@
         </div>
     </div>
     <div class="header-drop-menu">
-        <a href="$base-path$host/">Start a Game</a>
-        <a href="$base-path$join/">Join a Game</a>
-        <a href="$base-path$about/">What is Multigolf?</a>
-        <a href="$base-path$faq/">FAQ & Help</a>
-        <a href="$base-path$contact/">Contact</a>
+        <a lang="en" href="$base-path$host/">Start a Game</a>
+        <a lang="en" href="$base-path$join/">Join a Game</a>
+        <a lang="en" href="$base-path$about/">What is Multigolf?</a>
+        <a lang="en" href="$base-path$faq/">FAQ & Help</a>
+        <a lang="en" href="$base-path$contact/">Contact</a>
+
+        <a lang="de" href="$base-path$host/">Spiel Starten</a>
+        <a lang="de" href="$base-path$join/">Spiel Beitreten</a>
+        <a lang="de" href="$base-path$about/">Was ist Multigolf?</a>
+        <a lang="de" href="$base-path$faq/">FAQ & Hilfe</a>
+        <a lang="de" href="$base-path$contact/">Kontakt</a>
+
+        <a class="change-lang-button"></a>
     </div>
 </header>
+<div class="header-placeholder"></div>
 
 <script>
     {
+        const changeLangButtons = document.querySelectorAll(".change-lang-button")
+        for (const changeLangButton of changeLangButtons) {
+            changeLangButton.onclick = event => {
+                const languages = ["en", "de"]
+                const currStyle = localStorage.getItem("lang") || languages[0]
+                const nextIndex = (languages.indexOf(currStyle) + 1) % languages.length
+                const nextNextIndex = (languages.indexOf(currStyle) + 2) % languages.length
+                localStorage.setItem("lang", languages[nextIndex])
+                document.documentElement.lang = localStorage.getItem("lang")
+
+                changeLangButton.animate([
+                    { transform: "rotateX(0deg)" },
+                    { transform: "rotateX(360deg)" }
+                ], {
+                    easing: "ease-in-out",
+                    duration: 350,
+                    fill: "forwards"
+                })
+
+                event.preventDefault()
+            }
+        }
+
         const header = document.querySelector("header")
         const hamburger = document.querySelector(".hamburger-icon")
         const headerDropMenu = document.querySelector(".header-drop-menu")

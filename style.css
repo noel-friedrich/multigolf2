@@ -10,13 +10,17 @@ body {
        include the address bar in the 100vh */
     --full-height: 100vh;
 
+    --huge-text-size: 5rem;
+    --subtitle-huge-text-size: 1.5rem;
+
+    --main-max-width: 600px;
+    --header-max-width: 800px;
+    --footer-max-width: 800px;
+
     --glassy-blur: blur(8px);
 
     --banner-background: red;
     --banner-foreground: white;
-
-    --header-max-width: 800px;
-    --footer-max-width: 800px;
 
     --header-background: rgba(243, 249, 243, .6);
     --header-border: none;
@@ -46,6 +50,8 @@ body {
     --input-color: var(--card-text-color);
 
     --background: rgb(243, 249, 243);
+    --primary-accent-color: #22e77b;
+    --on-primary-accent-color: white;
 }
 
 body[data-style="dark"] {
@@ -79,6 +85,47 @@ body {
     background-size: 40%;
     font-family: var(--general-font);
     font-size: var(--general-font-size);
+}
+
+.huge-text-container {
+    color: var(--card-text-color);
+    font-size: var(--huge-text-size);
+    margin-top: .2em;
+    margin-bottom: .5em;
+    text-align: center;
+    padding-left: .5em;
+    padding-right: .5em;
+}
+
+.huge-text-container .headline {
+    font-family: var(--header-font);
+    font-size: var(--huge-text-size);
+    padding: .5em;
+    margin-bottom: -.5em;
+}
+
+.huge-text-container .subtitle {
+    padding: .5em;
+    font-family: var(--header-font);
+    font-size: var(--subtitle-huge-text-size);
+}
+
+@media only screen and (max-width: 1100px) {
+
+    body {
+        --huge-text-size: 4rem;
+        --subtitle-huge-text-size: 1.4rem;
+    }
+    
+}
+
+@media only screen and (max-width: 800px) {
+
+    body {
+        --huge-text-size: 3rem;
+        --subtitle-huge-text-size: 1.3rem;
+    }
+    
 }
 
 h1, h2, h3,
@@ -135,7 +182,7 @@ body.sticky-header header {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: min(800px, 100%);
+    width: min(var(--header-max-width), 100%);
 }
 
 header .logo-container .logo {
@@ -170,8 +217,8 @@ header .link-island {
 header .link-island a {
     display: block;
     padding: .3em;
-    padding-left: .6em;
-    padding-right: .6em;
+    padding-left: .4em;
+    padding-right: .4em;
     padding-top: .4em;
     text-decoration: none;
     color: var(--card-text-color);
@@ -192,6 +239,27 @@ header .link-island a.current {
 
 header .link-island a.current {
     cursor: default;
+}
+
+header .link-island .change-lang-button {
+    background-color: transparent;
+    border: var(--card-border);
+    padding-top: .4rem;
+    padding-left: .8rem;
+    padding-right: .8rem;
+    border-radius: 5rem;
+    cursor: pointer;
+    font-family: var(--header-font);
+    font-size: 1.3em;
+    background-color: var(--card-background);
+    color: var(--card-text-color);
+    text-decoration: none !important;
+    margin-left: 1rem;
+    transition: 300ms;
+}
+
+header .link-island .change-lang-button:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 .header-drop-menu {
@@ -227,6 +295,27 @@ body:not(.sticky-header) .header-drop-menu {
     color: var(--card-text-color);
     border-radius: 5px;
     background: var(--header-button-background);
+}
+
+.header-drop-menu .change-lang-button {
+    background-color: rgba(243, 249, 243, .6);
+    text-align: center;
+}
+
+html[lang="en"] .change-lang-button::before {
+    content: "Deutsch";
+}
+
+html[lang="de"] .change-lang-button::before {
+    content: "English";
+}
+
+html[lang="en"] :not(html)[lang="de"] {
+    display: none;
+}
+
+html[lang="de"] :not(html)[lang="en"] {
+    display: none;
 }
 
 .header-drop-menu a:hover {
@@ -321,11 +410,11 @@ header .hamburger-icon.x .bar:nth-child(3) {
 main {
     background: var(--card-background);
     padding: 2rem;
-    width: min(100%, 600px);
+    width: min(100%, var(--main-max-width));
     margin: 0 auto;
     display: grid;
     gap: 1em;
-    border-radius: 1rem;
+    border-radius: 2rem;
     margin-top: .1rem;
     margin-bottom: 3rem;
     box-shadow: var(--card-shadow);
@@ -336,9 +425,13 @@ main {
     transition: margin 300ms;
 }
 
-body.sticky-header main {
-    /* .1rem default + header size */
-    margin-top: 4.6rem;
+.header-placeholder {
+    width: 100%;
+    height: 4.6rem;
+}
+
+body:not(.sticky-header) .header-placeholder {
+    display: none;
 }
 
 @media only screen and (max-width: 600px) {
@@ -354,11 +447,6 @@ body.sticky-header main {
 
     main {
         margin-top: 1rem;
-    }
-
-    body.sticky-header main {
-        /* 1rem default + header size */
-        margin-top: 5.5rem;
     }
 
 }
@@ -390,6 +478,7 @@ main .yt-video-wrapper > iframe {
     width: 100%;
     height: 100%;
     border: none;
+    border-radius: .5rem;
 }
 
 main p.error::before {
@@ -691,7 +780,7 @@ main .faq-container .entry:not(.unfolded) .answer {
 main .back-button {
     position: absolute;
     top: -2rem;
-    left: 1rem;
+    left: 2rem;
     font-size: 1rem;
     font-weight: normal;
     padding: .3rem;
@@ -1020,4 +1109,14 @@ main .layout-choice button {
 .annoying-banner canvas {
     width: 100%;
     height: 100%;
+}
+
+::-moz-selection {
+    color: var(--on-primary-accent-color);
+    background: var(--primary-accent-color);
+}
+
+::selection {
+    color: var(--on-primary-accent-color);
+    background: var(--primary-accent-color);
 }

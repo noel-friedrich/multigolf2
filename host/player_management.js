@@ -31,7 +31,7 @@ function updatePlayerlist() {
     playerListFieldset.style.display = "grid"
     playerListContainer.innerHTML = ""
     if (rtc.connections.length == 0) {
-        playerListContainer.textContent = ("Once you connect players, they will show up here.")
+        playerListContainer.textContent = Text.OnceYouConnectPlayers
     }
 
     for (let i = 0; i < rtc.connections.length; i++) {
@@ -47,7 +47,7 @@ function updatePlayerlist() {
 
         const connection = rtc.connections[i]
 
-        playerNameElement.textContent = `Device #${connection.index}`
+        playerNameElement.textContent = Text.DeviceNum(connection.index)
 
         const connectionStatus = connection.getStatus()
         circularIndicator.classList.add(connectionStatus.color)
@@ -61,14 +61,12 @@ async function finishPlayers() {
     if (gameState.phase != gamePhase.Connecting) return
 
     if (rtc.connections.length == 0) {
-        alert("You haven't connected any devices yet. Connect one and try again!")
+        alert(Text.NoDevicesError)
         return
     } 
 
-    if (confirm("Do you really want to start the game? You won't be able to add any more players.")) {
-        updatePlayerlist()
-        changeGamePhase(gamePhase.ConfigGame)
-    }
+    updatePlayerlist()
+    changeGamePhase(gamePhase.ConfigGame)
 }
 
 async function finishConfig() {

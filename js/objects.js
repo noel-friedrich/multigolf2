@@ -20,17 +20,6 @@ const golfObjectTypeSpriteMap = {
     [golfObjectType.GravityBox]: Sprite.GravityBox
 }
 
-const golfObjectTypeDescriptionMap = {
-    [golfObjectType.Start]: "Place where all balls start",
-    [golfObjectType.Hole]: "Goal that all balls must reach",
-    [golfObjectType.Lava]: "Balls touching Lava are reset to the start",
-    [golfObjectType.Eraser]: "Erase placed Objects",
-    [golfObjectType.DuellHole1]: "Goal that <duell-player-1> has to reach",
-    [golfObjectType.DuellHole2]: "Goal that <duell-player-2> has to reach",
-    [golfObjectType.CustomWall]: "A wall that balls will bounce off",
-    [golfObjectType.GravityBox]: "Balls inside will experience gravity"
-}
-
 class GolfObject {
 
     constructor(type, pos, size, angle, uid, resizable) {
@@ -168,8 +157,48 @@ class GolfObject {
         return this
     }
 
+    get name() {
+        switch (this.type) {
+            case golfObjectType.Start:
+                return Text.ObjectStart
+            case golfObjectType.Hole:
+                return Text.ObjectHole
+            case golfObjectType.Lava:
+                return Text.ObjectLava
+            case golfObjectType.Eraser:
+                return Text.ObjectEraser
+            case golfObjectType.DuellHole1:
+                return Text.ObjectDuellHole("1")
+            case golfObjectType.DuellHole2:
+                return Text.ObjectDuellHole("2")
+            case golfObjectType.CustomWall:
+                return Text.ObjectCustomWall
+            case golfObjectType.GravityBox:
+                return Text.ObjectGravityBox
+        }
+        return ""
+    }
+
     get description() {
-        return golfObjectTypeDescriptionMap[this.type]
+        switch (this.type) {
+            case golfObjectType.Start:
+                return Text.ObjectStartDescription
+            case golfObjectType.Hole:
+                return Text.ObjectHoleDescription
+            case golfObjectType.Lava:
+                return Text.ObjectLavaDescription
+            case golfObjectType.Eraser:
+                return Text.ObjectEraserDescriptiom
+            case golfObjectType.DuellHole1:
+                return Text.ObjectDuellHoleDescription("<duell-player-1>")
+            case golfObjectType.DuellHole2:
+                return Text.ObjectDuellHoleDescription("<duell-player-2>")
+            case golfObjectType.CustomWall:
+                return Text.ObjectCustomWallDescription
+            case golfObjectType.GravityBox:
+                return Text.ObjectGravityBoxDescription
+        }
+        return ""
     }
 
     static makeDefault(type) {
