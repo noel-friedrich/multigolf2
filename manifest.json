@@ -33,5 +33,54 @@
             "sizes": "512x512",
             "type": "image/png"
         }
+    ],
+    "id": "Multigolf",
+    "dir": "ltr",
+    "lang": "en",
+    "display_override": [
+        "fullscreen",
+        "standalone",
+        "window-controls-overlay"
+    ],
+    "shortcuts": [
+        {
+            "name": "Join a Game",
+            "url": "join",
+            "description": "Join a Multigolf Game"
+        },
+        {
+            "name": "Start a Game",
+            "url": "host",
+            "description": "Start a Multigolf Game"
+        }
+    ],
+    "categories": [
+        "games"
+    ],
+    "screenshots": [
+        {
+            "src": "assets/screenshots/multigolf-screenshot-1.jpg",
+            "sizes": "1023x2048",
+            "type": "image/jpg",
+            "label": "Multigolf Homescreen"
+        },
+        {
+            "src": "assets/screenshots/multigolf-screenshot-2.jpg",
+            "sizes": "1020x2048",
+            "type": "image/jpg",
+            "label": "FAQ and Help Screen"
+        },
+        {
+            "src": "assets/screenshots/multigolf-screenshot-3.jpg",
+            "sizes": "1024x2048",
+            "type": "image/jpg",
+            "label": "Join Game Screen"
+        },
+        {
+            "src": "assets/screenshots/multigolf-screenshot-4.jpg",
+            "sizes": "1024x2048",
+            "type": "image/jpg",
+            "label": "Gamemode Choice Screen"
+        }
     ]
 }
