@@ -2,6 +2,7 @@
     "name": "Multigolf",
     "short_name": "Multigolf",
     "start_url": ".",
+    "scope": ".",
     "display": "standalone",
     "theme_color": "#21e77b",
     "background_color": "#f3f9f3",
