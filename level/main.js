@@ -2,6 +2,79 @@ let level = null
 let gameState = null
 let ball = null
 
+const touchInfo = {
+    isDown: false,
+    lastDownPos: null,
+    lastUpPos: null,
+    currPos: null,
+    lastDownTime: null,
+    lastUpTime: null,
+    focusedBall: null,
+    focusedObject: null,
+    draggingObject: false
+}
+
+function onEventDown(event) {
+    touchInfo.isDown = true
+    touchInfo.currPos = Vector2d.fromTouchEvent(event, levelCanvas)
+    touchInfo.lastDownPos = touchInfo.currPos.copy()
+    touchInfo.lastDownTime = Date.now()
+
+    if (!gameState) return
+
+    const boardPos = gameState.screenPosToBoardPos(touchInfo.currPos)
+
+    let smallestDistance = Infinity
+    let closestBall = null
+
+    for (const ball of gameState.board.balls) {
+        if (ball.isMoving() || !ball.active) {
+            continue
+        }
+
+        const distance = ball.pos.distance(boardPos)
+        if (distance < smallestDistance) {
+            smallestDistance = distance
+            closestBall = ball
+        }
+    }
+
+    if (smallestDistance < 100) {
+        touchInfo.focusedBall = closestBall
+    }
+}
+
+function onEventMove(event) {
+    touchInfo.currPos = Vector2d.fromTouchEvent(event, levelCanvas)
+}
+
+function onEventUp(event) {
+    touchInfo.isDown = false
+    touchInfo.currPos = null
+    touchInfo.lastUpPos = Vector2d.fromTouchEvent(event, levelCanvas)
+    touchInfo.lastUpTime = Date.now()
+
+    if (!touchInfo.focusedBall || !touchInfo.lastDownPos || !touchInfo.lastUpPos || !gameState
+        || touchInfo.lastDownPos.distance(touchInfo.lastUpPos) < 30
+    ) {
+        return
+    }
+
+    const strength = Math.min(touchInfo.lastDownPos.distance(touchInfo.lastUpPos) * 0.3 / gameState.combinedScalingFactor, 70)
+    const touchUpBoardPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
+    const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
+
+    // do an optimistic change
+    if (gameState.mode == gameMode.Tournament) {
+        gameState.onTournamentKick(touchInfo.focusedBall)
+    }
+
+    touchInfo.focusedBall.kick(direction)
+
+    touchInfo.focusedBall = null
+    touchInfo.draggingObject = false
+}
+
 const canvasAspectRatio = 9 / 16
 const displayAspectRatio = 9 / 17
 const directionLoopLengthMs = 2000
@@ -17,6 +90,14 @@ const levelIdOutput = document.querySelector("#level-id-output")
 if (!hasUnlockedLevel(levelId)) {
     goBackToLevelChoice()
 }
+
+levelCanvas.addEventListener("touchstart", onEventDown)
+levelCanvas.addEventListener("touchmove", onEventMove)
+levelCanvas.addEventListener("touchend", onEventUp)
+
+levelCanvas.addEventListener("mousedown", onEventDown)
+levelCanvas.addEventListener("mousemove", onEventMove)
+levelCanvas.addEventListener("mouseup", onEventUp)
 
 let hasGoneToNextLevel = false
 function goToNextLevel() {
@@ -92,31 +173,9 @@ setInterval(() => {
     }
 })
 
-function getCurrDirection() {
-    return (Date.now() % directionLoopLengthMs) / directionLoopLengthMs * Math.PI * 2
-}
-
-function shoot() {
-    if (!gameState) return
-    if (!ball || ball.inHole || ball.isMoving()) return
-
-    const angle = getCurrDirection()
-    ball.kick(Vector2d.fromAngle(angle).scale(28))
-}
-
 function gameLoop() {
     gameState.update()
-
-    if (ball && !ball.inHole && !ball.isMoving()) {
-        const touchScreenPos = ball.pos.add(Vector2d.fromAngle(getCurrDirection())
-            .scale(Math.min(levelCanvas.width, levelCanvas.height) * 0.2))
-        Renderer.render(gameState, levelContext, {
-            isDown: true, focusedBall: ball,
-            currPos: gameState.boardPosToScreenPos(touchScreenPos)
-        })
-    } else {
-        Renderer.render(gameState, levelContext, {})
-    }
+    Renderer.render(gameState, levelContext, touchInfo)
 
     if (ball && ball.inHole && ball.radius == 0) {
         completeLevel(level.id)
@@ -164,10 +223,6 @@ async function main() {
     gameLoop()
 
     addEventListener("resize", resizeCanvas)
-    addEventListener("keydown", event => {
-        if ([" ", "Enter"].includes(event.key)) shoot()
-    })
-    levelCanvas.addEventListener("click", shoot)
 }
 
 main()

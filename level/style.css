@@ -2,7 +2,6 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
-    background-color: black;
 }
 
 .level-container {
@@ -10,7 +9,6 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: black;
     display: grid;
 }
 
@@ -20,16 +18,17 @@ body {
     --height: 18px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    font-family: monospace;
-    color: white;
+    font-family: var(--header-font);
     font-size: calc(var(--height) * 0.7);
     gap: calc(var(--height) * 1);
+    color: var(--card-text-color);
 }
 
 .level-header .menu-link {
     color: white;
     text-decoration: none;
     text-align: right;
+    color: var(--card-text-color);
 }
 
 .level-header .menu-link:hover {
@@ -50,6 +49,6 @@ body {
     box-sizing: border-box;
     background-image: url("../assets/objects/grid.svg");
     background-size: 20%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 1rem;
 }
