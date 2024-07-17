@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "golf.multi.twa",
+        "sha256_cert_fingerprints": ["7D:6F:BC:E3:B8:CD:B5:4B:30:C3:E0:7F:1B:E7:7E:91:99:E7:D3:AB:E2:9F:02:90:A2:D4:70:25:DF:95:76:69"]
+      }
+    }]
