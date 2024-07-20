@@ -611,7 +611,7 @@ class RtcHostManager {
                 // check if there is already a connection with that deviceIndex.
                 // if there is, we ignore their wish and give them a new one (by
                 // passing _null_ to this.makeConnection)
-                if (deviceIndex == null
+                if (deviceIndex != null
                     && this.connections[deviceIndex - 1]
                     && this.connections[deviceIndex - 1].getStatus().color !== "red"
                 ) {

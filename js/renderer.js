@@ -50,12 +50,17 @@ class Renderer {
 
     static renderNothing(gameState, context, touchInfo) {
         context.canvas.style.display = "none"
+        
+        document.body.style.overflow = "visible"
+        if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen()
+        }
     }
 
     static drawCircle(context, pos, radius) {
         context.beginPath()
         context.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false)
-    } 
+    }
 
     static renderConstruction(gameState, context, touchInfo) {
         const canvas = context.canvas
@@ -254,26 +259,26 @@ class Renderer {
     static render(gameState, context, touchInfo) {
         this.updateCanvasSize(context)
         document.body.style.overflow = "hidden"
-        switch (gameState.phase) {
-            case gamePhase.ConstructionChoice:
-            case gamePhase.ConstructionAuto:
-            case gamePhase.ConstructionCustom:
-                return this.renderConstruction(gameState, context, touchInfo)
-            case gamePhase.Placing:
-                this.renderBoard(gameState, context, touchInfo, {drawBalls: false, drawGravity: false})
-                return this.renderPlacingTools(gameState, context, touchInfo)
-            case gamePhase.PlayingDuell:
-            case gamePhase.PlayingSandbox:
-            case gamePhase.PlayingTournament:
-                this.renderBoard(gameState, context, touchInfo, {drawSelection: false, drawGravity: false})
-                return this.renderBallInteractions(gameState, context, touchInfo)
-            default:
-                document.body.style.overflow = "visible"
-                if (document.fullscreenElement && document.exitFullscreen) {
-                    document.exitFullscreen()
-                }
-                return this.renderNothing(gameState, context, touchInfo)
+
+        if ([
+            gamePhase.ConstructionChoice,
+            gamePhase.ConstructionAuto,
+            gamePhase.ConstructionCustom
+        ].includes(gameState.phase)) {
+            return this.renderConstruction(gameState, context, touchInfo)
         }
+
+        if (gameState.phase == gamePhase.Placing) {
+            this.renderBoard(gameState, context, touchInfo, {drawBalls: false, drawGravity: false})
+            return this.renderPlacingTools(gameState, context, touchInfo)
+        }
+
+        if (gamePhase.isPlaying(gameState.phase)) {
+            this.renderBoard(gameState, context, touchInfo, {drawSelection: false, drawGravity: false})
+            return this.renderBallInteractions(gameState, context, touchInfo)
+        }
+
+        return this.renderNothing(gameState, context, touchInfo)
     }
 
 }
