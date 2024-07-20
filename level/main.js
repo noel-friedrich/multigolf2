@@ -195,6 +195,7 @@ function loadLevel(id) {
     }
     
     gameState = GameState.fromObject(level.gameState)
+    gameState.phase = gamePhase.PlayingSandbox
     gameState.getReferenceCanvas = () => levelCanvas
     gameState.board.physicsTime = Date.now()
 
