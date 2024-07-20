@@ -22,7 +22,7 @@ fullscreenCanvas.addEventListener("touchstart", event => {
     touchInfo.lastDownPos = touchInfo.currPos.copy()
     touchInfo.lastDownTime = Date.now()
 
-    if (gameState.phase == gamePhase.Construction) {
+    if (gameState.phase == gamePhase.ConstructionCustom) {
         touchInfo.currPos = clampToEdges(touchInfo.currPos)
         touchInfo.lastDownPos = touchInfo.currPos.copy()
     } else if (gamePhase.isPlaying(gameState.phase)) {
@@ -35,7 +35,7 @@ fullscreenCanvas.addEventListener("touchstart", event => {
 fullscreenCanvas.addEventListener("touchmove", event => {
     touchInfo.currPos = Vector2d.fromTouchEvent(event, fullscreenCanvas)
 
-    if (gameState.phase == gamePhase.Construction) {
+    if (gameState.phase == gamePhase.ConstructionCustom) {
         touchInfo.currPos = clampToEdges(touchInfo.currPos)
     } else if (gameState.phase == gamePhase.Placing) {
         onPlaceTouchMove(touchInfo)
@@ -48,7 +48,7 @@ fullscreenCanvas.addEventListener("touchend", event => {
     touchInfo.lastUpPos = Vector2d.fromTouchEvent(event, fullscreenCanvas)
     touchInfo.lastUpTime = Date.now()
 
-    if (gameState.phase == gamePhase.Construction) {
+    if (gameState.phase == gamePhase.ConstructionCustom) {
         touchInfo.lastUpPos = clampToEdges(touchInfo.lastUpPos)
         onConstructionTouchEvent(touchInfo)
     } else if (gameState.phase == gamePhase.Placing) {

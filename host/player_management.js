@@ -11,6 +11,8 @@ const playerListFieldset = document.querySelector("#player-list-fieldset")
 const layoutChoiceContainer = document.querySelector("#layout-choice-container")
 const gameConfigContainer = document.querySelector("#game-config-container")
 
+const keepLayoutButton = document.querySelector("#keep-layout-button")
+
 const headerElement = document.querySelector("header")
 
 function logToConnectionLog(message) {

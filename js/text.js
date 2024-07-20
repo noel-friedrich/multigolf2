@@ -259,6 +259,10 @@ const Text = {
     ObjectGravityBoxDescription: {
         [Lang.EN]: "Balls inside will experience gravity",
         [Lang.DE]: "Bälle werden in die Richtung geschubst"
+    },
+    NotConstructedYet: {
+        [Lang.EN]: "You haven't constructed a course layout yet.",
+        [Lang.DE]: "Du hast noch kein Layout erstellt."
     }
 }
 

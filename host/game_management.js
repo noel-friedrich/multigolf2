@@ -23,12 +23,12 @@ function physicsLoop() {
 
 function onDataMessage(dataMessage, rtc) {
     if (dataMessage.type == dataMessageType.PING) {
-        if (rtc.receivePing(dataMessage) && gameState.phase == gamePhase.Construction) {
+        if (rtc.receivePing(dataMessage) && gameState.phase == gamePhase.ConstructionAuto) {
             generateBoardTemplates()
         } 
 
     } else if (
-        gameState.phase == gamePhase.Construction &&
+        gameState.phase == gamePhase.ConstructionCustom &&
         dataMessage.type == dataMessageType.CONSTRUCTION_LINE
     ) {
         const constructionLine = ConstructionLine.fromObject(dataMessage.data.line)
@@ -43,7 +43,7 @@ function onDataMessage(dataMessage, rtc) {
         dataMessage.type == dataMessageType.SEND_DIMENSIONS
     ) {
         gameState.board.course = Course.fromObject(dataMessage.data.course)
-        gameState.phase = gamePhase.Construction
+        gameState.phase = gamePhase.ConstructionAuto
         finishConstruction()
 
     } else if (
@@ -122,7 +122,7 @@ async function startGame() {
 
     if (!renderingIntervalIsSet) {
         setInterval(() => {
-            if (gameState.phase >= gamePhase.Construction) {
+            if (gameState.board.course.phones.length > 0) {
                 boardCanvasFieldset.style.display = "grid"
                 BoardRenderer.render(gameState.board, boardContext)
             } else {
@@ -152,22 +152,30 @@ async function startGame() {
         rtc.connections[0].sendMessage(new DataMessage(
             dataMessageType.REQUEST_DIMENSIONS))
     } else {
-        changeGamePhase(gamePhase.Construction, true)
+        changeGamePhase(gamePhase.ConstructionChoice, true)
     }
 
     syncGamestate()
 }
 
 function finishConstruction() {
-    if (gameState.phase != gamePhase.Construction) {
+    if (![
+        gamePhase.ConstructionChoice,
+        gamePhase.ConstructionAuto,
+        gamePhase.ConstructionCustom
+    ].includes(gameState.phase)) {
         return
+    }
+
+    if (gameState.board.course.phones.length == 0) {
+        return alert(Text.NotConstructedYet)
     }
 
     if (gameState.board.course && gameState.board.course.getOverlaps().length > 0) {
         if (!confirm(Text.CourseHasOverlap)) {
             return
         }
-    } 
+    }
 
     changeGamePhase(gamePhase.Placing)
     preparePlacing()
@@ -298,7 +306,7 @@ function back() {
         case gamePhase.TournamentExplanation:
         case gamePhase.DuellExplanation:
             return changeGamePhase(gamePhase.ConfigGame, true)
-        case gamePhase.Construction:
+        case gamePhase.ConstructionChoice:
             if (gameState.mode == gameMode.Tournament) {
                 return changeGamePhase(gamePhase.TournamentExplanation, true)
             } else if (gameState.mode == gameMode.Duell) {
@@ -306,6 +314,9 @@ function back() {
             } else {
                 return changeGamePhase(gamePhase.ConfigGame, true)
             }
+        case gamePhase.ConstructionAuto:
+        case gamePhase.ConstructionCustom:
+            return changeGamePhase(gamePhase.ConstructionChoice, true)
         case gamePhase.Placing:
             if (rtc.connections.length == 1) {
                 if (gameState.mode == gameMode.Tournament) {
@@ -316,7 +327,7 @@ function back() {
                     return changeGamePhase(gamePhase.ConfigGame, true)
                 }
             } else {
-                return changeGamePhase(gamePhase.Construction, true)
+                return changeGamePhase(gamePhase.ConstructionChoice, true)
             }
     }
 }

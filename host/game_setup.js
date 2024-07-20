@@ -69,7 +69,10 @@ function changeGamePhase(newPhase, force=false) {
     gameState.phase = newPhase
     updateHtmlSection(newPhase)
 
-    if (newPhase == gamePhase.Construction) {
+    if (newPhase == gamePhase.ConstructionChoice) {
+        const hasLayout = gameState.board.course.phones.length > 0
+        keepLayoutButton.style.display = hasLayout ? "block" : "none"
+    } else if (newPhase == gamePhase.ConstructionAuto) {
         generateBoardTemplates()
     } else if (newPhase == gamePhase.ConfigGame) {
         generateConfigHtml()
@@ -269,7 +272,7 @@ async function generateConfigHtml() {
 }
 
 async function generateBoardTemplates() {
-    if (gameState.phase != gamePhase.Construction) {
+    if (gameState.phase != gamePhase.ConstructionAuto) {
         return
     }
     
@@ -281,7 +284,7 @@ async function generateBoardTemplates() {
 
     const boardGenerator = new BoardGenerator(displaySizes)
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
         const layoutContainer = document.createElement("div")
         layoutContainer.classList.add("layout-choice")
 

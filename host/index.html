@@ -556,27 +556,83 @@
                 </button>
             </section>
 
-            <section data-phase="construction">
+            <section data-phase="construction-choice">
                 <button class="back-button" onclick="back()">
                     <span lang="en">&#x25c0; Back</span>
                     <span lang="de">&#x25c0; Zurück</span>
                 </button>
                 <h2>
-                    <span lang="en">Course Construction</span>
-                    <span lang="de">Kursbau</span>
+                    <span lang="en">Course Layout</span>
+                    <span lang="de">Kurs-Layout</span>
                 </h2>
                 <p>
                     <span lang="en">
-                        You can either connect phones manually by drawing
-                        connecting lines along borders or by
-                        choosing a suggested layout at the bottom of this page.
+                        How do you want to choose the course layout (how the 
+                        devices lie next to each other)?
                     </span>
                     <span lang="de">
-                        Du kannst entweder die Geräte manuell miteinander verbinden
-                        oder ein vorgeschlagenes Layout benutzen. Die vorgeschlagenen
-                        Layouts sind ganz unten.
+                        Wie willst das Kurs-Layout (wie die Geräte zueinander liegen)
+                        bestimmen?
                     </span>
                 </p>
+                <button onclick="finishConstruction()" id="keep-layout-button">
+                    <span lang="en">Keep current Layout</span>
+                    <span lang="de">Aktuelles Layout behalten</span>
+                </button>
+                <fieldset>
+                    <legend>
+                        <span lang="en">Automatic Layout</span>
+                        <span lang="de">Automatisches Layout</span>
+                    </legend>
+                    <p>
+                        <span lang="en">
+                            The game will suggest layouts for you to replicate.
+                        </span>
+                        <span lang="de">
+                            Das Spiel wird Layouts vorschlagen, die du nachbauen
+                            sollst.
+                        </span>
+                    </p>
+                    <button onclick="changeGamePhase(gamePhase.ConstructionAuto)">
+                        <span lang="en">Start an Auto-Layout</span>
+                        <span lang="de">Automatisches Layout starten</span>
+                    </button>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        <span lang="en">Custom Layout</span>
+                        <span lang="de">Eigenes Layout</span>
+                    </legend>
+                    <p>
+                        <span lang="en">
+                            To create a custom layout, you will have
+                            to tell the game exactly how the phones lie next
+                            to each other by drawing lines with your finger
+                            along connection edges. This can take a bit of time.
+                        </span>
+                        <span lang="de">
+                            Um ein eigenes Layout zu erstellen, musst du
+                            dem Spiel vermitteln, wie die Geräte zueinander liegen.
+                            Dazu malst du Linien mit deinem Finger entlang verbundener
+                            Kanten. Das kann je nach Geräteanzahl ein bisschen dauern.
+                        </span>
+                    </p>
+                    <button onclick="changeGamePhase(gamePhase.ConstructionCustom)">
+                        <span lang="en">Start a Custom-Layout</span>
+                        <span lang="de">Eigenes Layout starten</span>
+                    </button>
+                </fieldset>
+            </section>
+
+            <section data-phase="construction-custom">
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Custom Course Layout</span>
+                    <span lang="de">Eigenes Kurs-Layout</span>
+                </h2>
                 <p>
                     <span lang="en">
                         To connect phones to each other manually,
@@ -598,12 +654,28 @@
                     <span lang="en">I've connected all phones!</span>
                     <span lang="de">Ich habe alle Geräte verbunden!</span>
                 </button>
+            </section>
+
+            <section data-phase="construction-auto">
+                <button class="back-button" onclick="back()">
+                    <span lang="en">&#x25c0; Back</span>
+                    <span lang="de">&#x25c0; Zurück</span>
+                </button>
+                <h2>
+                    <span lang="en">Automatic Course Layout</span>
+                    <span lang="de">Automatisches Kurs-Layout</span>
+                </h2>
                 <p>
                     <span lang="en">
-                        Alternatively, choose a layout below to copy.
+                        Please tap on each device once to ensure
+                        that all screens are correctly sized (some may
+                        be able to go into fullscreen, most iPhones won't).
                     </span>
                     <span lang="de">
-                        Alternativ kannst du auch ein vorgeschlagenes Layout unten akzeptieren.
+                        Tippe auf jedem Gerät einmal auf den Display,
+                        um sicherzugehen, dass die Displays maximiert werden
+                        (manche Geräte können den Vollbildmodus aktivieren, die
+                        meisten iPhones nicht).
                     </span>
                 </p>
                 <div id="layout-choice-container"></div> 

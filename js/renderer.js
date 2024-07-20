@@ -255,7 +255,9 @@ class Renderer {
         this.updateCanvasSize(context)
         document.body.style.overflow = "hidden"
         switch (gameState.phase) {
-            case gamePhase.Construction:
+            case gamePhase.ConstructionChoice:
+            case gamePhase.ConstructionAuto:
+            case gamePhase.ConstructionCustom:
                 return this.renderConstruction(gameState, context, touchInfo)
             case gamePhase.Placing:
                 this.renderBoard(gameState, context, touchInfo, {drawBalls: false, drawGravity: false})
