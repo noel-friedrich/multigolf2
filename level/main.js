@@ -121,8 +121,8 @@ function resizeCanvas() {
 
     const displaySize = new Vector2d(100 * displayAspectRatio, displayAspectRatio)
 
-    const maxWidth = window.innerWidth
-    const maxHeight = window.innerHeight
+    const maxWidth = window.innerWidth - 20
+    const maxHeight = window.innerHeight - 20
     const realSizeRatio = maxWidth / maxHeight
 
     if (realSizeRatio < displayAspectRatio) {
