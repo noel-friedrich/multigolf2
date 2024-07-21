@@ -256,9 +256,14 @@ class Renderer {
         }
     }
 
-    static render(gameState, context, touchInfo) {
+    static render(gameState, context, touchInfo, {
+        preventScrolling = true
+    }={}) {
         this.updateCanvasSize(context)
-        document.body.style.overflow = "hidden"
+
+        if (preventScrolling) {
+            document.body.style.overflow = "hidden"
+        }
 
         if ([
             gamePhase.ConstructionChoice,

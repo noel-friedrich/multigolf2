@@ -99,3 +99,6 @@ handle_file("404.html")
 
 from build_service_worker import build_service_worker
 build_service_worker()
+
+from build_levels import build_levels
+build_levels()

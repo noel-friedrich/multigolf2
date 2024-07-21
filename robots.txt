@@ -4,4 +4,4 @@ Disallow: /client/
 Disallow: /api/
 Disallow: /scripts/
 Disallow: /level/
-Disallow: /level-editor/
+Disallow: /level-maker/

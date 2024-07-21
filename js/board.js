@@ -242,24 +242,35 @@ class Ball {
 
     updatePhysics(board) {
         const stepCount = Math.max(Math.ceil(this.vel.length / 10), 1)
+        let isUnderAcceleration = false
 
         // add gravity from current phone
-        if (board.deviceGravityEnabled && this.isMoving()) {
+        if (board.deviceGravityEnabled && this.isMoving() && !this.inHole) {
             for (let i = 0; i < board.course.phones.length; i++) {
                 if (board.course.phones[i].containsPos(this.pos)) {
                     const gravity = board.course.phones[i].gravity
                         .rotate(board.course.phones[i].angle)
                     if (!gravity) break
-                    this.vel.iadd(gravity)
+                    if (gravity.length > 0) {
+                        this.vel.iadd(gravity)
+                        isUnderAcceleration = true
+                    }
                     break
                 }
             }
         }
 
-        const gravityBoxes = this._getIntersectingObjects(board, golfObjectType.GravityBox)
-        for (const box of gravityBoxes) {
-            const gravity = Vector2d.fromAngle(box.angle - Math.PI / 2).scale(0.5)
-            this.vel.iadd(gravity)
+        if (this.isMoving() && !this.inHole) {
+            const gravityBoxes = this._getIntersectingObjects(board, golfObjectType.GravityBox)
+            for (const box of gravityBoxes) {
+                const gravity = Vector2d.fromAngle(box.angle - Math.PI / 2).scale(0.5)
+                this.vel.iadd(gravity)
+                isUnderAcceleration = true
+            }
+        }
+
+        if (this.isMoving() && this.vel.length < 0.3 && !isUnderAcceleration) {
+            this.vel.iscale(0)
         }
 
         this.vel.iscale(0.97)
@@ -284,8 +295,8 @@ class Ball {
             this.immobileTickCount++
         }
 
-        // aprox. 3 seconds before it's considered stuck
-        if (this.immobileTickCount > 180) {
+        // aprox. 2 seconds before it's considered stuck
+        if (this.immobileTickCount > 60 * 2 && this.isMoving()) {
             this.vel.iscale(0)
         }
 
@@ -324,9 +335,6 @@ class Ball {
         let madeWallCollision = false
 
         this.pos.iadd(this.vel)
-        if (this.vel.length < 0.1) {
-            this.vel.iscale(0)
-        }
 
         const inLava = board.objects.filter(o => o.type == golfObjectType.Lava)
             .some(o => o.intersects(this.pos))
@@ -359,7 +367,7 @@ class Ball {
         for (const [p1, p2] of collidingWalls) {
             this.pos.isub(this.vel)
             this.vel = this._reflectAtWall(p1, p2, this.vel)
-            this.pos.iadd(this.vel.scale(0.95))
+            this.pos.iadd(this.vel.scale(0.8))
 
             madeWallCollision = true
         }
@@ -488,6 +496,16 @@ class Board {
             }
         }
         return closestObject
+    }
+
+    intersectObject(pos) {
+        // iterate backwards because of drawing order
+        for (let i = this.objects.length - 1; i >= 0; i--) {
+            if (this.objects[i].intersects(pos)) {
+                return this.objects[i]
+            }
+        }
+        return null
     }
 
     get startPos() {

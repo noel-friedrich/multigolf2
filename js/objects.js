@@ -202,7 +202,9 @@ class GolfObject {
     }
 
     static makeDefault(type) {
-        return placableObjects.find(o => o.type == type).copy()
+        const obj = placableObjects.find(o => o.type == type).copy()
+        obj.uid = Math.random().toString().slice(2)
+        return obj
     }
 
 }

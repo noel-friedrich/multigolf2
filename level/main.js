@@ -87,22 +87,26 @@ const levelContext = levelCanvas.getContext("2d")
 const logoImg = document.querySelector("#logo-img")
 const levelIdOutput = document.querySelector("#level-id-output")
 
-if (!hasUnlockedLevel(levelId)) {
+if (!hasUnlockedLevel(levelId) && levelId != "editor") {
     goBackToLevelChoice()
 }
 
-levelCanvas.addEventListener("touchstart", onEventDown)
-levelCanvas.addEventListener("touchmove", onEventMove)
-levelCanvas.addEventListener("touchend", onEventUp)
+document.body.addEventListener("touchstart", onEventDown)
+document.body.addEventListener("touchmove", onEventMove)
+document.body.addEventListener("touchend", onEventUp)
 
-levelCanvas.addEventListener("mousedown", onEventDown)
-levelCanvas.addEventListener("mousemove", onEventMove)
-levelCanvas.addEventListener("mouseup", onEventUp)
+document.body.addEventListener("mousedown", onEventDown)
+document.body.addEventListener("mousemove", onEventMove)
+document.body.addEventListener("mouseup", onEventUp)
 
 let hasGoneToNextLevel = false
 function goToNextLevel() {
     if (hasGoneToNextLevel) {
         return
+    }
+
+    if (levelId == "editor") {
+        return loadLevel("editor")
     }
 
     hasGoneToNextLevel = true
@@ -186,9 +190,24 @@ function gameLoop() {
 }
 
 function loadLevel(id) {
-    level = levels.find(l => l.id == id)
-    levelId = id
-    levelIdOutput.textContent = levelId.toString().padStart(2, "0")
+    if (id == "editor") {
+        try {
+            levelId = "editor"
+            const str = localStorage.getItem("level-maker-temp")
+            level = {
+                id: 0,
+                difficulty: "easy",
+                gameState: JSON.parse(str)
+            }
+            levelIdOutput.textContent = "??"
+        } catch (e) {
+            goBackToLevelChoice()
+        }
+    } else { 
+        level = levels.find(l => l.id == id)
+        levelId = id
+        levelIdOutput.textContent = levelId.toString().padStart(2, "0")
+    }
 
     if (!level) {
         goBackToLevelChoice()

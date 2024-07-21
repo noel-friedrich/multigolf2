@@ -145,6 +145,11 @@ class Vector2d {
         this.y = y
     }
 
+    setVector2d(v) {
+        this.x = v.x
+        this.y = v.y
+    }
+
     addX(x) {
         return new Vector2d(this.x + x, this.y)
     }
@@ -239,6 +244,10 @@ class Vector2d {
         return new Vector2d(x - rect.left, y - rect.top)
     }
 
+    static fromEvent(event, element) {
+        return Vector2d.fromTouchEvent(event, element)
+    }
+
     clampX(clampValues, maxDelta) {
         const newVector = this.copy()
         for (let clampValue of clampValues) {
@@ -265,6 +274,35 @@ class Vector2d {
 
     max() {
         return Math.max(this.x, this.y)
+    }
+
+    round() {
+        return new Vector2d(Math.round(this.x), Math.round(this.y))
+    }
+
+    iround() {
+        this.x = Math.round(this.x)
+        this.y = Math.round(this.y)
+    }
+
+    toString() {
+        return `${this.x}, ${this.y}`
+    }
+
+    static fromString(str) {
+        const parts = str.split(",")
+        if (parts.length != 2) {
+            throw new Error("String must be made up of two numbers seperated by comma")
+        }
+
+        const x = parseFloat(parts[0])
+        const y = parseFloat(parts[1])
+
+        if (isNaN(x) || isNaN(y)) {
+            throw new Error("String contains invalid number(s)")
+        }
+
+        return new Vector2d(x, y)
     }
 
 }
