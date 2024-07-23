@@ -1,11 +1,11 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "golf.multi.twa",
-    "sha256_cert_fingerprints": [
-      "41:B2:F6:DE:E8:BB:89:50:29:99:2A:64:6A:79:44:AA:22:72:7A:6F:50:6F:76:A6:75:3F:A5:08:73:46:47:3A",
-      "9E:B5:EF:70:77:67:FD:C5:13:C6:99:7B:A4:F1:81:3C:02:A7:34:34:E1:98:BC:DA:13:43:23:DE:0B:53:76:74"
-    ]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "golf.multi.twa",
+      "sha256_cert_fingerprints":
+        ["9E:B5:EF:70:77:67:FD:C5:13:C6:99:7B:A4:F1:81:3C:02:A7:34:34:E1:98:BC:DA:13:43:23:DE:0B:53:76:74", "2C:C3:6E:4D:7C:74:1B:5B:3D:54:66:C8:31:25:AD:CE:6E:3B:F4:9D:50:0F:D7:05:F4:66:2D:DA:41:F1:ED:70"]
+    }
   }
-}]
+]
