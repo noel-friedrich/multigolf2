@@ -156,6 +156,7 @@ document.addEventListener("click", function enableNoSleep() {
 }, false)
 
 fullscreenCanvas.addEventListener("click", () => {
+    const fullscreenElement = document.mozFullScreenElement || document.webkitFullscreenElement || document.fullscreenElement
     if (requestFullscreenOnCanvasClick
         && document.fullscreenElement != fullscreenCanvas
     ) {
