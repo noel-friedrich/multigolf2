@@ -158,9 +158,17 @@ document.addEventListener("click", function enableNoSleep() {
 fullscreenCanvas.addEventListener("click", () => {
     if (requestFullscreenOnCanvasClick
         && document.fullscreenElement != fullscreenCanvas
-        && fullscreenCanvas.requestFullscreen
     ) {
-        fullscreenCanvas.requestFullscreen()
+        // man isn't the web such a fun place?
+        if (fullscreenCanvas.requestFullscreen) {
+            fullscreenCanvas.requestFullscreen()
+        } else if (fullscreenCanvas.msRequestFullscreen) {
+            fullscreenCanvas.msRequestFullscreen()
+        } else if (fullscreenCanvas.mozRequestFullScreen) {
+            fullscreenCanvas.mozRequestFullScreen()
+        } else if (fullscreenCanvas.webkitRequestFullscreen) {
+            fullscreenCanvas.webkitRequestFullscreen()
+        }
     }
 })
 

@@ -52,8 +52,17 @@ class Renderer {
         context.canvas.style.display = "none"
         
         document.body.style.overflow = "visible"
-        if (document.fullscreenElement && document.exitFullscreen) {
-            document.exitFullscreen()
+        if (document.fullscreenElement) {
+            // who doesn't love browser compat?
+            if (document.exitFullscreen) {
+                document.exitFullscreen()
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen()
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen()
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen()
+            }
         }
     }
 
