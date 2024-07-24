@@ -271,21 +271,97 @@ class PhoneCoordinates {
 
 }
 
-class Course {
+class PhoneConnectionLine {
 
-    constructor(phones=[]) {
-        this.phones = phones
+    getRandomColor() {
+        const hue = Math.round(Math.random() * 360)
+        
+        // Avoid green-ish hues to avoid confusion with board color
+        if (hue > 65 && hue < 185) {
+            return this.getRandomColor()
+        }
+
+        return `hsl(${hue}deg 100% 50%)`
+    }
+
+    constructor(start, end, color="random") {
+        this.start = start ?? new Vector2d(0, 0)
+        this.end = end ?? new Vector2d(1, 0)
+
+        if (color == "random") {
+            this.color = this.getRandomColor()
+        } else {
+            this.color = color
+        }
+    }
+
+    get length() {
+        return this.start.distance(this.end)
+    }
+
+    get points() {
+        return [this.start, this.end]
+    }
+
+    translate(vec) {
+        this.start.iadd(vec)
+        this.end.iadd(vec)
+        return this
+    }
+
+    rotate(angle) {
+        for (let vec of this.points) {
+            vec.irotate(angle)
+        }
+    }
+
+    scale(scalar) {
+        for (let vec of this.points) {
+            vec.iscale(scalar)
+        }
+    }
+
+    static fromObject(obj) {
+        return new PhoneConnectionLine(
+            Vector2d.fromObject(obj.start),
+            Vector2d.fromObject(obj.end),
+            obj.color
+        )
     }
 
     toObject() {
         return {
-            phones: this.phones.map(p => p.toObject())
+            start: this.start.toObject(),
+            end: this.end.toObject(),
+            color: this.color
+        }
+    }
+
+}
+
+class Course {
+
+    constructor(phones, lines) {
+        this.phones = phones ?? []
+        this.lines = lines ?? []
+    }
+
+    reset() {
+        this.phones = []
+        this.lines = []
+    }
+
+    toObject() {
+        return {
+            phones: this.phones.map(p => p.toObject()),
+            lines: this.lines.map(l => l.toObject()),
         }
     }
 
     static fromObject(obj) {
         return new Course(
-            obj.phones.map(p => PhoneCoordinates.fromObject(p))
+            obj.phones.map(p => PhoneCoordinates.fromObject(p)),
+            obj.lines?.map(l => PhoneConnectionLine.fromObject(l))
         )
     }
 
@@ -295,18 +371,25 @@ class Course {
 
     scale(scalar) {
         this.phones.forEach(p => p.scale(scalar))
+        this.lines.forEach(l => l.scale(scalar))
     }
 
     rotate(angle) {
         this.phones.forEach(p => p.rotate(angle))
+        this.lines.forEach(l => l.rotate(angle))
     }
 
     translate(point) {
         this.phones.forEach(p => p.translate(point))
+        this.lines.forEach(l => l.translate(point))
     }
 
     addPhone(phone) {
         this.phones.push(phone)
+    }
+
+    addLine(line) {
+        this.lines.push(line)
     }
 
     containsPos(pos) {

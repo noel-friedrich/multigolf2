@@ -2,11 +2,11 @@
 <html lang="en">
 
     <!-- SET title=Multigolf -->
-    <!-- SET description=Homepage of multi.golf: a multiplayer minigolf game that used multiple devices to build minigolf courses -->
+    <!-- SET description=Homepage of multi.golf: a multiplayer minigolf game that uses multiple screens to build minigolf courses -->
     <!-- BEGIN default_head -->
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Homepage of multi.golf: a multiplayer minigolf game that used multiple devices to build minigolf courses">
+        <meta name="description" content="Homepage of multi.golf: a multiplayer minigolf game that uses multiple screens to build minigolf courses">
         <meta charset="UTF-8">
         <title>Multigolf</title>
         <link rel="manifest" href="manifest.json">
@@ -318,7 +318,8 @@
                 // replace CSS "100vh" with actual inner height in px
                 // (-1 to prevent inaccuracies in some browsers)
                 const updateInnerHeight = () => {
-                    document.body.style.setProperty("--full-height", `${window.innerHeight - 1}px`)
+                    const height = window.screen?.availHeight || window.innerHeight
+                    document.body.style.setProperty("--full-height", `${height - 1}px`)
                 }
                 updateInnerHeight()
                 addEventListener("resize", updateInnerHeight)

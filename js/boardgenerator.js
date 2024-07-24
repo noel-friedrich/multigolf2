@@ -24,6 +24,64 @@ class BoardGenerator {
         return course
     }
 
+    getConnectingLines(prevPhone, phone) {
+        return [
+            // upper corners
+            new PhoneConnectionLine(
+                new Vector2d(0, 0),
+                new Vector2d(Math.min(prevPhone.size.x, phone.size.x), 0)
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(prevPhone.size.x, 0),
+                new Vector2d(prevPhone.size.x, Math.min(phone.size.y, prevPhone.size.y))
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(Math.max(prevPhone.maxXY.x - phone.maxXY.x, 0), prevPhone.size.y),
+                new Vector2d(prevPhone.size.x, prevPhone.size.y)
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(0, Math.max(0, prevPhone.maxXY.y - phone.maxXY.y)),
+                new Vector2d(0, prevPhone.size.y)
+            ),
+
+            // lower corners
+            new PhoneConnectionLine(
+                new Vector2d(Math.max(prevPhone.maxXY.x - phone.maxXY.x, 0), 0),
+                new Vector2d(prevPhone.size.x, 0)
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(prevPhone.size.x, Math.max(0, prevPhone.maxXY.y - phone.maxXY.y)),
+                new Vector2d(prevPhone.size.x, prevPhone.size.y)
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(0, prevPhone.size.y),
+                new Vector2d(Math.min(prevPhone.size.x, phone.size.x), prevPhone.size.y)
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(0, 0),
+                new Vector2d(0, Math.min(phone.size.y, prevPhone.size.y))
+            ),
+
+            // middles
+            new PhoneConnectionLine(
+                new Vector2d(Math.max(prevPhone.minXY.x + prevPhone.maxXY.x - phone.minXY.x - phone.maxXY.x, 0) / 2, 0),
+                new Vector2d(prevPhone.size.x - Math.max(prevPhone.minXY.x + prevPhone.maxXY.x - phone.minXY.x - phone.maxXY.x, 0) / 2, 0)
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(prevPhone.size.x, Math.max(prevPhone.minXY.y + prevPhone.maxXY.y - phone.minXY.y - phone.maxXY.y, 0) / 2),
+                new Vector2d(prevPhone.size.x, prevPhone.size.y - Math.max(prevPhone.minXY.y + prevPhone.maxXY.y - phone.minXY.y - phone.maxXY.y, 0) / 2)
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(Math.max(prevPhone.minXY.x + prevPhone.maxXY.x - phone.minXY.x - phone.maxXY.x, 0) / 2, prevPhone.size.y),
+                new Vector2d(prevPhone.size.x - Math.max(prevPhone.minXY.x + prevPhone.maxXY.x - phone.minXY.x - phone.maxXY.x, 0) / 2, prevPhone.size.y)
+            ),
+            new PhoneConnectionLine(
+                new Vector2d(0, Math.max(prevPhone.minXY.y + prevPhone.maxXY.y - phone.minXY.y - phone.maxXY.y, 0) / 2),
+                new Vector2d(0, prevPhone.size.y - Math.max(prevPhone.minXY.y + prevPhone.maxXY.y - phone.minXY.y - phone.maxXY.y, 0) / 2)
+            ),
+        ]
+    }
+
     getPhoneAlignOptions(prevPhone, phone) {
         return [
             // upper corners
@@ -107,8 +165,11 @@ class BoardGenerator {
             let alignOption = Math.floor(Math.random() * translateOptions.length)
             if (linear) alignOption = 10
             course.alignOptions.push(alignOption)
-            phone.translate(translateOptions[alignOption])
 
+            const lineOptions = this.getConnectingLines(prevPhone, phone)
+            course.addLine(lineOptions[alignOption].translate(phone.minXY))
+
+            phone.translate(translateOptions[alignOption])
             course.addPhone(phone)
 
             const previousPhones = course.phones.slice(0, -2)
@@ -120,6 +181,7 @@ class BoardGenerator {
                 // undo last phone addition
                 phones.unshift(course.phones.pop())
                 course.alignOptions.pop()
+                course.lines.pop()
 
                 phoneTries++
             } else {
@@ -130,16 +192,17 @@ class BoardGenerator {
                 phones = this.screenSizes.map(size => {
                     return PhoneCoordinates.fromWidthHeight(size.x, size.y)
                 })
+                course.alignOptions = []
                 course.phones = [phones.shift()]
+                course.lines = []
                 phoneTries = 0
                 totalTries++
             }
 
-            if (totalTries > 1000) {
+            if (totalTries > 10000) {
                 throw new Error("Couldn't generate course [too many tries]")
             }
         }
-
         return course
     }
 
@@ -172,7 +235,7 @@ class BoardGenerator {
 
     generate() {
         const board = new Board()
-        board.course = this.generateRandomCourse({linear: false})
+        board.course = this.generateRandomCourse({linear: Math.random() < 0.1})
         this.placeStartAndHole(board)
         return board
     }

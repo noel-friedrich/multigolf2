@@ -74,6 +74,8 @@ function changeGamePhase(newPhase, force=false) {
         keepLayoutButton.style.display = hasLayout ? "block" : "none"
     } else if (newPhase == gamePhase.ConstructionAuto) {
         generateBoardTemplates()
+    } else if (newPhase == gamePhase.ConstructionCustom) {
+        gameState.board.resetConfig()
     } else if (newPhase == gamePhase.ConfigGame) {
         generateConfigHtml()
     }
@@ -296,7 +298,7 @@ async function generateBoardTemplates() {
 
         const boardOption = boardGenerator.generate()
         setTimeout(() => {
-            BoardRenderer.render(boardOption, context)
+            BoardRenderer.render(boardOption, context, {drawConnectionLines: true})
         }, 100)
 
         button.onclick = () => {

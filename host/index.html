@@ -939,7 +939,8 @@
                 // replace CSS "100vh" with actual inner height in px
                 // (-1 to prevent inaccuracies in some browsers)
                 const updateInnerHeight = () => {
-                    document.body.style.setProperty("--full-height", `${window.innerHeight - 1}px`)
+                    const height = window.screen?.availHeight || window.innerHeight
+                    document.body.style.setProperty("--full-height", `${height - 1}px`)
                 }
                 updateInnerHeight()
                 addEventListener("resize", updateInnerHeight)
@@ -965,7 +966,7 @@
         </script>
         <!-- END -->
 
-        <!-- SET js_version=28 -->
+        <!-- SET js_version=29 -->
         <!-- JS_IMPORT js/text.js -->
         <!-- JS_IMPORT js/qrcode.js -->
         <!-- JS_IMPORT js/sprite.js -->
@@ -986,24 +987,24 @@
         <!-- JS_IMPORT host/main.js -->
 
         <!-- BEGIN js_imports -->
-        <script src="../js/text.js?v28"></script>
-        <script src="../js/qrcode.js?v28"></script>
-        <script src="../js/sprite.js?v28"></script>
-        <script src="../js/nosleep.js?v28"></script>
-        <script src="../js/mathutils.js?v28"></script>
-        <script src="../js/phone_coordinates.js?v28"></script>
-        <script src="../js/board.js?v28"></script>
-        <script src="../js/gamestate.js?v28"></script>
-        <script src="../js/boardrenderer.js?v28"></script>
-        <script src="../js/rtc.js?v28"></script>
-        <script src="../js/objects.js?v28"></script>
-        <script src="../js/scoreboardmaker.js?v28"></script>
-        <script src="../js/boardgenerator.js?v28"></script>
-        <script src="../js/audioplayer.js?v28"></script>
-        <script src="../host/game_setup.js?v28"></script>
-        <script src="../host/game_management.js?v28"></script>
-        <script src="../host/player_management.js?v28"></script>
-        <script src="../host/main.js?v28"></script>
+        <script src="../js/text.js?v29"></script>
+        <script src="../js/qrcode.js?v29"></script>
+        <script src="../js/sprite.js?v29"></script>
+        <script src="../js/nosleep.js?v29"></script>
+        <script src="../js/mathutils.js?v29"></script>
+        <script src="../js/phone_coordinates.js?v29"></script>
+        <script src="../js/board.js?v29"></script>
+        <script src="../js/gamestate.js?v29"></script>
+        <script src="../js/boardrenderer.js?v29"></script>
+        <script src="../js/rtc.js?v29"></script>
+        <script src="../js/objects.js?v29"></script>
+        <script src="../js/scoreboardmaker.js?v29"></script>
+        <script src="../js/boardgenerator.js?v29"></script>
+        <script src="../js/audioplayer.js?v29"></script>
+        <script src="../host/game_setup.js?v29"></script>
+        <script src="../host/game_management.js?v29"></script>
+        <script src="../host/player_management.js?v29"></script>
+        <script src="../host/main.js?v29"></script>
         <!-- END -->
     </body>
 

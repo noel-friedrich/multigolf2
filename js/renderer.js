@@ -72,6 +72,23 @@ class Renderer {
         context.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false)
     }
 
+    static renderConnectionLines(gameState, context, touchInfo) {
+        for (const line of gameState.board.course.lines) {
+            context.beginPath()
+
+            const startPos = gameState.boardPosToScreenPos(line.start)
+            const endPos = gameState.boardPosToScreenPos(line.end)
+
+            context.moveTo(startPos.x, startPos.y)
+            context.lineTo(endPos.x, endPos.y)
+            
+            context.lineWidth = 20 / gameState.combinedScalingFactor
+            context.strokeStyle = line.color
+            context.lineCap = "round"
+            context.stroke()
+        }
+    }
+
     static renderConstruction(gameState, context, touchInfo) {
         const canvas = context.canvas
 
@@ -83,7 +100,7 @@ class Renderer {
         context.textAlign = "center"
         context.font = `${this.screenUnit * 3}px Arial`
         context.fillStyle = "black"
-        context.fillText(gameState.deviceIndex, canvas.width / 2, canvas.height / 2)
+        context.fillText(gameState.deviceIndex + ".", canvas.width / 2, canvas.height / 2)
 
         if (touchInfo.isDown) {
             if (touchInfo.lastDownPos) {
@@ -100,6 +117,8 @@ class Renderer {
             this.drawCircle(context, touchInfo.currPos, 25)
             context.fill()
         }
+
+        this.renderConnectionLines(gameState, context, touchInfo)
     }
 
     static drawObjectOutline(gameState, context, object) {
@@ -181,11 +200,16 @@ class Renderer {
     static renderBoard(gameState, context, touchInfo, {
         drawBalls = true,
         drawSelection = true,
-        drawGravity = true
+        drawGravity = false,
+        drawConnectionLines = false,
     }={}) {
         context.canvas.style.display = "block"
         const backgroundSizePercent = Math.max(Math.round(51 / gameState.scalingFactor), 1)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
+
+        if (drawConnectionLines) {
+            this.renderConnectionLines(gameState, context, touchInfo)
+        }
 
         if (drawGravity) {
             this.drawGravityArrows(gameState, context, touchInfo)
@@ -284,7 +308,8 @@ class Renderer {
         }
 
         if (gameState.phase == gamePhase.Placing) {
-            this.renderBoard(gameState, context, touchInfo, {drawBalls: false, drawGravity: false})
+            this.renderBoard(gameState, context, touchInfo,
+                {drawBalls: false, drawGravity: false, drawConnectionLines: true})
             return this.renderPlacingTools(gameState, context, touchInfo)
         }
 

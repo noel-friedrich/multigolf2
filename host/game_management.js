@@ -124,7 +124,9 @@ async function startGame() {
         setInterval(() => {
             if (gameState.board.course.phones.length > 0) {
                 boardCanvasFieldset.style.display = "grid"
-                BoardRenderer.render(gameState.board, boardContext)
+                BoardRenderer.render(gameState.board, boardContext, {
+                    drawConnectionLines: gameState.phase >= gamePhase.ConstructionChoice && gameState.phase <= gamePhase.Placing
+                })
             } else {
                 boardCanvasFieldset.style.display = "none"
             }

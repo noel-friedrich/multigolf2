@@ -100,7 +100,7 @@ class RtcBase {
 
     static checkForSignalsInterval = 1000
     static clientTimeoutPeriod = 20 * 1000
-    static hostTimeoutPeriod = 2 * 60 * 1000
+    static hostTimeoutPeriod = 10 * 1000
     
     initDatachannelListeners() {
         this.dataChannel.onopen = (e) => {
@@ -269,6 +269,7 @@ class RtcBase {
         while (true) {
             const timeElapsed = Date.now() - startWaitTime
             if (timeElapsed > timeout) {
+                this.die()
                 throw new Error(`Timeout while waiting for ${name}`)
             }
 
@@ -302,6 +303,7 @@ class RtcBase {
 
             const timeElapsed = Date.now() - startTime
             if (timeElapsed > timeoutPeriod) {
+                this.die()
                 throw new Error(`Timeout while waiting for ${objectName}`)
             }
 
@@ -526,10 +528,14 @@ class RtcHostManager {
         logFunction = () => {},
         onDataMessage = () => {},
         onClientUrlAvailable = () => {},
+        allowConnectionOverride = () => true
     }={}) {
+        this.gameState = gameState
+
         this.logFunction = logFunction
         this.onDataMessage = onDataMessage
         this.onClientUrlAvailable = onClientUrlAvailable
+        this.allowConnectionOverride = allowConnectionOverride
 
         this.poolUid = null
         this.connections = []
@@ -614,6 +620,7 @@ class RtcHostManager {
                 if (deviceIndex != null
                     && this.connections[deviceIndex - 1]
                     && this.connections[deviceIndex - 1].getStatus().color !== "red"
+                    && this.allowConnectionOverride()
                 ) {
                     deviceIndex = null
                 }
@@ -638,7 +645,7 @@ class RtcHostManager {
         }
 
         // removed refrences to them
-        this.connections = this.connections.filter(c => c.getStatus().color != "red")
+        this.connections = this.connections.filter(c => c.alive)
         rtc.sortConnections()
     }
 

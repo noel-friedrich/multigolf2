@@ -443,6 +443,13 @@ class Board {
         this.physicsStepEvents = []
     }
 
+    resetConfig() {
+        this.balls = []
+        this.objects = []
+        this.course.reset()
+        this.courseHistory = [this.course.copy()]
+    }
+
     addPhysicsEvent(callback, relativeStepIndex) {
         this.physicsStepEvents.push([this.physicsStepCount + relativeStepIndex, callback])
     }
@@ -668,6 +675,7 @@ class Board {
         this.course.translate(originB.sub(originA))
 
         this.course.addPhone(b.phone.copy())
+        this.course.addLine(new PhoneConnectionLine(b.line.startPos, b.line.endPos))
         this.courseHistory.push(this.course.copy())
 
         return true

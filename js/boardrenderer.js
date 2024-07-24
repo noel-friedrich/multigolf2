@@ -53,7 +53,7 @@ class BoardRenderer {
         context.stroke()
     }
 
-    static render(board, context) {
+    static render(board, context, {drawConnectionLines = false}={}) {
         const canvas = context.canvas
         canvas.style.display = "block"
         canvas.width = canvas.clientWidth
@@ -80,6 +80,7 @@ class BoardRenderer {
         //  step-by-step optimization until we reach the goal)
         // (this part doesn't have to be _that_ efficient)
         // (the approach is converging exponentially, so should be fine)
+        maxX = undefined
         while (maxX == undefined || maxX > canvas.width || maxY > canvas.height) {
             screenBoard.scale(0.95 ** 2)
             maxX = Math.max(...screenBoard.course.phones.map(p => p.points.map(c => c.x)).flat())
@@ -122,15 +123,25 @@ class BoardRenderer {
         for (let i = 0; i < minOverlapIndex; i++) {
             const phone = screenBoard.course.phones[i]
             const averagePos = calcAveragePos(phone.points)
-            context.font = `${Math.max(phone.size.x, phone.size.y) * 0.2}px Arial`
+            context.font = `${Math.min(phone.size.x, phone.size.y) * 0.4}px Arial`
             context.textBaseline = "middle"
             context.textAlign = "center"
             context.fillStyle = "black"
             context.save()
             context.translate(averagePos.x, averagePos.y)
             context.rotate(phone.angle)
-            context.fillText((i + 1).toString(), 0, 0)
+            context.fillText((i + 1).toString() + ".", 0, 0)
             context.restore()
+        }
+
+        if (drawConnectionLines)
+        for (const line of screenBoard.course.lines) {
+            context.beginPath()
+            context.moveTo(line.start.x, line.start.y)
+            context.lineTo(line.end.x, line.end.y)
+            context.lineWidth = 5
+            context.strokeStyle = line.color
+            context.stroke()
         }
 
         for (const obj of screenBoard.objects) {

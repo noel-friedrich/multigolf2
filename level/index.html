@@ -35,7 +35,10 @@
     <body>
         <div class="level-container">
             <div class="level-header">
-                <a class="menu-link" href="../mono/">To Levels</a>
+                <a class="menu-link" href="../mono/">
+                    <span lang="en">To Levels</span>
+                    <span lang="de">Alle Level</span>
+                </a>
                 <div class="level-display">
                     Level <output id="level-id-output">00</output>
                 </div>
@@ -76,7 +79,8 @@
                 // replace CSS "100vh" with actual inner height in px
                 // (-1 to prevent inaccuracies in some browsers)
                 const updateInnerHeight = () => {
-                    document.body.style.setProperty("--full-height", `${window.innerHeight - 1}px`)
+                    const height = window.screen?.availHeight || window.innerHeight
+                    document.body.style.setProperty("--full-height", `${height - 1}px`)
                 }
                 updateInnerHeight()
                 addEventListener("resize", updateInnerHeight)
