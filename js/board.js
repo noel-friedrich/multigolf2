@@ -94,19 +94,24 @@ class Ball {
         return closestWall
     }
 
-    _getCollidingCorner(board) {
+    _getCollidingCorners(board) {
         const walledObjects = board.course.phones
             .concat(board.objects.filter(o => o.type == golfObjectType.CustomWall))
-        
+        const collidingCorners = []
+
         for (const wallObject of walledObjects) {
             for (const corner of wallObject.corners) {
-                if (corner.distance(this.pos) < this.radius) {
-                    return corner
+                const distance = corner.distance(this.pos)
+                if (distance < this.radius) {
+                    collidingCorners.push({
+                        type: "corner",
+                        distance, point: corner
+                    })
                 }
             }
         }
 
-        return null
+        return collidingCorners
     }
 
     _getCollidingWalls(board) {
@@ -139,7 +144,10 @@ class Ball {
                     }
 
                     if (overlapCount < 2) {
-                        collidingWalls.push([p1, p2])
+                        collidingWalls.push({
+                            points: [p1, p2], distance,
+                            type: "wall"
+                        })
                     }
                 }
             }
@@ -349,25 +357,30 @@ class Ball {
             return
         }
 
-        const collidingCorner = this._getCollidingCorner(board)
-        if (collidingCorner) {
-            // corner collisions solved using quick mafs
-            // https://gamedev.stackexchange.com/questions/10911/a-ball-hits-the-corner-where-will-it-deflect
-            const cornerDir = this.pos.sub(collidingCorner)
-            const collisionStrength = -2 * this.vel.dot(cornerDir) / cornerDir.squaredLength
-            
-            this.pos.isub(this.vel)
-            this.vel.iadd(cornerDir.scale(collisionStrength))
-            this.pos.iadd(this.vel.scale(0.95))
+        const collidingObjects = this._getCollidingCorners(board).concat(this._getCollidingWalls(board))
+        collidingObjects.sort((a, b) => a.distance - b.distance)
 
-            madeWallCollision = true
-        }
-        
-        const collidingWalls = this._getCollidingWalls(board)
-        for (const [p1, p2] of collidingWalls) {
-            this.pos.isub(this.vel)
-            this.vel = this._reflectAtWall(p1, p2, this.vel)
-            this.pos.iadd(this.vel.scale(0.8))
+        if (collidingObjects.length > 0) {
+            if (collidingObjects[0].type == "corner") {
+                const collidingCorner = collidingObjects[0].point
+
+                // corner collisions solved using quick mafs
+                // https://gamedev.stackexchange.com/questions/10911/a-ball-hits-the-corner-where-will-it-deflect
+                const cornerDir = this.pos.sub(collidingCorner)
+                const collisionStrength = -2 * this.vel.dot(cornerDir) / cornerDir.squaredLength
+                
+                this.pos.isub(this.vel)
+                this.vel.iadd(cornerDir.scale(collisionStrength))
+                this.pos.iadd(this.vel.scale(0.95))
+
+                madeWallCollision = true
+            } else {
+                for (const [p1, p2] of collidingObjects.filter(o => o.type == "wall").map(o => o.points)) {
+                    this.pos.isub(this.vel)
+                    this.vel = this._reflectAtWall(p1, p2, this.vel)
+                    this.pos.iadd(this.vel.scale(0.8))
+                }
+            }
 
             madeWallCollision = true
         }

@@ -153,7 +153,7 @@ class Renderer {
 
         context.strokeStyle = "black"
         context.fillStyle = "white"
-        context.lineWidth = 5 / gameState.combinedScalingFactor
+        context.lineWidth = 3 / gameState.combinedScalingFactor
         context.lineCap = "round"
 
         context.fill()
