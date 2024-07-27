@@ -55,12 +55,13 @@ function onEventUp(event) {
     touchInfo.lastUpTime = Date.now()
 
     if (!touchInfo.focusedBall || !touchInfo.lastDownPos || !touchInfo.lastUpPos || !gameState
-        || touchInfo.lastDownPos.distance(touchInfo.lastUpPos) < 30
+        || touchInfo.lastDownPos.distance(touchInfo.lastUpPos) < 10
     ) {
         return
     }
 
-    const strength = Math.min(touchInfo.lastDownPos.distance(touchInfo.lastUpPos) * 0.3 / gameState.combinedScalingFactor, 70)
+    const ballPos = gameState.boardPosToScreenPos(touchInfo.focusedBall.pos)
+    const strength = Math.min(ballPos.distance(touchInfo.lastUpPos) * 0.3 / gameState.combinedScalingFactor, 70)
     const touchUpBoardPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
     const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
 
