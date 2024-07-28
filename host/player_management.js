@@ -122,5 +122,7 @@ function startConnectionProcess() {
             allowConnectionOverride: () => gameState.phase == gamePhase.Connecting
         })
         rtc.start()
+
+        fetch("https://www.noel-friedrich.de/multigolf2/api/count_start.php")
     }
 }

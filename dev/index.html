@@ -162,8 +162,10 @@
             <fieldset>
                 <legend>Site Views</legend>
                 <p style="text-align: initial;">
-                    <a href="https://multi.golf">https://multi.golf</a> has
-                    <output id="site-visitors-output">&lt;Loading...&gt;</output> site visits.<br>
+                    <a href="https://multi.golf">https://multi.golf</a> has been visited
+                    <output id="site-visitors-output">&lt;Loading...&gt;</output> times and
+                    <output id="game-starts-output">&lt;Loading...&gt;</output> games have been started in total.<br>
+
                     (Last updated: <output id="site-visitors-time-output">&lt;Loading...&gt;</output>)
                     <script>
                         const intervalFunc = async () => {
@@ -171,7 +173,9 @@
                                 "https://www.noel-friedrich.de/terminal/api/get_visit_count.php"
                             ).then(response => response.json())
                             const multigolfVisits = visits.find(v => v.url == "https://multi.golf").visits
+                            const multigolfStarts = visits.find(v => v.url == "https://multi.golf/host/").visits
                             document.getElementById("site-visitors-output").textContent = multigolfVisits
+                            document.getElementById("game-starts-output").textContent = multigolfStarts
                             document.getElementById("site-visitors-time-output").textContent = new Date()
                         }
 

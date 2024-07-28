@@ -1,3 +1,61 @@
+const PARTICLE_MAX_TICKS = 100
+
+class Particle {
+
+    constructor(pos, vel, color, radius, ticksAlive) {
+        this.pos = pos ?? new Vector2d(0, 0)
+        this.vel = vel ?? new Vector2d(0, 0)
+        this.color = color ?? "white"
+        this.radius = radius ?? 10
+        this.ticksAlive = 0
+        this.alive = true
+    }
+
+    die() {
+        this.alive = false
+    }
+
+    get opacity() {
+        return Math.max(1 - this.ticksAlive / PARTICLE_MAX_TICKS, 0)
+    }
+
+    updatePhysics(board) {
+        if (!this.alive) {
+            return
+        }
+
+        this.pos.iadd(this.vel)
+        if (!board.course.containsPos(this.pos)) {
+            this.die()
+        }
+        
+        if (this.ticksAlive > PARTICLE_MAX_TICKS) {
+            this.die()
+        }
+
+        this.ticksAlive++
+    }
+
+    toObject() {
+        return {
+            p: this.pos.toObject(),
+            v: this.vel.toObject(),
+            c: this.color,
+            r: this.radius,
+            t: this.ticksAlive
+        }
+    }
+
+    static fromObject(obj) {
+        return new Particle(
+            Vector2d.fromObject(obj.p),
+            Vector2d.fromObject(obj.v),
+            obj.c, obj.r, obj.t
+        )
+    }
+
+}
+
 class Ball {
 
     constructor(pos, vel, inHole, radius, spriteUrl, kicks, active, uid, rotationAngle, lastImmobilePos, immobileTickCount) {
@@ -308,15 +366,17 @@ class Ball {
             this.vel.iscale(0)
         }
 
-        if (!board.course.containsPos(this.pos)) {
+        if (!board.course.containsPos(this.pos) ||
+            board.objects.filter(o => o.type == golfObjectType.CustomWall)
+                .some(o => o.intersects(this.pos))) {
             // if the ball is out of bounds too long,
             // something went horribly wrong and we reset
             // him to the start
             
             this.outOfBoundsTickCount++
             if (this.outOfBoundsTickCount > 10) {
-                this.pos = board.startPos.copy()
-                this.vel.iscale(0)
+                this.resetPos(board.startPos)
+                this.outOfBoundsTickCount = 0
             }
         } else {
             this.outOfBoundsTickCount = 0
@@ -339,6 +399,12 @@ class Ball {
         }
     }
 
+    resetPos(startPos) {
+        this.pos = startPos.copy()
+        this.vel.iscale(0)
+        this.angle = 0
+    }
+
     physicsStep(board) {
         let madeWallCollision = false
 
@@ -352,9 +418,7 @@ class Ball {
                 window.AudioPlayer.play(AudioSprite.Lava)
             }
 
-            this.pos = board.startPos.copy()
-            this.vel.iscale(0)
-            return
+            return this.resetPos(board.startPos)
         }
 
         const collidingObjects = this._getCollidingCorners(board).concat(this._getCollidingWalls(board))
@@ -373,12 +437,16 @@ class Ball {
                 this.vel.iadd(cornerDir.scale(collisionStrength))
                 this.pos.iadd(this.vel.scale(0.95))
 
+                board.spawnParticleExplosion(collidingCorner)
+
                 madeWallCollision = true
             } else {
                 for (const [p1, p2] of collidingObjects.filter(o => o.type == "wall").map(o => o.points)) {
                     this.pos.isub(this.vel)
                     this.vel = this._reflectAtWall(p1, p2, this.vel)
                     this.pos.iadd(this.vel.scale(0.8))
+                    const { closestPoint } = this._distanceToWall(p1, p2, this.pos)
+                    board.spawnParticleExplosion(closestPoint, {speedFactor: this.vel.length / 5})
                 }
             }
 
@@ -438,17 +506,21 @@ class Board {
 
     static physicsTimestep = 17 // approximately 60 fps
 
-    constructor(course, objects, balls, physicsTime, ballCollisionEnabled, deviceGravityEnabled) {
+    constructor(course, objects, balls, physicsTime, ballCollisionEnabled, deviceGravityEnabled, particlesEnabled, particles) {
         this.course = course ?? new Course()
         this.objects = objects ?? []
         this.balls = balls ?? []
+        this.particles = particles ?? []
         this.physicsTime = physicsTime ?? Date.now()
+
         this.ballCollisionEnabled = ballCollisionEnabled ?? true
         this.deviceGravityEnabled = deviceGravityEnabled ?? true
+        this.particlesEnabled = particlesEnabled ?? true
 
         // the following properties will not be
         // exported and thus not sent to clients
         // (as they are only useful for host)
+
         this.constructionLineBuffer = []
         this.courseHistory = [this.course.copy()]
         
@@ -465,6 +537,19 @@ class Board {
 
     addPhysicsEvent(callback, relativeStepIndex) {
         this.physicsStepEvents.push([this.physicsStepCount + relativeStepIndex, callback])
+    }
+
+    spawnParticleExplosion(pos, {color=undefined, speedFactor=1, numParticles=30}={}) {
+        const plusminus = Math.ceil(numParticles * 0.3)
+        numParticles += Math.round((Math.random() - 0.5) * 2 * plusminus)
+
+        for (let i = 0; i < numParticles; i++) {
+            const speed = Math.random() * 0.5 + 2
+            const angle = i / numParticles * Math.PI * 2
+            const vel = Vector2d.fromAngle(angle).scale(speed).scale(speedFactor)
+            const particle = new Particle(pos.copy(), vel, color)
+            this.particles.push(particle)
+        }
     }
 
     clearPhysicsEvents() {
@@ -549,6 +634,12 @@ class Board {
         for (const ball of this.balls) {
             ball.updatePhysics(this)
         }
+        for (const particle of this.particles) {
+            particle.updatePhysics(this)
+        }
+
+        this.particles = this.particles.filter(p => p.alive)
+
         this.physicsTime += Board.physicsTimestep
     }
 
@@ -604,7 +695,9 @@ class Board {
             balls: this.balls.map(b => b.toObject()),
             physicsTime: this.physicsTime,
             ballCollisionEnabled: this.ballCollisionEnabled,
-            deviceGravityEnabled: this.deviceGravityEnabled
+            deviceGravityEnabled: this.deviceGravityEnabled,
+            particlesEnabled: this.particlesEnabled,
+            particles: this.particles.map(p => p.toObject())
         }
     }
 
@@ -614,7 +707,8 @@ class Board {
             obj.objects.map(o => GolfObject.fromObject(o)),
             obj.balls.map(b => Ball.fromObject(b)),
             obj.physicsTime, obj.ballCollisionEnabled,
-            obj.deviceGravityEnabled
+            obj.deviceGravityEnabled, obj.particlesEnabled,
+            obj.particles?.map(p => Particle.fromObject(p))
         )
     }
 
