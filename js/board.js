@@ -664,6 +664,12 @@ class Board {
 
             this.physicsStepEvents = this.physicsStepEvents.filter(([i, _]) => i > this.physicsStepCount)
         }
+
+        // if the device lags more than 10 seconds behind, catching up to normal
+        // time will take too long to make sense. It was probably doing nothing anyways. (hopefully)
+        if (Math.abs(this.physicsTime - maxTime) > 10 * 1000) {
+            this.physicsTime = maxTime
+        }
     }
 
     simulateStepsEfficiently(numSteps, {

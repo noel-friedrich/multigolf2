@@ -22,6 +22,8 @@
     <script>
         const urlSearchParams = new URLSearchParams(window.location.search)
         let levelId = urlSearchParams.get("id")
+        const challengeMode = urlSearchParams.has("challenge")
+        let challengeKicks = 0
         
         function goBackToLevelChoice() {
             window.location.href = "../mono/"

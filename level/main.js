@@ -65,12 +65,10 @@ function onEventUp(event) {
     const touchUpBoardPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
     const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
 
-    // do an optimistic change
-    if (gameState.mode == gameMode.Tournament) {
-        gameState.onTournamentKick(touchInfo.focusedBall)
-    }
-
     touchInfo.focusedBall.kick(direction)
+    challengeKicks--
+
+    localStorage.setItem("challenge-kicks", challengeKicks)
 
     touchInfo.focusedBall = null
     touchInfo.draggingObject = false
@@ -88,7 +86,7 @@ const levelContext = levelCanvas.getContext("2d")
 const logoImg = document.querySelector("#logo-img")
 const levelIdOutput = document.querySelector("#level-id-output")
 
-if (!hasUnlockedLevel(levelId) && levelId != "editor") {
+if (!hasUnlockedLevel(levelId) && levelId != "editor" && !challengeMode) {
     goBackToLevelChoice()
 }
 
@@ -117,6 +115,9 @@ function goToNextLevel() {
     } else {
         goBackToLevelChoice()
     }
+    
+    challengeKicks++
+    localStorage.setItem("challenge-kicks", challengeKicks)
 }
 
 function resizeCanvas() {
@@ -180,11 +181,19 @@ setInterval(() => {
 
 function gameLoop() {
     gameState.update()
-    Renderer.render(gameState, levelContext, touchInfo)
+
+    Renderer.render(gameState, levelContext, touchInfo,
+        challengeMode ? {challengeBalls: challengeKicks} : {}
+    )
 
     if (ball && ball.inHole && ball.radius == 0) {
         completeLevel(level.id)
         goToNextLevel()
+    }
+
+    if (challengeMode && challengeKicks <= 0 && !ball.isMoving() && !ball.inHole) {
+        localStorage.removeItem("challenge-kicks")
+        goBackToLevelChoice()
     }
 
     window.requestAnimationFrame(gameLoop)
@@ -220,11 +229,15 @@ function loadLevel(id) {
     gameState.board.physicsTime = Date.now()
     gameState.board.particlesEnabled = true
 
-    ball = gameState.board.spawnBall({spriteUrl: Sprite.BallWhite})
+    ball = gameState.board.spawnBall({spriteUrl: "random"})
 
     const url = new URL(window.location.href)
     url.searchParams.set("id", levelId)
     window.history.pushState(null, "", url.toString())
+
+    if (challengeMode) {
+        localStorage.setItem("challenge-level", levelId)
+    }
 
     hasGoneToNextLevel = false
 }
@@ -236,6 +249,19 @@ async function main() {
     await Renderer.load()
     window.AudioPlayer = AudioPlayer
     await window.AudioPlayer.load()
+
+    if (challengeMode) {
+        let localKicks = localStorage.getItem("challenge-kicks")
+        let localLevel = localStorage.getItem("challenge-level")
+
+        if (localKicks === null || localLevel === null) {
+            localKicks = 10
+            localLevel = 1
+        }
+
+        levelId = localLevel
+        challengeKicks = localKicks
+    }
 
     await loadLevels("../mono/default_levels.json")
     loadLevel(levelId)

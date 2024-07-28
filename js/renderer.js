@@ -300,8 +300,27 @@ class Renderer {
         }
     }
 
+    static renderChallengeBalls(gameState, context, touchInfo, challengeBalls) {
+        const fontSize = context.canvas.height * 0.06
+        const padding = 10
+
+        context.font = `bold ${fontSize}px Arial`
+        context.fillStyle = "white"
+        context.textAlign = "left"
+        context.textBaseline = "top"
+        context.strokeStyle = "black"
+        context.lineWidth = 5
+        context.strokeText(challengeBalls, padding + fontSize * 1.1, 10)
+        context.fillText(challengeBalls, padding + fontSize * 1.1, 10)
+        
+        const ballSprite = gameState.board.balls[0]?.spriteUrl ?? Sprite.BallWhite
+        this.drawSprite(context, new Vector2d(1, 1).scale(padding + fontSize * 0.5 - 3),
+            new Vector2d(1, 1).scale(fontSize * 0.8), ballSprite)
+    }
+
     static render(gameState, context, touchInfo, {
-        preventScrolling = true
+        preventScrolling = true,
+        challengeBalls = undefined
     }={}) {
         this.updateCanvasSize(context)
 
@@ -325,6 +344,10 @@ class Renderer {
 
         if (gamePhase.isPlaying(gameState.phase)) {
             this.renderBoard(gameState, context, touchInfo, {drawSelection: false, drawGravity: false})
+            if (challengeBalls !== undefined) {
+                this.renderChallengeBalls(gameState, context, touchInfo, challengeBalls)
+            }
+
             return this.renderBallInteractions(gameState, context, touchInfo)
         }
 
