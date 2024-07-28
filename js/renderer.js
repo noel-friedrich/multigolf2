@@ -267,7 +267,7 @@ class Renderer {
 
         if (gameState.board.particlesEnabled) {
             for (const particle of gameState.board.particles) {
-                context.globalAlpha = 0.5
+                context.globalAlpha = particle.opacity
                 const screenPos = gameState.boardPosToScreenPos(particle.pos)
                 context.fillStyle = particle.color
                 context.fillRect(screenPos.x, screenPos.y, particle.radius, particle.radius)

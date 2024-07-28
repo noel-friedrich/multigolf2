@@ -53,7 +53,7 @@ class BoardRenderer {
         context.stroke()
     }
 
-    static render(board, context, {drawConnectionLines = false}={}) {
+    static render(board, context, {drawConnectionLines = false, drawBalls = true}={}) {
         const canvas = context.canvas
         canvas.style.display = "block"
         canvas.width = canvas.clientWidth
@@ -149,6 +149,14 @@ class BoardRenderer {
                 this.drawCustomWall(context, obj.corners)
             } else {
                 this.drawSprite(context, obj.pos, obj.size, obj.sprite, {angle: obj.angle})
+            }
+        }
+
+        if (drawBalls) {
+            for (const ball of screenBoard.balls) {
+                this.drawSprite(context, ball.pos, 
+                    new Vector2d(ball.radius, ball.radius).scale(2),
+                    ball.spriteUrl, {angle: ball.angle})
             }
         }
     }

@@ -462,6 +462,12 @@ main p {
     margin: 0;
 }
 
+main p.success {
+    text-align: center;
+    color: rgb(5, 162, 0);
+    font-weight: bold;
+}
+
 main p.error {
     text-align: center;
     color: red;

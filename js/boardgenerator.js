@@ -240,4 +240,93 @@ class BoardGenerator {
         return board
     }
 
+    static async placeObjectsRandomly(board, {
+        objectType = golfObjectType.Lava,
+        maxTries = 10,
+        numObjects = 3
+    }={}) {
+        function kickAllBallsRandom() {
+            for (const ball of board.balls) {
+                const speed = 100 + Math.random() * 50
+                const angle = Math.random() * Math.PI * 2
+                const dir = Vector2d.fromAngle(angle).scale(speed)
+                ball.kick(dir)
+            }
+        }
+
+        async function testWithBalls({
+            numBalls = 100,
+            numKicks = board.course.phones.length * 2,
+            stepsPerKick = 100
+        }={}) {
+            if (!board.startPos || board.endPositions.length == 0) {
+                return true
+            }
+
+            const prevBallCollisionEnabled = board.ballCollisionEnabled
+            board.ballCollisionEnabled = false
+
+            let balls = []
+            for (let i = 0; i < numBalls; i++) {
+                const ball = board.spawnBall()
+                balls.push(ball)
+            }
+
+            for (let n = 0; n < numKicks; n++) {
+                board.addPhysicsEvent(kickAllBallsRandom, n * stepsPerKick + 1)
+            }
+
+            for (let i = 0; i < numKicks; i++) {
+                board.simulateStepsEfficiently(stepsPerKick)
+                await new Promise(resolve => setTimeout(resolve, 0))
+            }
+
+            board.ballCollisionEnabled = prevBallCollisionEnabled
+
+            const success = balls.some(b => b.inHole)
+            const ballUids = balls.map(b => b.uid)
+            board.balls = board.balls.filter(b => !ballUids.includes(b.uid))
+
+            return success
+        }
+
+        function getRandomCoursePos() {
+            // choose a random phone weighted by its area
+            let randomPhone = undefined
+            const areaSum = board.course.phones.reduce((p, c) => p + c.area, 0)
+            const r = Math.random() * areaSum
+            let cumulativeSum = 0
+            for (const phone of board.course.phones) {
+                cumulativeSum += phone.area
+                if (cumulativeSum >= r) {
+                    randomPhone = phone
+                    break
+                }
+            }
+            console.assert(randomPhone !== undefined)
+
+            return randomPhone.randomPosInside()
+        }
+
+        for (let i = 0; i < maxTries; i++) {
+            const addedObjectUids = []
+            for (let i = 0; i < numObjects; i++) {
+                const randomLava = GolfObject.makeDefault(objectType)
+                randomLava.setPos(getRandomCoursePos())
+                randomLava.setAngle(Math.random() * 2 * Math.PI)
+                randomLava.setSize(randomLava.size.scale(0.8 + Math.random() * 0.4))
+                board.objects.push(randomLava)
+                
+                addedObjectUids.push(randomLava.uid)
+            }
+
+            if (await testWithBalls()) {
+                return true
+            } else {
+                board.objects = board.objects.filter(o => !addedObjectUids.includes(o.uid))
+            }
+        }
+        return false
+    }
+
 }

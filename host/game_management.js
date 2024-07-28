@@ -184,6 +184,16 @@ function finishConstruction() {
     syncGamestate()
 }
 
+let busyPlacingObjects = false
+function placeRandomObjects(numObjects, objectType) {
+    if (gameState.phase != gamePhase.Placing || busyPlacingObjects) {
+        return
+    }
+
+    busyPlacingObjects = true
+    BoardGenerator.placeObjectsRandomly(gameState.board, {numObjects, objectType}).then(() => busyPlacingObjects = false)
+}
+
 function preparePlacing() {
     for (const container of document.querySelectorAll(".object-selection-container")) {
         container.innerHTML = ""

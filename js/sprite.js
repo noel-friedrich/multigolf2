@@ -82,3 +82,39 @@ const AllBallSprites = [
     Sprite.BallLightblue,
     Sprite.BallWhite,
 ]
+
+function setSpritePath(prePath) {
+    const spriteObjects = [Sprite, AudioSprite]
+    const spriteLists = [allNoteSprites, AllBallSprites]
+
+    for (const obj of spriteObjects) {
+        for (const [key, value] of Object.entries(obj)) {
+            obj[key] = prePath + value
+        }
+    }
+    
+    for (const lst of spriteLists) {
+        for (let i = 0; i < lst.length; i++) {
+            lst[i] = prePath + lst[i]
+        }
+    }
+
+    try {
+        golfObjectTypeSpriteMap = {
+            [golfObjectType.Start]: Sprite.Start,
+            [golfObjectType.Hole]: Sprite.Hole,
+            [golfObjectType.Lava]: Sprite.Lava,
+            [golfObjectType.Eraser]: Sprite.Eraser,
+            [golfObjectType.DuellHole1]: Sprite.DuellHole1,
+            [golfObjectType.DuellHole2]: Sprite.DuellHole2,
+            [golfObjectType.CustomWall]: Sprite.CustomWall,
+            [golfObjectType.GravityBox]: Sprite.GravityBox
+        }        
+    } catch (e) {
+        console.log("Couldn't update golfObjectTypeSpriteMap")
+        if (!(e instanceof ReferenceError)) {
+            throw e
+        }
+    }
+
+}

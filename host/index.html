@@ -698,7 +698,7 @@
                     <span lang="en">
                         Select an object below and click anywhere on the course to place it.
                         Every course must have at least a start and a hole. You can move
-                        existing items around by dragging and pinching. Remove items using
+                        existing objects around by dragging and pinching. Remove objects using
                         the eraser.
                     </span>
                     <span lang="de">
@@ -710,6 +710,20 @@
                     </span>
                 </p>
                 <div class="object-selection-container"></div>
+                <fieldset style="border-radius: .5rem; grid-template-columns: 1fr 1fr;">
+                    <legend>
+                        <span lang="en">Place Random Objects</span>
+                        <span lang="de">Zufällige Objekte Platzieren</span>
+                    </legend>
+                    <button class="smaller" onclick="placeRandomObjects(3, golfObjectType.Lava)">
+                        <span lang="en"><b>3</b>x Lava</span>
+                        <span lang="de"><b>3</b>x Lava</span>
+                    </button>
+                    <button class="smaller" onclick="placeRandomObjects(3, golfObjectType.GravityBox)">
+                        <span lang="en"><b>3</b>x Gravity</span>
+                        <span lang="de"><b>3</b>x Gravitations-Box</span>
+                    </button>
+                </fieldset>
                 <button onclick="finishPlacing()">
                     <span lang="en">I'm finished.</span>
                     <span lang="de">Fertig!</span>
@@ -800,6 +814,26 @@
                         die Ergbnisse mit deinen Freunden teilen.
                     </span>
                 </p>
+                <fieldset>
+                    <legend>Feedback</legend>
+                    <p>
+                        <span lang="en">
+                            How did you find the game? What could be improved or added?
+                            If you have a minute, it would be very helpful to give some quick feedback,
+                            even if it's just a thumbs up or down (it's completely anonymous).
+                        </span>
+                        <span lang="de">
+                            Wie war das Spiel? Was könnte verbessert oder hinzugefügt werden?
+                            Wenn du eine Minute Zeit hättest, wäre ein schnelles Feedback super hilfreich,
+                            auch wenn es nur ein schneller Daumen nach unten oder oben ist
+                            (es ist komplett anonym).
+                        </span>
+                    </p>
+                    <div class="custom-form feedback-form">
+                        <textarea rows="5" placeholder="Feedback Text" name="feedback-text"></textarea>
+                        <button class="smaller">Send Feedback</button>
+                    </div>
+                </fieldset>
                 <button onclick="playNewGame()">
                     <span lang="en">Play a new Game</span>
                     <span lang="de">Neues Spiel anfangen</span>
@@ -826,6 +860,26 @@
                         um ein neues Spiel (vielleicht ein anderer Spielmodus?) anzufangen.
                     </span>
                 </p>
+                <fieldset>
+                    <legend>Feedback</legend>
+                    <p>
+                        <span lang="en">
+                            How did you find the game? What could be improved or added?
+                            If you have a minute, it would be very helpful to give some quick feedback,
+                            even if it's just a thumbs up or down (it's completely anonymous).
+                        </span>
+                        <span lang="de">
+                            Wie war das Spiel? Was könnte verbessert oder hinzugefügt werden?
+                            Wenn du eine Minute Zeit hättest, wäre ein schnelles Feedback super hilfreich,
+                            auch wenn es nur ein schneller Daumen nach unten oder oben ist
+                            (es ist komplett anonym).
+                        </span>
+                    </p>
+                    <div class="custom-form feedback-form">
+                        <textarea rows="5" placeholder="Feedback Text" name="feedback-text"></textarea>
+                        <button class="smaller">Send Feedback</button>
+                    </div>
+                </fieldset>
                 <button onclick="playNewGame()">
                     <span lang="en">Play a new Game</span>
                     <span lang="de">Neues Spiel anfangen</span>
@@ -985,6 +1039,7 @@
         <!-- JS_IMPORT host/game_management.js -->
         <!-- JS_IMPORT host/player_management.js -->
         <!-- JS_IMPORT host/main.js -->
+        <!-- JS_IMPORT host/feedback.js -->
 
         <!-- BEGIN js_imports -->
         <script src="../js/text.js?v29"></script>
@@ -1005,6 +1060,7 @@
         <script src="../host/game_management.js?v29"></script>
         <script src="../host/player_management.js?v29"></script>
         <script src="../host/main.js?v29"></script>
+        <script src="../host/feedback.js?v29"></script>
         <!-- END -->
     </body>
 

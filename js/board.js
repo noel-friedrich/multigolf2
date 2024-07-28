@@ -1,4 +1,4 @@
-const PARTICLE_MAX_TICKS = 100
+const PARTICLE_MAX_TICKS = 30
 
 class Particle {
 
@@ -6,7 +6,7 @@ class Particle {
         this.pos = pos ?? new Vector2d(0, 0)
         this.vel = vel ?? new Vector2d(0, 0)
         this.color = color ?? "white"
-        this.radius = radius ?? 10
+        this.radius = radius ?? 5
         this.ticksAlive = 0
         this.alive = true
     }
@@ -28,7 +28,7 @@ class Particle {
         if (!board.course.containsPos(this.pos)) {
             this.die()
         }
-        
+
         if (this.ticksAlive > PARTICLE_MAX_TICKS) {
             this.die()
         }
@@ -235,9 +235,9 @@ class Ball {
         let d = p2toP1.dot(p2toPoint) / (p2toP1.length ** 2)
 
         if (d < 0) {
-            return p1.distance(point)
+            return {distance: p1.distance(point), closestPoint: p1.copy()}
         } else if (d > 1) {
-            return p2.distance(point)
+            return {distance: p2.distance(point), closestPoint: p2.copy()}
         } else {
             let closestPoint = p1.add(p2toP1.scale(d))
             return {distance: closestPoint.distance(point), closestPoint}
@@ -402,7 +402,7 @@ class Ball {
     resetPos(startPos) {
         this.pos = startPos.copy()
         this.vel.iscale(0)
-        this.angle = 0
+        this.rotationAngle = 0
     }
 
     physicsStep(board) {
@@ -417,6 +417,9 @@ class Ball {
             if (window.AudioPlayer) {
                 window.AudioPlayer.play(AudioSprite.Lava)
             }
+
+            board.spawnParticleExplosion(this.pos,
+                {forceSpeed: this.vel.length, color: "#f9480a"})
 
             return this.resetPos(board.startPos)
         }
@@ -437,16 +440,12 @@ class Ball {
                 this.vel.iadd(cornerDir.scale(collisionStrength))
                 this.pos.iadd(this.vel.scale(0.95))
 
-                board.spawnParticleExplosion(collidingCorner)
-
                 madeWallCollision = true
             } else {
                 for (const [p1, p2] of collidingObjects.filter(o => o.type == "wall").map(o => o.points)) {
                     this.pos.isub(this.vel)
                     this.vel = this._reflectAtWall(p1, p2, this.vel)
                     this.pos.iadd(this.vel.scale(0.8))
-                    const { closestPoint } = this._distanceToWall(p1, p2, this.pos)
-                    board.spawnParticleExplosion(closestPoint, {speedFactor: this.vel.length / 5})
                 }
             }
 
@@ -515,7 +514,7 @@ class Board {
 
         this.ballCollisionEnabled = ballCollisionEnabled ?? true
         this.deviceGravityEnabled = deviceGravityEnabled ?? true
-        this.particlesEnabled = particlesEnabled ?? true
+        this.particlesEnabled = particlesEnabled ?? false
 
         // the following properties will not be
         // exported and thus not sent to clients
@@ -539,15 +538,22 @@ class Board {
         this.physicsStepEvents.push([this.physicsStepCount + relativeStepIndex, callback])
     }
 
-    spawnParticleExplosion(pos, {color=undefined, speedFactor=1, numParticles=30}={}) {
+    spawnParticleExplosion(pos, {color=undefined, forceSpeed=undefined, numParticles=50, radius=undefined}={}) {
+        if (!this.particlesEnabled) {
+            return
+        }
+
         const plusminus = Math.ceil(numParticles * 0.3)
         numParticles += Math.round((Math.random() - 0.5) * 2 * plusminus)
+        const angleStep = 1 / numParticles * Math.PI * 2
 
         for (let i = 0; i < numParticles; i++) {
-            const speed = Math.random() * 0.5 + 2
-            const angle = i / numParticles * Math.PI * 2
-            const vel = Vector2d.fromAngle(angle).scale(speed).scale(speedFactor)
-            const particle = new Particle(pos.copy(), vel, color)
+            let speed = forceSpeed ?? 2
+            speed *= 0.7 + Math.random() * 0.6
+
+            const angle = (i + Math.random()) * angleStep
+            const vel = Vector2d.fromAngle(angle).scale(speed)
+            const particle = new Particle(pos.copy(), vel, color, radius)
             this.particles.push(particle)
         }
     }
@@ -634,12 +640,12 @@ class Board {
         for (const ball of this.balls) {
             ball.updatePhysics(this)
         }
+
         for (const particle of this.particles) {
             particle.updatePhysics(this)
         }
 
         this.particles = this.particles.filter(p => p.alive)
-
         this.physicsTime += Board.physicsTimestep
     }
 
@@ -658,6 +664,30 @@ class Board {
 
             this.physicsStepEvents = this.physicsStepEvents.filter(([i, _]) => i > this.physicsStepCount)
         }
+    }
+
+    simulateStepsEfficiently(numSteps, {
+        disableParticles = true
+    }={}) {
+        const prevParticlesEnabled = this.particlesEnabled
+        if (disableParticles) {
+            this.particlesEnabled = false
+        }
+
+        for (let i = 0; i < numSteps; i++) {
+            this.physicsStep()
+            this.physicsStepCount++
+
+            for (const [eventIndex, callback] of this.physicsStepEvents) {
+                if (eventIndex == this.physicsStepCount) {
+                    callback()
+                }
+            }
+
+            this.physicsStepEvents = this.physicsStepEvents.filter(([i, _]) => i > this.physicsStepCount)
+        }
+
+        this.particlesEnabled = prevParticlesEnabled 
     }
 
     spawnBall({

@@ -84,6 +84,18 @@ class PhoneCoordinates {
         return [this.topLeft, this.topRight, this.bottomRight, this.bottomLeft]
     }
 
+    get midPos() {
+        return this.topLeft.add(this.bottomRight).scale(0.5)
+    }
+
+    randomPosInside() {
+        const x = Math.random()
+        const y = Math.random()
+
+        return this.topLeft.add(this.topRight.sub(this.topLeft).scale(x))
+            .add(this.bottomLeft.sub(this.topLeft).scale(y))
+    }
+
     scale(scalar) {
         this.scalar *= scalar
         for (let vec of this.points) {
@@ -120,6 +132,10 @@ class PhoneCoordinates {
         const rotated1 = this.topLeft.rotate(-this.angle)
         const rotated2 = this.bottomLeft.rotate(-this.angle)
         return rotated2.y - rotated1.y
+    }
+
+    get area() {
+        return this.size.x * this.size.y
     }
 
     creditCardScalingFactor(screenSize) {

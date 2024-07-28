@@ -9,7 +9,7 @@ const golfObjectType = {
     GravityBox: "Gravity Box"
 }
 
-const golfObjectTypeSpriteMap = {
+let golfObjectTypeSpriteMap = {
     [golfObjectType.Start]: Sprite.Start,
     [golfObjectType.Hole]: Sprite.Hole,
     [golfObjectType.Lava]: Sprite.Lava,
@@ -202,7 +202,7 @@ class GolfObject {
     }
 
     static makeDefault(type) {
-        const obj = placableObjects.find(o => o.type == type).copy()
+        const obj = defaultObjects[type].copy()
         obj.uid = Math.random().toString().slice(2)
         return obj
     }

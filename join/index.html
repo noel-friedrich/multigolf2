@@ -173,6 +173,12 @@
             const joinButton = document.getElementById("join-button")
             const codeLength = 8
 
+            codeInput.addEventListener("keydown", event => {
+                if (event.key == "Enter") {
+                    joinButton.click()
+                }
+            })
+
             const validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("")
 
             const sanetizeCode = code => code.toUpperCase().split("")

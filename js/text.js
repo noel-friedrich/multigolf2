@@ -263,6 +263,14 @@ const Text = {
     NotConstructedYet: {
         [Lang.EN]: "You haven't constructed a course layout yet.",
         [Lang.DE]: "Du hast noch kein Layout erstellt."
+    },
+    ThanksForFeedback: {
+        [Lang.EN]: "Thanks for the feedback! You're the best!",
+        [Lang.DE]: "Feedback erfolgreich abgeschickt! Vielen Dank!"
+    },
+    FeedbackTooLong: {
+        [Lang.EN]: "That's too long feedback for this box. Maybe send me an email instead?",
+        [Lang.DE]: "Das ist zu viel Feedback für diese Box. Vielleicht ist eine Email besser?"
     }
 }
 

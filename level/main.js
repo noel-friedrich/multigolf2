@@ -218,6 +218,7 @@ function loadLevel(id) {
     gameState.phase = gamePhase.PlayingSandbox
     gameState.getReferenceCanvas = () => levelCanvas
     gameState.board.physicsTime = Date.now()
+    gameState.board.particlesEnabled = true
 
     ball = gameState.board.spawnBall({spriteUrl: Sprite.BallWhite})
 
