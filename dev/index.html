@@ -315,6 +315,18 @@
                         })
                     })
                 }
+        
+                // enable mobile debugging
+                const urlParams = new URLSearchParams(window.location.href)
+                if (urlParams.has("show_errors")) {
+                    console.log("Activated Alert Debug Mode")
+                    addEventListener("error", event => {
+                        const textNode = document.createElement("div")
+                        textNode.textContent = `[L${event.lineno} C${event.colno}] ${event.message} (${event.filename})`
+                        document.body.appendChild(textNode)
+                        console.log("DEBUG", textNode.textContent)
+                    })
+                }
             }
         </script>
         <!-- END -->
