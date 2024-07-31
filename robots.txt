@@ -5,3 +5,4 @@ Disallow: /api/
 Disallow: /scripts/
 Disallow: /level/
 Disallow: /level-maker/
+Disallow: /annoy/
