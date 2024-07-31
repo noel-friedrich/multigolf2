@@ -7,16 +7,23 @@ class AudioPlayer {
     static speechEnabled = true
 
     static loadAudio(src) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const element = document.createElement("audio")
-            element.addEventListener("canplaythrough", resolve)
-    
             element.style.display = "none"
-            element.preload = "true"
-            element.src = src
             document.body.appendChild(element)
 
+            element.addEventListener("canplaythrough", resolve)
+            element.addEventListener("error", reject)
+    
+            element.src = src
+            element.preload = "true"
+            element.load()
+
             this.spriteAudioMap[src].push(element)
+
+            // if canplaythrough doesn't fire, just pretend it's loaded after 500ms
+            // (mainly a problem on IOS)
+            setTimeout(resolve, 500)
         })
     }    
     

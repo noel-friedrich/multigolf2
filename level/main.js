@@ -247,6 +247,7 @@ async function main() {
     drawLoading()
 
     await Renderer.load()
+
     window.AudioPlayer = AudioPlayer
     await window.AudioPlayer.load()
 
