@@ -100,8 +100,13 @@ function onDataMessage(dataMessage, rtc) {
             const gravity = Vector2d.fromObject(dataMessage.data)
             if (Math.abs(gravity.x) < 0.1) gravity.x = 0
             if (Math.abs(gravity.y) < 0.1) gravity.y = 0
-            gameState.board.course.phones[dataMessage.data.deviceIndex - 1].gravity = gravity
-            syncGamestate()
+            const phone = gameState.board.course.phones[dataMessage.data.deviceIndex - 1]
+            if (phone) {
+                phone.gravity = gravity
+                syncGamestate()
+            } else {
+                console.log(`[Warning] Tried updating phone gravity of index ${dataMessage.data.deviceIndex}`)
+            }
         }
 
     } else {

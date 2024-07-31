@@ -371,7 +371,10 @@ class RtcHost extends RtcBase {
 
             // the time between host and client (pingTime) is approximated as
             // time delay between back and forth ping halved
-            this.delayMs = timeElapsed / 2
+
+            // using a complementary filter to make the delayMs converge on
+            // something steady instead of making it jump around a lot
+            this.delayMs = (timeElapsed / 2) * 0.1 + this.delayMs * 0.9
             
             await new Promise(resolve => setTimeout(resolve, RtcBase.pingPeriod))
         }

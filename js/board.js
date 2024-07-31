@@ -11,7 +11,7 @@ class Board {
 
         this.ballCollisionEnabled = ballCollisionEnabled ?? true
         this.deviceGravityEnabled = deviceGravityEnabled ?? true
-        this.particlesEnabled = particlesEnabled ?? false
+        this.particlesEnabled = particlesEnabled ?? true
 
         // the following properties will not be
         // exported and thus not sent to clients
@@ -135,7 +135,7 @@ class Board {
 
     updateObjectPhysics() {
         for (const object of this.objects.filter(o => o.type == golfObjectType.Cannon)) {
-            object.angle += 0.02
+            object.angle += 0.02244
         }
     }
 

@@ -1,6 +1,6 @@
 class Ball {
 
-    constructor(pos, vel, inHole, radius, spriteUrl, kicks, active, uid, rotationAngle, lastImmobilePos, immobileTickCount, objectMemory) {
+    constructor(pos, vel, inHole, radius, spriteUrl, kicks, active, uid, rotationAngle, lastImmobilePos, immobileTickCount, objectMemory, generallyAbleToCollide) {
         this.pos = pos
         this.vel = vel ?? new Vector2d(0, 0)
 
@@ -18,6 +18,7 @@ class Ball {
         this.immobileTickCount = immobileTickCount ?? 0
 
         this.objectMemory = objectMemory ?? new Map() // {objectUid => dynamicMap<key, value>}
+        this.generallyAbleToCollide = generallyAbleToCollide ?? true
 
         // the following properties will not be saved
         // and synced across devices
@@ -27,35 +28,37 @@ class Ball {
 
     toObject() {
         return {
-            pos: this.pos.toObject(),
-            vel: this.vel.toObject(),
-            inHole: this.inHole,
-            radius: this.radius,
-            spriteUrl: this.spriteUrl,
-            kicks: this.kicks,
-            active: this.active,
-            uid: this.uid,
-            rotationAngle: this.rotationAngle,
-            lastImmobilePos: this.lastImmobilePos,
-            immobileTickCount: this.immobileTickCount,
-            objectMemory: Array.from(this.objectMemory.entries()).map(([k, v]) => [k, Array.from(v.entries())])
+            p: this.pos.toObject(),
+            v: this.vel.toObject(),
+            i: this.inHole,
+            r: this.radius,
+            s: this.spriteUrl,
+            k: this.kicks,
+            a: this.active,
+            u: this.uid,
+            ro: this.rotationAngle,
+            l: this.lastImmobilePos,
+            im: this.immobileTickCount,
+            o: Array.from(this.objectMemory.entries()).map(([k, v]) => [k, Array.from(v.entries())]),
+            g: this.generallyAbleToCollide
         }
     }
 
     static fromObject(obj) {
         return new Ball(
-            Vector2d.fromObject(obj.pos),
-            Vector2d.fromObject(obj.vel),
-            obj.inHole,
-            obj.radius,
-            obj.spriteUrl,
-            obj.kicks,
-            obj.active,
-            obj.uid,
-            obj.rotationAngle,
-            obj.lastImmobilePos,
-            obj.immobileTickCount,
-            (obj.objectMemory !== undefined) ? new Map(obj.objectMemory.map(([k, v]) => [k, new Map(v)])) : new Map()
+            Vector2d.fromObject(obj.p),
+            Vector2d.fromObject(obj.v),
+            obj.i,
+            obj.r,
+            obj.s,
+            obj.k,
+            obj.a,
+            obj.u,
+            obj.ro,
+            obj.l,
+            obj.im,
+            (obj.o !== undefined) ? new Map(obj.o.map(([k, v]) => [k, new Map(v)])) : new Map(),
+            obj.g
         )
     }
 
@@ -215,7 +218,7 @@ class Ball {
     }
 
     calcBallCollisions(board) {
-        if (!this.readyToCollide(board)) {
+        if (!this.readyToCollide(board) || !this.generallyAbleToCollide) {
             return
         }
         
@@ -224,7 +227,7 @@ class Ball {
                 continue
             }
 
-            if (!ball.readyToCollide(board)) {
+            if (!ball.readyToCollide(board) || !ball.generallyAbleToCollide) {
                 continue
             }
 
@@ -349,6 +352,7 @@ class Ball {
         this.pos = startPos.copy()
         this.vel.iscale(0)
         this.rotationAngle = 0
+        this.generallyAbleToCollide = true
     }
 
     interactWithLava(board, object) {
@@ -387,12 +391,14 @@ class Ball {
         }
 
         // rotation of cannon
-        this.rotationAngle += 0.02
+        this.rotationAngle += 0.02244
 
         this.pos.iinterpolate(desiredPos, Math.min(cannonProgress / 50, 1))
         this.vel.iscale(0)
 
-        if (cannonProgress > 140) {
+        this.generallyAbleToCollide = false
+
+        if (cannonProgress >= 140) {
             this.vel.setVector2d(shootDir.scale(object.size.max() / 2))
             this.pos.iadd(shootDir.scale(object.size.max() / 2))
             this.resetObjectMemory(object.uid)
@@ -408,6 +414,8 @@ class Ball {
             if (window.AudioPlayer) {
                 window.AudioPlayer.play(AudioSprite.Cannon)
             }
+
+            this.generallyAbleToCollide = true
         }
 
         objectData.set("progress", cannonProgress + 1)
