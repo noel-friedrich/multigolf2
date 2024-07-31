@@ -4,7 +4,7 @@ import subprocess, os
 img_output_size = 11
 
 custom_sizes = {
-    "grid.svg": 64,
+    "grid.svg": 256,
     "cannon.svg": 20
 }
 
