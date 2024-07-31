@@ -204,7 +204,7 @@ class Renderer {
         drawConnectionLines = false,
     }={}) {
         context.canvas.style.display = "block"
-        const backgroundSizePercent = Math.max(Math.round(51 * gameState.scalingFactor), 1)
+        const backgroundSizePercent = Math.max(Math.round(51 * gameState.combinedScalingFactor), 1)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
 
         if (drawConnectionLines) {
