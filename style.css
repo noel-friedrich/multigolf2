@@ -104,6 +104,7 @@ body {
     padding-right: 0;
     padding-left: 0;
     margin-bottom: -.5em;
+    font-weight: bold;
 }
 
 .huge-text-container .subtitle {
@@ -208,6 +209,7 @@ header .logo-container .logo-text {
     font-family: var(--header-font);
     display: flex;
     align-self: center;
+    font-weight: bold;
 }
 
 header .link-island {
