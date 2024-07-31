@@ -150,6 +150,14 @@ class Vector2d {
         this.y = v.y
     }
 
+    interpolate(v, t) {
+        return this.add(v.sub(this).scale(t))
+    }
+
+    iinterpolate(v, t) {
+        this.iadd(v.sub(this).scale(t))
+    }
+
     addX(x) {
         return new Vector2d(this.x + x, this.y)
     }

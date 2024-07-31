@@ -216,6 +216,10 @@ const Text = {
         [Lang.EN]: "Lava",
         [Lang.DE]: "Lava"
     },
+    ObjectCannon: {
+        [Lang.EN]: "Cannon",
+        [Lang.DE]: "Kanone"
+    },
     ObjectEraser: {
         [Lang.EN]: "Eraser",
         [Lang.DE]: "Radierer"
@@ -243,6 +247,10 @@ const Text = {
     ObjectLavaDescription: {
         [Lang.EN]: "Balls falling into Lava are reset to the start",
         [Lang.DE]: "In Lava fallen = Zum Start zurück"
+    },
+    ObjectCannonDescription: {
+        [Lang.EN]: "Rotates and shoots balls",
+        [Lang.DE]: "Dreht sich und schießt Bälle weg"
     },
     ObjectEraserDescriptiom: {
         [Lang.EN]: "Erase placed objects",

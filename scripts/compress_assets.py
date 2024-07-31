@@ -3,6 +3,11 @@ import subprocess, os
 
 img_output_size = 11
 
+custom_sizes = {
+    "grid.svg": 64,
+    "cannon.svg": 20
+}
+
 for svg_path in Path("assets").rglob("*.svg"):
     svg_file_relative = str(svg_path)
     png_file_relative = "assets\\compressed\\" + svg_file_relative.split("\\", 1)[1]
@@ -18,10 +23,13 @@ for svg_path in Path("assets").rglob("*.svg"):
     transparent = True
 
     if svg_file_relative.endswith("grid.svg"):
-        size = 100
         transparent = False
 
-    print("Writing", png_file_relative)
+    for key, custom_size in custom_sizes.items():
+        if svg_file_relative.endswith(key):
+            size = custom_size
+
+    print("Writing", png_file_relative, f"{size=}")
     command = ["inkscape", "-z", "--export-type=png", f"--export-filename={png_file}", svg_file,
                "--export-width", str(size), "--export-height", str(size)]
     

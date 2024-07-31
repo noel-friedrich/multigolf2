@@ -196,15 +196,13 @@ function updateObjectList() {
 }
 
 function initObjectTypeSelect() {
-    for (const type of Object.values(defaultObjects).map(o => o.type)) {
+    for (const type of placableObjects.filter(o => o.visibility(gameState)).map(o => o.type)) {
         const option = document.createElement("option")
         option.value = type
         option.textContent = type
         objectTypeSelect.appendChild(option)
     }
 }
-
-initObjectTypeSelect()
 
 function addObject() {
     const startExists = !!gameState.board.objects.find(o => o.type == golfObjectType.Start)
@@ -314,6 +312,7 @@ async function main() {
     updateLevelCanvas()
     updateObjectList()
     loadFromLocalStorage()
+    initObjectTypeSelect()
 }
 
 function download(filename, text) {

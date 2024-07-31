@@ -2,6 +2,7 @@ const golfObjectType = {
     Start: "Start",
     Hole: "Hole",
     Lava: "Lava",
+    Cannon: "Cannon",
     Eraser: "Eraser",
     DuellHole1: "Hole 1",
     DuellHole2: "Hole 2",
@@ -13,6 +14,7 @@ let golfObjectTypeSpriteMap = {
     [golfObjectType.Start]: Sprite.Start,
     [golfObjectType.Hole]: Sprite.Hole,
     [golfObjectType.Lava]: Sprite.Lava,
+    [golfObjectType.Cannon]: Sprite.Cannon,
     [golfObjectType.Eraser]: Sprite.Eraser,
     [golfObjectType.DuellHole1]: Sprite.DuellHole1,
     [golfObjectType.DuellHole2]: Sprite.DuellHole2,
@@ -165,6 +167,8 @@ class GolfObject {
                 return Text.ObjectHole
             case golfObjectType.Lava:
                 return Text.ObjectLava
+            case golfObjectType.Cannon:
+                return Text.ObjectCannon
             case golfObjectType.Eraser:
                 return Text.ObjectEraser
             case golfObjectType.DuellHole1:
@@ -187,6 +191,8 @@ class GolfObject {
                 return Text.ObjectHoleDescription
             case golfObjectType.Lava:
                 return Text.ObjectLavaDescription
+            case golfObjectType.Cannon:
+                return Text.ObjectCannonDescription
             case golfObjectType.Eraser:
                 return Text.ObjectEraserDescriptiom
             case golfObjectType.DuellHole1:
@@ -213,6 +219,7 @@ const placableObjects = [
     new GolfObject(golfObjectType.Start),
     new GolfObject(golfObjectType.Hole).setVisibility(gs => gs.mode != gameMode.Duell),
     new GolfObject(golfObjectType.Lava).setSize(new Vector2d(80, 80)).setResizable(true),
+    new GolfObject(golfObjectType.Cannon).setSize(new Vector2d(80, 80)),
     new GolfObject(golfObjectType.CustomWall).setSize(new Vector2d(120, 40)).setResizable(true),
     new GolfObject(golfObjectType.GravityBox).setSize(new Vector2d(80, 80)).setResizable(true),
     new GolfObject(golfObjectType.DuellHole1).setVisibility(gs => gs.mode == gameMode.Duell),
@@ -224,8 +231,9 @@ const defaultObjects = {
     [golfObjectType.Start]: placableObjects[0],
     [golfObjectType.Hole]: placableObjects[1],
     [golfObjectType.Lava]: placableObjects[2],
-    [golfObjectType.CustomWall]: placableObjects[3],
-    [golfObjectType.GravityBox]: placableObjects[4],
-    [golfObjectType.DuellHole1]: placableObjects[5],
-    [golfObjectType.DuellHole2]: placableObjects[6],
+    [golfObjectType.Cannon]: placableObjects[3],
+    [golfObjectType.CustomWall]: placableObjects[4],
+    [golfObjectType.GravityBox]: placableObjects[5],
+    [golfObjectType.DuellHole1]: placableObjects[6],
+    [golfObjectType.DuellHole2]: placableObjects[7],
 }
