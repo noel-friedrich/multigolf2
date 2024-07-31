@@ -63,7 +63,7 @@ async function finishPlayers() {
     if (gameState.phase != gamePhase.Connecting) return
 
     if (rtc.connections.length == 0) {
-        alert(Text.NoDevicesError)
+        customAlert(Text.NoDevicesError)
         return
     } 
 

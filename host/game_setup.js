@@ -111,7 +111,7 @@ function registerPlayers() {
 
     const isValidName = name => {
         if (name.length > 30) {
-            alert(Text.NameTooLong(name.slice(0, 30)))
+            customAlert(Text.NameTooLong(name.slice(0, 30)))
             return false
         }
 
@@ -133,12 +133,12 @@ function registerPlayers() {
     }
 
     if (gameState.mode == gameMode.Duell && players.length != 2) {
-        alert(Text.PleaseFillOutFields)
+        customAlert(Text.PleaseFillOutFields)
         return
     }
 
     if (gameState.mode == gameMode.Tournament && players.length == 0) {
-        alert(Text.FilloutOneName)
+        customAlert(Text.FilloutOneName)
         return
     }
 
@@ -146,7 +146,7 @@ function registerPlayers() {
     for (let player of players) {
         const n = player.name.toLowerCase()
         if (playerNames.has(player.name)) {
-            alert(Text.TwoPlayersSameName)
+            customAlert(Text.TwoPlayersSameName)
             return
         }
         playerNames.add(n)

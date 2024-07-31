@@ -160,7 +160,7 @@ async function startGame() {
     syncGamestate()
 }
 
-function finishConstruction() {
+async function finishConstruction() {
     if (![
         gamePhase.ConstructionChoice,
         gamePhase.ConstructionAuto,
@@ -170,11 +170,11 @@ function finishConstruction() {
     }
 
     if (gameState.board.course.phones.length == 0) {
-        return alert(Text.NotConstructedYet)
+        return customAlert(Text.NotConstructedYet)
     }
 
     if (gameState.board.course && gameState.board.course.getOverlaps().length > 0) {
-        if (!confirm(Text.CourseHasOverlap)) {
+        if (!(await customConfirm(Text.CourseHasOverlap))) {
             return
         }
     }
@@ -249,23 +249,23 @@ function finishPlacing() {
     }
 
     if (!gameState.board.startPos) {
-        alert(Text.NoStartYet)
+        customAlert(Text.NoStartYet)
         return
     }
 
     if (gameState.board.endPositions.length == 0) {
-        alert(Text.NoHoleYet)
+        customAlert(Text.NoHoleYet)
         return
     }
 
     if (gameState.mode == gameMode.Duell) {
         if (!gameState.board.objects.find(o => o.type == golfObjectType.DuellHole1)) {
-            alert(Text.HaventPlacedHoleFor(gameState.replaceText("<duell-player-1>")))
+            customAlert(Text.HaventPlacedHoleFor(gameState.replaceText("<duell-player-1>")))
             return
         }
 
         if (!gameState.board.objects.find(o => o.type == golfObjectType.DuellHole2)) {
-            alert(Text.HaventPlacedHoleFor(gameState.replaceText("<duell-player-2>")))
+            customAlert(Text.HaventPlacedHoleFor(gameState.replaceText("<duell-player-2>")))
             return
         }
     }
