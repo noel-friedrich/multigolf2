@@ -149,6 +149,44 @@ function updateObjectList() {
             {editable: object.resizable, type: "Vector2d", set: v => object.size.setVector2d(v)})
         addAttribute("angle (°)", object.angle / Math.PI * 180,
             {editable: true, type: "number", set: v => object.angle = v / 180 * Math.PI})
+
+        addButton("Front", () => {
+            let index = null
+            for (let i = 0; i < gameState.board.objects.length; i++) {
+                if (gameState.board.objects[i].uid == object.uid) {
+                    index = i
+                }
+            }
+
+            editingState.focusedObject = object
+            const newIndex = gameState.board.objects.length - 1
+
+            const temp = gameState.board.objects[newIndex]
+            gameState.board.objects[newIndex] = gameState.board.objects[index]
+            gameState.board.objects[index] = temp
+
+            updateObjectList()
+            updateObjectSelection()
+        })
+
+        addButton("Back", () => {
+            let index = null
+            for (let i = 0; i < gameState.board.objects.length; i++) {
+                if (gameState.board.objects[i].uid == object.uid) {
+                    index = i
+                }
+            }
+
+            editingState.focusedObject = object
+            const newIndex = 0
+
+            const temp = gameState.board.objects[newIndex]
+            gameState.board.objects[newIndex] = gameState.board.objects[index]
+            gameState.board.objects[index] = temp
+            
+            updateObjectList()
+            updateObjectSelection()
+        })
         
         addButton("Delete", event => {
             gameState.board.objects = gameState.board.objects.filter(o => o.uid != object.uid)
@@ -159,27 +197,6 @@ function updateObjectList() {
             updateObjectList()
             updateLevelCanvas()
             preventClickThrough = true
-        })
-
-        addButton("Move Down", () => {
-            let index = null
-            for (let i = 0; i < gameState.board.objects.length; i++) {
-                if (gameState.board.objects[i].uid == object.uid) {
-                    index = i
-                }
-            }
-
-            if (index === null || index === 0) {
-                return
-            }
-
-            editingState.focusedObject = object
-
-            const temp = gameState.board.objects[index - 1]
-            gameState.board.objects[index - 1] = gameState.board.objects[index]
-            gameState.board.objects[index] = temp
-            updateObjectList()
-            updateObjectSelection()
         })
 
         if (object.type != golfObjectType.Start) {
@@ -456,6 +473,9 @@ addEventListener("keydown", event => {
     }
 
     addOnKey("d", () => runFunction("Duplicate"))
+    addOnKey("f", () => runFunction("Front"))
+    addOnKey("b", () => runFunction("Back"))
+    
     addOnKey("Backspace", () => runFunction("Delete"))
 
     if (event.shiftKey) {
