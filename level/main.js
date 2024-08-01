@@ -123,7 +123,7 @@ async function goToNextLevel() {
     if (nextLevelExists && hasUnlockedLevel(packId, nextLevelId)) {
         loadLevel(nextLevelId)
     } else {
-        goBackToLevelChoice()
+        return goBackToLevelChoice()
     }
     
     challengeKicks++
