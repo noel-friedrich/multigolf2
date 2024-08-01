@@ -420,7 +420,7 @@ async function load() {
 
 async function test() {
     saveToLocalStorage()
-    window.open("../level/?id=editor&ja", "_blank").focus()
+    window.open("../level/?id=editor&pack=none", "_blank").focus()
 }
 
 function reset() {

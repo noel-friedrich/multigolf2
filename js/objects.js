@@ -118,20 +118,23 @@ class GolfObject {
 
     toObject() {
         return {
-            type: this.type,
-            pos: this.pos.toObject(),
-            size: this.size.toObject(),
-            angle: this.angle,
-            uid: this.uid,
-            resizable: this.resizable
+            t: this.type,
+            p: this.pos.toObject(),
+            s: this.size.toObject(),
+            a: this.angle,
+            u: this.uid,
+            r: this.resizable
         }
     }
 
     static fromObject(obj) {
         return new GolfObject(
-            obj.type, Vector2d.fromObject(obj.pos),
-            Vector2d.fromObject(obj.size), obj.angle, obj.uid,
-            obj.resizable
+            obj.t ?? obj.type,
+            Vector2d.fromObject(obj.p ?? obj.pos),
+            Vector2d.fromObject(obj.s ?? obj.size),
+            obj.a ?? obj.angle,
+            obj.u ?? obj.uid,
+            obj.r ?? obj.resizable
         )
     }
 

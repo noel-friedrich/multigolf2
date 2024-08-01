@@ -314,7 +314,7 @@ class GameState {
         let prevPlayerName = this.tournamentActivePlayer.name
         let inHoleCount = 0
         while ((this.tournamentBall.inHole && this.tournamentBall.radius == 0)
-            || (this.tournamentBall.kicks >= this.tournamentMaxKicks && !this.tournamentBall.isMoving())) {
+            || (this.tournamentBall.kicks >= this.tournamentMaxKicks && !this.tournamentBall.isInMovement())) {
             inHoleCount++
 
             this.tournamentBall.active = false

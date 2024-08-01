@@ -157,7 +157,7 @@ async function onBallDown(touchInfo) {
     let closestBall = null
 
     for (const ball of gameState.board.balls) {
-        if (ball.isMoving() || !ball.active) {
+        if (ball.isInMovement() || !ball.active) {
             continue
         }
 

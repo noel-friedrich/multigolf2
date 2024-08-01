@@ -30,7 +30,7 @@ function onEventDown(event) {
     let closestBall = null
 
     for (const ball of gameState.board.balls) {
-        if (ball.isMoving() || !ball.active) {
+        if (ball.isInMovement() || !ball.active) {
             continue
         }
 
@@ -201,7 +201,7 @@ async function gameLoop() {
         goToNextLevel()
     }
 
-    if (challengeMode && challengeKicks <= 0 && !ball.isMoving() && !ball.inHole) {
+    if (challengeMode && challengeKicks <= 0 && !ball.isInMovement() && !ball.inHole) {
         localStorage.removeItem("challenge-kicks")
         if (await customConfirm(Text.WantToTryAgain, {header: Text.YouLost})) {
             location.reload()
@@ -285,7 +285,10 @@ async function main() {
         challengeKicks = localKicks
     }
 
-    await downloadPack(`../mono/level-data/packs/${packId}.json`)
+    if (levelId != "editor") {
+        await downloadPack(`../mono/level-data/packs/${packId}.json`)
+    }
+
     loadLevel(levelId)
 
     isLoading = false

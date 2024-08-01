@@ -288,10 +288,13 @@ class Ball {
             this.vel.iscale(0)
         }
 
+        let isActivelyMoving = false
         this.vel.iscale(0.97)
         this.vel.iscale(1 / stepCount)
         for (let i = 0; i < stepCount; i++) {
-            this.physicsStep(board)
+            if (this.physicsStep(board)) {
+                isActivelyMoving = true
+            }
         }
         this.vel.iscale(stepCount)
 
@@ -331,7 +334,7 @@ class Ball {
             this.outOfBoundsTickCount = 0
         }
 
-        if (this.isMoving()) {
+        if (this.isMoving() || isActivelyMoving) {
             // if the ball is moving for more than
             // ~10 seconds, we stop it. causes for 
             // this could be gravity box loops
@@ -346,6 +349,10 @@ class Ball {
         } else {
             this.movingTickCount = 0
         }
+    }
+
+    isInMovement() {
+        return this.movingTickCount > 0
     }
 
     resetPos(startPos) {
@@ -419,6 +426,8 @@ class Ball {
         }
 
         objectData.set("progress", cannonProgress + 1)
+
+        return true
     }
 
     getObjectMemory(objectUid) {
@@ -459,19 +468,22 @@ class Ball {
 
     physicsStep(board) {
         let madeWallCollision = false
+        let isActivelyMoving = false
 
         this.pos.iadd(this.vel)
-
+        
         const touchingObjects = board.objects.filter(o => o.intersects(this.pos))
         for (const object of touchingObjects) {
-            this.interactStepWithObject(board, object)
+            if (this.interactStepWithObject(board, object)) {
+                isActivelyMoving = true
+            }
         }
         this.updateObjectMemories()
 
         const collidingObjects = this._getCollidingCorners(board).concat(this._getCollidingWalls(board))
         collidingObjects.sort((a, b) => a.distance - b.distance)
 
-        if (collidingObjects.length > 0) {
+        if (collidingObjects.length > 0 && this.generallyAbleToCollide) {
             if (collidingObjects[0].type == "corner") {
                 const collidingCorner = collidingObjects[0].point
 
@@ -527,6 +539,8 @@ class Ball {
                 volume: Math.min(this.vel.length / 10 * 0.9 + 0.1, 1.)
             })
         }
+
+        return isActivelyMoving
     }
 
     translate(point) {
