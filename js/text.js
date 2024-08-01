@@ -279,7 +279,31 @@ const Text = {
     FeedbackTooLong: {
         [Lang.EN]: "That's too long feedback for this box. Maybe send me an email instead?",
         [Lang.DE]: "Das ist zu viel Feedback für diese Box. Vielleicht ist eine Email besser?"
-    }
+    },
+    StartChallenge: {
+        [Lang.EN]: "Start Challenge",
+        [Lang.DE]: "Challenge Starten"
+    },
+    WantToTryAgain: {
+        [Lang.EN]: "You lost the Challenge. Do you want to try again?",
+        [Lang.DE]: "Du hast die Challenge verloren. Willst du es nochmal probieren?"
+    },
+    YouLost: {
+        [Lang.EN]: "You Lost!",
+        [Lang.DE]: "Verloren!"
+    },
+    YouWonLong: kicksLeft => ({
+        [Lang.EN]: `Hoooorayyy! You won the Challenge! Congratulations! You even have ${kicksLeft} kicks left!`,
+        [Lang.DE]: `Huuurraaaa! Du hast die Challenge bezwungen! Herzlichen Glückwunsch! Du hast sogar ${kicksLeft} Schläge übrig!`
+    }),
+    YouWon: {
+        [Lang.EN]: "You Won!",
+        [Lang.DE]: "Gewonnen!"
+    },
+    YourPackHighscore: (packName, score) => ({
+        [Lang.EN]: `At your best attempt at ${packName}, you had ${score} kicks left.`,
+        [Lang.DE]: `Beim besten Versuch bei diesem Pack hattest du ${score} Schläge übrig.`
+    })
 }
 
 function getLangText(textObject) {

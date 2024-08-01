@@ -1,0 +1,18 @@
+{
+    "id": "grass",
+    "name": {
+        "en": "Starter Hills",
+        "de": "Starter Hügel"
+    },
+    "description": {
+        "en": "Fun and creative levels for new Multigolfers.",
+        "de": "Spaßige und kreative Level für neue Monogolfer."
+    },
+    "author": "Noel Friedrich",
+    "difficulty": "medium",
+    "difficulty-name": {
+        "en": "Medium",
+        "de": "Medium"
+    },
+    "background": "normal"
+}

@@ -1,4 +1,6 @@
 let level = null
+let levelConfig = null
+let levels = []
 let gameState = null
 let ball = null
 
@@ -86,7 +88,7 @@ const levelContext = levelCanvas.getContext("2d")
 const logoImg = document.querySelector("#logo-img")
 const levelIdOutput = document.querySelector("#level-id-output")
 
-if (!hasUnlockedLevel(levelId) && levelId != "editor" && !challengeMode) {
+if (!hasUnlockedLevel(packId, levelId) && levelId != "editor" && !challengeMode) {
     goBackToLevelChoice()
 }
 
@@ -99,7 +101,7 @@ document.body.addEventListener("mousemove", onEventMove)
 document.body.addEventListener("mouseup", onEventUp)
 
 let hasGoneToNextLevel = false
-function goToNextLevel() {
+async function goToNextLevel() {
     if (hasGoneToNextLevel) {
         return
     }
@@ -110,7 +112,15 @@ function goToNextLevel() {
 
     hasGoneToNextLevel = true
     const nextLevelId = parseInt(levelId) + 1
-    if (levels.find(l => l.id == nextLevelId) && hasUnlockedLevel(nextLevelId)) {
+    const nextLevelExists = levels.find(l => l.id == nextLevelId)
+
+    if (!nextLevelExists && challengeKicks > 0 && challengeMode) {
+        localStorage.removeItem("challenge-kicks")
+        setHighscore(packId, challengeKicks)
+        await customAlert(Text.YouWonLong(challengeKicks), {header: Text.YouWon})
+    }
+
+    if (nextLevelExists && hasUnlockedLevel(packId, nextLevelId)) {
         loadLevel(nextLevelId)
     } else {
         goBackToLevelChoice()
@@ -179,7 +189,7 @@ setInterval(() => {
     }
 })
 
-function gameLoop() {
+async function gameLoop() {
     gameState.update()
 
     Renderer.render(gameState, levelContext, touchInfo,
@@ -187,13 +197,17 @@ function gameLoop() {
     )
 
     if (ball && ball.inHole && ball.radius == 0) {
-        completeLevel(level.id)
+        unlockLevel(packId, level.id + 1)
         goToNextLevel()
     }
 
     if (challengeMode && challengeKicks <= 0 && !ball.isMoving() && !ball.inHole) {
         localStorage.removeItem("challenge-kicks")
-        goBackToLevelChoice()
+        if (await customConfirm(Text.WantToTryAgain, {header: Text.YouLost})) {
+            location.reload()
+        } else {
+            goBackToLevelChoice()
+        }
     }
 
     window.requestAnimationFrame(gameLoop)
@@ -242,6 +256,13 @@ function loadLevel(id) {
     hasGoneToNextLevel = false
 }
 
+async function downloadPack(url) {
+    const result = await fetch(url)
+    const data = await result.json()
+    levels.push(...data.levels)
+    levelConfig = data.config
+}
+
 async function main() {
     resizeCanvas()
     drawLoading()
@@ -255,7 +276,7 @@ async function main() {
         let localKicks = localStorage.getItem("challenge-kicks")
         let localLevel = localStorage.getItem("challenge-level")
 
-        if (localKicks === null || localLevel === null) {
+        if (localKicks === null || localLevel === null || localKicks < 1) {
             localKicks = 10
             localLevel = 1
         }
@@ -264,7 +285,7 @@ async function main() {
         challengeKicks = localKicks
     }
 
-    await loadLevels("../mono/default_levels.json")
+    await downloadPack(`../mono/level-data/packs/${packId}.json`)
     loadLevel(levelId)
 
     isLoading = false

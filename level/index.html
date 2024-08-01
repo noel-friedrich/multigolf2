@@ -22,14 +22,15 @@
     <script>
         const urlSearchParams = new URLSearchParams(window.location.search)
         let levelId = urlSearchParams.get("id")
-        const challengeMode = urlSearchParams.has("challenge")
+        let packId = urlSearchParams.get("pack")
+        const challengeMode = urlSearchParams.get("challenge") == "true"
         let challengeKicks = 0
         
         function goBackToLevelChoice() {
             window.location.href = "../mono/"
         }
 
-        if (!levelId) {
+        if (!levelId || !packId) {
             goBackToLevelChoice()
         }
     </script>
@@ -122,10 +123,179 @@
             }
         </script>
         <!-- END -->
+        
+        <!-- BEGIN custom_alert -->
+        <div class="custom-alert-container">
+            <div class="custom-alert-box">
+                <h2 class="header"></h2>
+                <div class="text"></div>
+                <div class="button-container alert">
+                    <button class="continue-button">
+                        <span lang="en">Continue</span>
+                        <span lang="de">Weiter</span>
+                    </button>
+                </div>
+                <div class="button-container confirm">
+                    <button class="yes-button">
+                        <span lang="en">Yes</span>
+                        <span lang="de">Ja</span>
+                    </button>
+                    <button class="no-button">
+                        <span lang="en">No</span>
+                        <span lang="de">Nein</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            .custom-alert-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                padding: 1rem;
+                z-index: 999;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                pointer-events: none;
+                transition: 300ms;
+            }
+        
+            .custom-alert-container[data-mode="alert"] .button-container:not(.alert) {
+                display: none;
+            }
+        
+            .custom-alert-container[data-mode="confirm"] .button-container:not(.confirm) {
+                display: none;
+            }
+        
+            .custom-alert-container .button-container.confirm {
+                gap: .5em;
+            }
+        
+            .custom-alert-container.default-yes .button-container.confirm .no-button {
+                background-color: white;
+                border: 1px solid #ccc;
+                color: black;
+            }
+        
+            .custom-alert-container:not(.default-yes) .button-container.confirm .yes-button {
+                background-color: white;
+                border: 1px solid #ccc;
+                color: black;
+            }
+        
+            .custom-alert-container .header.active {
+                text-align: center;
+                display: block;
+                font-family: var(--header-font);
+                margin: 0;
+                margin-bottom: .8rem; 
+            }
+        
+            .custom-alert-container .header:not(.active) {
+                display: none;
+            }
+        
+            .custom-alert-container.active {
+                pointer-events: all;
+                background-color: rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(2px);
+            }
+        
+            .custom-alert-container:not(.active) .custom-alert-box {
+                display: none;
+            }
+        
+            .custom-alert-container .custom-alert-box {
+                padding: 1.5rem;
+                background-color: white;
+                color: black;
+                border-radius: 1rem;
+                max-width: 30rem;
+                box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
+                font-size: 1.1em;
+            }
+        
+            .custom-alert-container .button-container {
+                width: 100%;
+                display: flex;
+                margin-top: .8rem;
+            }
+        
+            .custom-alert-container .button-container button {
+                background-color: var(--primary-accent-color);
+                color: var(--on-primary-accent-color);
+                padding: .5rem;
+                padding-left: .8rem;
+                padding-right: .8rem;
+                margin: 0 auto;
+                border-radius: .5rem;
+                font-size: 1.1em;
+                border: none;
+                cursor: pointer;
+            }
+        
+            .custom-alert-container .button-container.confirm button {
+                width: 100%;
+            }
+        </style>
+        
+        <script>
+            function customAlert(msg, {header=null, confirm=false, defaultYes=true}={}) {
+                return new Promise((resolve, reject) => {
+                    const alertContainer = document.querySelector(".custom-alert-container")
+                    alertContainer.classList.add("active")
+                    alertContainer.dataset.mode = confirm ? "confirm" : "alert"
+                    if (defaultYes) {
+                        alertContainer.classList.add("default-yes")
+                    } else {
+                        alertContainer.classList.remove("default-yes")
+                    }
+                    
+                    const headerElement = alertContainer.querySelector(".header")
+                    if (header !== null) {
+                        headerElement.classList.add("active")
+                        headerElement.textContent = header
+                    } else {
+                        headerElement.classList.remove("active")
+                    }
+            
+                    const textElement = alertContainer.querySelector(".text")
+                    textElement.textContent = msg
+            
+                    alertContainer.querySelector(".yes-button").addEventListener("click", () => {
+                        alertContainer.classList.remove("active")
+                        resolve(true)
+                    })
+        
+                    alertContainer.querySelector(".no-button").addEventListener("click", () => {
+                        alertContainer.classList.remove("active")
+                        resolve(false)
+                    })
+        
+                    alertContainer.querySelector(".continue-button").addEventListener("click", () => {
+                        alertContainer.classList.remove("active")
+                        resolve()
+                    })
+                })
+            }
+            
+            async function customConfirm(msg, {defaultYes=true, header=null}={}) {
+                return await customAlert(msg, {header, defaultYes, confirm: true})
+            }
+        </script>
+        
+        
+        <!-- END -->
 
         <!-- SET js_version=8 -->
         <!-- SET js_minify=true -->
 
+        <!-- JS_IMPORT js/text.js -->
         <!-- JS_IMPORT js/sprite.js -->
         <!-- JS_IMPORT js/nosleep.js -->
         <!-- JS_IMPORT js/mathutils.js -->
@@ -144,7 +314,7 @@
         <!-- JS_IMPORT level/main.js -->
 
         <!-- BEGIN js_imports -->
-        <script src="../js/minified/j20b53732eafe62da.min.js?v8"></script>
+        <script src="../js/minified/j8773167d758a7b29.min.js?v8"></script>
         <!-- END -->
     </body>
 

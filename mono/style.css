@@ -1,9 +1,55 @@
+#level-packs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.level-pack {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .3rem;
+    background-color: var(--input-background);
+    padding: 1rem;
+    border-radius: 1rem;
+    border: var(--button-border);
+}
+
+.level-pack .header {
+    display: flex;
+    flex-direction: row;
+}
+
+.level-pack .difficulty {
+    margin-left: auto;
+}
+
+html[lang="en"] .level-pack .author::before {
+    content: "Author: ";
+}
+
+html[lang="de"] .level-pack .author::before {
+    content: "Autor: ";
+}
+
+.level-pack .author {
+    font-style: italic;
+    text-align: end;
+    margin-top: -.5rem;
+    font-size: .8em;
+}
+
+.level-pack .highscore-text {
+    margin-top: .5rem;
+}
+
 .levels-container {
-    --level-size: 4rem;
+    --level-size: 3.3rem;
 
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--level-size), 1fr));
     gap: .5rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
 }
 
 .levels-container .level {
@@ -30,12 +76,8 @@
     cursor: not-allowed;
 }
 
-.levels-container .level[data-difficulty="easy"] {
+.levels-container .level {
     background-color: rgb(193, 255, 203);
-}
-
-.levels-container .level[data-difficulty="normal"] {
-    background-color: rgb(242, 255, 193);
 }
 
 .levels-container .level[data-difficulty="hard"] {
