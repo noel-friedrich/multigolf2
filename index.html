@@ -33,13 +33,13 @@
                         <span lang="en">Join Game</span>
                         <span lang="de">Spiel Beitreten</span>
                     </a>
+                    <a href="mono/">
+                        <span lang="en">Mono</span>
+                        <span lang="de">Mono</span>
+                    </a>
                     <a href="about/">
                         <span lang="en">About</span>
                         <span lang="de">Info</span>
-                    </a>
-                    <a href="faq/">
-                        <span lang="en">FAQ</span>
-                        <span lang="de">FAQ</span>
                     </a>
         
                     <a class="change-lang-button"></a>
@@ -53,14 +53,14 @@
             <div class="header-drop-menu">
                 <a lang="en" href="host/">Start a Game</a>
                 <a lang="en" href="join/">Join a Game</a>
+                <a lang="en" href="mono/">Monogolf</a>
                 <a lang="en" href="about/">What is Multigolf?</a>
-                <a lang="en" href="faq/">FAQ & Help</a>
                 <a lang="en" href="contact/">Contact</a>
         
                 <a lang="de" href="host/">Spiel Starten</a>
                 <a lang="de" href="join/">Spiel Beitreten</a>
+                <a lang="de" href="mono/">Monogolf</a>
                 <a lang="de" href="about/">Was ist Multigolf?</a>
-                <a lang="de" href="faq/">FAQ & Hilfe</a>
                 <a lang="de" href="contact/">Kontakt</a>
         
                 <a class="change-lang-button"></a>
@@ -204,7 +204,144 @@
                     Starte ein Spiel
                 </span>
             </a>
+            <hr>
+            <h1>
+                <span lang="en">FAQ and Help</span>
+                <span lang="de">FAQ und Hilfe</span>
+            </h1>
+            <p lang="en">
+                Below are some <b>F</b>requently <b>A</b>sked <b>Q</b>uestions.
+                If you have any other questions, feel free to contact me
+                <a href="../contact">here</a>!
+            </p>
+            <p lang="de">
+                Unten sind ein paar Häufig gestellte Fragen (FAQs). 
+                Wenn andere Fragen bestehen bin ich über das
+                <a href="../contact">Kontaktformular</a> erreichbar!
+            </p>
+            <div class="faq-container">
+                <div class="entry">
+                    <div class="question" lang="en">
+                        Can I use the host device for the course?
+                    </div>
+                    <div class="answer" lang="en">
+                        <b>No</b>. The host phone display's useful information
+                        for the game like status, scores and who's turn it is 
+                        and cannot participate as a device in the Multigolf course.
+                        Thus, when you're playing with 5 phones, only 4 can be used
+                        for the course itself while one must play host.
+                    </div>
+
+                    <div class="question" lang="de">
+                        Kann das Server-Gerät für den Kurs benutzt werden?
+                    </div>
+                    <div class="answer" lang="de">
+                        <b>Nein</b>. Das Server-Gerät zeigt wichtige Informationen,
+                        den Spielstatus und Anleitungen an. Wenn also z.B. insgesamt
+                        5 Geräte verfügbar sind können nur 4 davon für den Kurs benutzt werden.
+                        Es eignet sich gut, einen Laptop oder PC als Server-Gerät zu verwenden.
+                    </div>
+                </div>
+                <div class="entry">
+                    <div class="question" lang="en">Can I use an iPad/a Tablet/a Laptop?</div>
+                    <div class="answer" lang="en">
+                        <b>Yes</b>! You may use any device with a touch screen
+                        for the course. The host device does not need to have a touch
+                        screen: it makes sense to use a laptop or computer as the 
+                        host to increase the number of phones to build the course.
+                    </div>
+
+                    <div class="question" lang="de">Kann ich ein iPad/ein Tablet/einen Laptop benutzen?</div>
+                    <div class="answer" lang="de">
+                        <b>Ja</b>! Du kannst jedes Gerät mit Touch-Screen als Kurs benutzen.
+                        Wenn du ein Gerät ohne Touch-Screen benutzen willst kannst du es
+                        stattdessen als Server-Gerät verwenden.
+                    </div>
+                </div>
+                <div class="entry">
+                    <div class="question" lang="en">How many devices to I need to play?</div>
+                    <div class="answer" lang="en">
+                        A good Multigolf course is made up of at least 3 devices plus 
+                        a host device. You can start games with only two devices
+                        (one host, one course), but that won't be much fun.
+                    </div>
+
+                    <div class="question" lang="de">Wieviele Geräte brauche ich zum Spielen?</div>
+                    <div class="answer" lang="de">
+                        Ein guter Multigolf Kurs besteht aus mindestens 3 Geräten (und einem
+                        Server-Gerät). Es können auch Kurse mit nur einem Gerät gestartet werden,
+                        die aber nicht besonders aufregend sind.
+                    </div>
+                </div>
+                <div class="entry">
+                    <div class="question" lang="en">Is there a maximum number of devices?</div>
+                    <div class="answer" lang="en">
+                        <b>No</b>. You can theoretically add hundreds of phones, although
+                        the rounds might take a while to setup and play. The ideal number of
+                        devices might be ~6, since a course that is too big get's boring,
+                        especially if you're just waiting for others to finish a round.
+                    </div>
+
+                    <div class="question" lang="de">Gibt es eine maximale Anzahl von Geräten?</div>
+                    <div class="answer" lang="de">
+                        <b>Nein</b>. Du kannst theoretisch hunderte von Geräten hinzufügen,
+                        jedoch werden die Runden wahrscheinlich zu lange dauern um in irgend einer
+                        Hinsicht Spaß zu machen. Die ideale Anzahl an Geräten liegt wahrscheinlich bei
+                        etwa ~6 Geräten.
+                    </div>
+                </div>
+                <div class="entry">
+                    <div class="question" lang="en">Why can't I build a circular course?</div>
+                    <div class="answer" lang="en">
+                        Most phones have much smaller display's than physical sizes
+                        (they have bezels around the display). However, the game does 
+                        not know how large these are. Thus, the shape of the digital course
+                        doesn't match the actual physical model of the course,
+                        it only approximates it. This makes it nearly impossible to 
+                        align devices to both form a circular path digitally and physically.
+                    </div>
+
+                    <div class="question" lang="de">Wieso kann ich einen Kreis-Kurs bauen?</div>
+                    <div class="answer" lang="de">
+                        Die meisten Handys haben ein kleines Display als physikalische Größe
+                        (sie haben Ränder). Dieser Rand kann vom Spiel nicht mit einberechnet werden,
+                        da das Spiel keine Informationen hat, wie dick dieser Rand bei jedem
+                        Handy ist. Es kann also kein realitätsgetreues Abbild des Kurses digital 
+                        repliziert werden, stattdessen wird es nur approximiert. Das führt dazu,
+                        dass ein in realität kreisförmiger Kurs (ein Kurs, dessen "Ende" zum "Anfang" verbunden ist)
+                        nicht im digitalen Abbild kreisförmig sein wird.
+                    </div>
+                </div>
+                <div class="entry">
+                    <div class="question" lang="en">What happens when a device disconnects ingame?</div>
+                    <div class="answer" lang="en">
+                        If the host device fails, the game stops. Try to keep it alive!
+                        If a device is a part of the course and disconnects, you can simply
+                        reconnect it mid-game. If it fails permanently (battery dead?),
+                        you'll have to restart the game. 
+                    </div>
+
+                    <div class="question" lang="de">Was passiert wenn ein Gerät im Spiel ausgeht oder das Spiel verlässt?</div>
+                    <div class="answer" lang="de">
+                        Wenn sich das Server-Gerät abschaltet endet das Spiel. Wenn ein anderes
+                        Gerät im Kurs die Verbindung abbricht kann es neu verbunden werden. Wenn
+                        es permanent den Kurs verlassen muss, muss ein neues Spiel
+                        angefangen werden.
+                    </div>
+                </div>
+            </div>
         </main>
+
+        <script>
+            const faqEntries = document.querySelectorAll(".faq-container > .entry")
+            for (const entry of faqEntries) {
+                for (const question of entry.querySelectorAll(".question")) {
+                    question.onclick = () => {
+                        entry.classList.toggle("unfolded")
+                    }
+                }
+            }
+        </script>
 
         <script>
             window.addEventListener("load", () => setTimeout(() => fetch("https://www.noel-friedrich.de/multigolf2/api/count_visit.php"), 0))
