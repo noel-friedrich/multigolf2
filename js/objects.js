@@ -24,12 +24,16 @@ let golfObjectTypeSpriteMap = {
 
 class GolfObject {
 
+    static makeRandomUid() {
+        return Math.random().toString().slice(2)   
+    }
+
     constructor(type, pos, size, angle, uid, resizable) {
         this.type = type
         this.pos = pos ?? new Vector2d(0, 0)
         this.size = size ?? new Vector2d(40, 40)
         this.angle = angle ?? 0
-        this.uid = uid ?? Math.random().toString().slice(2)
+        this.uid = uid ?? GolfObject.makeRandomUid()
         this.resizable = resizable ?? false
 
         // local attribute, won't be exported
@@ -209,7 +213,7 @@ class GolfObject {
 
     static makeDefault(type) {
         const obj = defaultObjects[type].copy()
-        obj.uid = Math.random().toString().slice(2)
+        obj.uid = GolfObject.makeRandomUid()
         return obj
     }
 

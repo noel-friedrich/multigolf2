@@ -136,8 +136,11 @@ function updateObjectList() {
             const button = document.createElement("button")
             button.textContent = text
             button.addEventListener("click", onClick)
+            button.dataset.function = text
             table.appendChild(button)
         }
+
+        let preventClickThrough = false
 
         addAttribute("type", object.type)
         addAttribute("pos", object.pos.toString(),
@@ -147,13 +150,18 @@ function updateObjectList() {
         addAttribute("angle (°)", object.angle / Math.PI * 180,
             {editable: true, type: "number", set: v => object.angle = v / 180 * Math.PI})
         
-        addButton("Delete", () => {
+        addButton("Delete", event => {
             gameState.board.objects = gameState.board.objects.filter(o => o.uid != object.uid)
+            if (editingState.focusedObject && editingState.focusedObject.uid == object.uid) {
+                editingState.focusedObject = null
+            }
+
             updateObjectList()
             updateLevelCanvas()
+            preventClickThrough = true
         })
 
-        addButton("Move Up", () => {
+        addButton("Move Down", () => {
             let index = null
             for (let i = 0; i < gameState.board.objects.length; i++) {
                 if (gameState.board.objects[i].uid == object.uid) {
@@ -174,11 +182,31 @@ function updateObjectList() {
             updateObjectSelection()
         })
 
+        if (object.type != golfObjectType.Start) {
+            addButton("Duplicate", () => {
+                const copy = object.copy()
+                copy.pos.iadd(new Vector2d(20, 20))
+                copy.uid = GolfObject.makeRandomUid()
+    
+                gameState.board.objects.push(copy)
+                editingState.focusedObject = copy
+                updateAllHtml()
+                preventClickThrough = true
+            })
+        }
+
         table.addEventListener("click", () => {
+            if (preventClickThrough) {
+                preventClickThrough = false
+                return
+            }
+
             editingState.focusedObject = object
             updateLevelCanvas()
             updateObjectSelection()
         })
+
+        object._table = table
 
         return table
     }
@@ -187,7 +215,8 @@ function updateObjectList() {
         objectTable.remove()
     }
 
-    for (const object of gameState.board.objects) {
+    for (let i = gameState.board.objects.length - 1; i >= 0; i--) {
+        const object = gameState.board.objects[i]
         const objectTable = makeObjectTable(object)
         objectList.appendChild(objectTable)
     }
@@ -390,5 +419,58 @@ function reset() {
 setInterval(() => {
     saveToLocalStorage()
 }, 1000)
+
+addEventListener("keydown", event => {
+    if (!editingState.focusedObject) {
+        return
+    }
+
+    const runFunction = f => {
+        const btn = editingState.focusedObject._table.querySelector(`[data-function="${f}"`)
+        if (btn) btn.click()
+    }
+
+    const addOnKey = (key, f) => {
+        if (event.key == key) {
+            event.preventDefault()
+            f()
+            updateAllHtml()
+        }
+    }
+
+    const changeSelectionIndex = (inc) => {
+        let index = undefined
+        for (let i = 0; i < gameState.board.objects.length; i++) {
+            if (gameState.board.objects[i].uid == editingState.focusedObject.uid) {
+                index = i
+            }
+        }
+
+        if (index === undefined) return
+        const newObject = gameState.board.objects[index + inc]
+        if (!newObject) return
+
+        editingState.focusedObject = newObject
+    }
+
+    addOnKey("d", () => runFunction("Duplicate"))
+    addOnKey("Backspace", () => runFunction("Delete"))
+
+    if (event.shiftKey) {
+        if (editingState.focusedObject.resizable) {
+            addOnKey("ArrowDown", () => editingState.focusedObject.size.iadd(new Vector2d(0, -40)))
+            addOnKey("ArrowUp", () => editingState.focusedObject.size.iadd(new Vector2d(0, 40)))
+            addOnKey("ArrowLeft", () => editingState.focusedObject.size.iadd(new Vector2d(-40, 0)))
+            addOnKey("ArrowRight", () => editingState.focusedObject.size.iadd(new Vector2d(40, 0)))
+        }
+        addOnKey("Tab", () => changeSelectionIndex(-1))
+    } else {
+        addOnKey("ArrowDown", () => editingState.focusedObject.pos.iadd(new Vector2d(0, 20)))
+        addOnKey("ArrowUp", () => editingState.focusedObject.pos.iadd(new Vector2d(0, -20)))
+        addOnKey("ArrowLeft", () => editingState.focusedObject.pos.iadd(new Vector2d(-20, 0)))
+        addOnKey("ArrowRight", () => editingState.focusedObject.pos.iadd(new Vector2d(20, 0)))
+        addOnKey("Tab", () => changeSelectionIndex(1))
+    }
+})
 
 main()

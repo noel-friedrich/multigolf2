@@ -227,13 +227,10 @@ class Renderer {
                     object.size.scale(1 / gameState.combinedScalingFactor),
                     object.sprite, {angle: gameState.boardAngleToScreenAngle(object.angle)})
             }
+        }
 
-
-            if (drawSelection) {
-                if (touchInfo.focusedObject && object.uid == touchInfo.focusedObject.uid) {
-                    this.drawObjectOutline(gameState, context, object)
-                }
-            }
+        if (drawSelection && touchInfo.focusedObject) {
+            this.drawObjectOutline(gameState, context, touchInfo.focusedObject)
         }
 
         if (!drawBalls) {
