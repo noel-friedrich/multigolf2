@@ -421,7 +421,9 @@ setInterval(() => {
 }, 1000)
 
 addEventListener("keydown", event => {
-    if (!editingState.focusedObject || (document.hasFocus && document.hasFocus())) {
+    if (!editingState.focusedObject || (
+        document.hasFocus && document.hasFocus() && document.activeElement && document.activeElement.tagName == "INPUT"
+    )) {
         return
     }
 
