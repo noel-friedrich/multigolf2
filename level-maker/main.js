@@ -484,6 +484,9 @@ addEventListener("keydown", event => {
             addOnKey("ArrowRight", () => editingState.focusedObject.size.iadd(new Vector2d(40, 0)))
         }
         addOnKey("Tab", () => changeSelectionIndex(-1))
+    } else if (event.ctrlKey) {
+        addOnKey("ArrowLeft", () => editingState.focusedObject.angle -= Math.PI / 4)
+        addOnKey("ArrowRight", () => editingState.focusedObject.angle += Math.PI / 4)
     } else {
         addOnKey("ArrowDown", () => editingState.focusedObject.pos.iadd(new Vector2d(0, 20)))
         addOnKey("ArrowUp", () => editingState.focusedObject.pos.iadd(new Vector2d(0, -20)))
