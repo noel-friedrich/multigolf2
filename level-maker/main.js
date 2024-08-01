@@ -158,13 +158,12 @@ function updateObjectList() {
                 }
             }
 
+            if (index === null) return
+
+            gameState.board.objects.splice(index, 1)
+            gameState.board.objects.push(object)
+
             editingState.focusedObject = object
-            const newIndex = gameState.board.objects.length - 1
-
-            const temp = gameState.board.objects[newIndex]
-            gameState.board.objects[newIndex] = gameState.board.objects[index]
-            gameState.board.objects[index] = temp
-
             updateObjectList()
             updateObjectSelection()
         })
@@ -177,13 +176,12 @@ function updateObjectList() {
                 }
             }
 
-            editingState.focusedObject = object
-            const newIndex = 0
+            if (index === null) return
 
-            const temp = gameState.board.objects[newIndex]
-            gameState.board.objects[newIndex] = gameState.board.objects[index]
-            gameState.board.objects[index] = temp
-            
+            gameState.board.objects.splice(index, 1)
+            gameState.board.objects.unshift(object)
+
+            editingState.focusedObject = object
             updateObjectList()
             updateObjectSelection()
         })
@@ -475,7 +473,7 @@ addEventListener("keydown", event => {
     addOnKey("d", () => runFunction("Duplicate"))
     addOnKey("f", () => runFunction("Front"))
     addOnKey("b", () => runFunction("Back"))
-    
+
     addOnKey("Backspace", () => runFunction("Delete"))
 
     if (event.shiftKey) {
