@@ -254,26 +254,9 @@ function onEventDown(event) {
     }
 }
 
-const snapValue = (currValue, values, epsilon=10) => {
-    for (let val of values) {
-        if (Math.abs(val - currValue) < epsilon) {
-            return val
-        }
-    }
-    return currValue
-}
-
 function clampObjectPos(pos) {
-    const xValues = [
-        0, levelSize.x / 4, levelSize.x / 2, levelSize.x * 3 / 4
-    ]
-    const yValues = [
-        0, levelSize.y / 8, levelSize.y / 4, levelSize.y * 3 / 8 ,
-        levelSize.y / 2, levelSize.y * 5 / 8, levelSize.y * 3 / 4,
-        levelSize.y * 7 / 8, levelSize.y
-    ]
-
-    return new Vector2d(snapValue(pos.x, xValues), snapValue(pos.y, yValues))
+    const snapToGrid = n => Math.floor(n / 20) * 20 + Math.round((n % 20) / 20) * 20
+    return new Vector2d(snapToGrid(pos.x), snapToGrid(pos.y))
 }
 
 function onEventMove(event) {
