@@ -114,7 +114,7 @@ async function goToNextLevel() {
     const nextLevelId = parseInt(levelId) + 1
     const nextLevelExists = levels.find(l => l.id == nextLevelId)
 
-    if (!nextLevelExists && challengeKicks > 0 && challengeMode) {
+    if (!nextLevelExists && challengeKicks >= 0 && challengeMode) {
         localStorage.removeItem("challenge-kicks")
         setHighscore(packId, challengeKicks)
         await customAlert(Text.YouWonLong(challengeKicks), {header: Text.YouWon})
