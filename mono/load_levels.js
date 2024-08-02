@@ -15,6 +15,11 @@ function getHighscore(packId) {
 }
 
 function setHighscore(packId, score) {
+    let highscore = getHighscore(packId)
+    if (highscore !== null && highscore >= score) {
+        return
+    }
+    
     localStorage.setItem(levelHighscoreLocalStorageKey(packId), score)
 }
 
