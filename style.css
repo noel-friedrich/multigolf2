@@ -495,7 +495,6 @@ main .pic-link:hover {
 
 main .pic-link .pic-container {
     position: relative;
-    border-bottom: var(--button-border);
     border-top-left-radius: .8rem;
     border-top-right-radius: .8rem;
 }
@@ -505,13 +504,13 @@ main .pic-link .pic-container .pic-text {
     bottom: 0;
     left: 0;
     padding: .7rem;
+    padding-bottom: 0;
+    margin-bottom: -1px;
     background: var(--card-background);
     font-family: var(--header-font);
     font-weight: bold;
     font-size: 1.2em;
     border-top-right-radius: .8rem;
-    border-top: var(--button-border);
-    border-right: var(--button-border);
     z-index: 100;
 }
 
