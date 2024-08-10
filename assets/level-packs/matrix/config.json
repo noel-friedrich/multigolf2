@@ -1,0 +1,26 @@
+{
+    "id": "matrix",
+    "name": {
+        "en": "Matrix Arena",
+        "de": "Matrix Arena"
+    },
+    "description": {
+        "en": "Super cool and flashy levels for beginners.",
+        "de": "Super coole und dunkle Level für Anfänger."
+    },
+    "author": "Noel Friedrich",
+    "difficulty": "easy",
+    "difficulty-name": {
+        "en": "Easy",
+        "de": "Einfach"
+    },
+    "styling": {
+        "grid":  "assets/compressed/objects/dark-grid.png",
+        "ball": "assets/compressed/objects/balls/rainbow.png",
+        "colors": {
+            "customWallOuter": "black",
+            "customWallInner": "#595959",
+            "pullColor": "rgba(255, 255, 255, 0.5)"
+        }
+    }
+}

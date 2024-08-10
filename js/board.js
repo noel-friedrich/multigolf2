@@ -2,12 +2,13 @@ class Board {
 
     static physicsTimestep = 17 // approximately 60 fps
 
-    constructor(course, objects, balls, physicsTime, ballCollisionEnabled, deviceGravityEnabled, particlesEnabled, particles) {
+    constructor(course, objects, balls, physicsTime, ballCollisionEnabled, deviceGravityEnabled, particlesEnabled, particles, styling) {
         this.course = course ?? new Course()
         this.objects = objects ?? []
         this.balls = balls ?? []
         this.particles = particles ?? []
         this.physicsTime = physicsTime ?? Date.now()
+        this.styling = styling ?? new BoardStyling()
 
         this.ballCollisionEnabled = ballCollisionEnabled ?? true
         this.deviceGravityEnabled = deviceGravityEnabled ?? true
@@ -135,7 +136,7 @@ class Board {
 
     updateObjectPhysics() {
         for (const object of this.objects.filter(o => o.type == golfObjectType.Cannon)) {
-            object.angle += 0.02244
+            object.angle += Math.PI / 140
         }
     }
 

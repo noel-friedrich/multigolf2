@@ -1,11 +1,11 @@
 from pathlib import Path
 import subprocess, os
 
-img_output_size = 11
+img_output_size = 8
 
 custom_sizes = {
     "grid.svg": 256,
-    "cannon.svg": 20
+    "cannon.svg": 16,
 }
 
 for svg_path in Path("assets").rglob("*.svg"):

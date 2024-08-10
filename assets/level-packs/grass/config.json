@@ -5,14 +5,13 @@
         "de": "Starter Hügel"
     },
     "description": {
-        "en": "Fun and creative levels for new Multigolfers.",
-        "de": "Spaßige und kreative Level für neue Monogolfer."
+        "en": "Fun and creative levels for experienced Multigolfers.",
+        "de": "Spaßige und kreative Level für erfahrene Monogolfer."
     },
     "author": "Noel Friedrich",
     "difficulty": "medium",
     "difficulty-name": {
         "en": "Medium",
         "de": "Medium"
-    },
-    "background": "normal"
+    }
 }

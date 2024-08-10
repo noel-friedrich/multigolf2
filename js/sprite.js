@@ -9,6 +9,7 @@ const Sprite = {
     BallViolet:    "../assets/compressed/objects/balls/violet.png",
     BallWhite:     "../assets/compressed/objects/balls/white.png",
     BallYellow:    "../assets/compressed/objects/balls/yellow.png",
+    BallRainbow:   "../assets/compressed/objects/balls/rainbow.png",
     Grid:          "../assets/compressed/objects/grid.png",
     Hole:          "../assets/compressed/objects/hole.png",
     Start:         "../assets/compressed/objects/start.png",

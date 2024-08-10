@@ -298,9 +298,11 @@ function onEventDown(event) {
     }
 }
 
-function clampObjectPos(pos) {
+function clampObjectPos(object) {
     const snapToGrid = n => Math.floor(n / 20) * 20 + Math.round((n % 20) / 20) * 20
-    return new Vector2d(snapToGrid(pos.x), snapToGrid(pos.y))
+    const cornerPos = object.corners[0]
+    const newCornerPos = new Vector2d(snapToGrid(cornerPos.x), snapToGrid(cornerPos.y))
+    object.pos.iadd(newCornerPos.sub(cornerPos))
 }
 
 function onEventMove(event) {
@@ -314,8 +316,8 @@ function onEventMove(event) {
         boardPos.iadd(editingState.draggingOffset)
     }
 
-    const newObjectPos = clampObjectPos(boardPos.round())
-    editingState.draggingObject.pos.setVector2d(newObjectPos)
+    editingState.draggingObject.pos.setVector2d(boardPos)
+    clampObjectPos(editingState.draggingObject)
     updateLevelCanvas()
     updateObjectList()
 
@@ -447,11 +449,13 @@ addEventListener("keydown", event => {
         if (btn) btn.click()
     }
 
-    const addOnKey = (key, f) => {
-        if (event.key == key) {
-            event.preventDefault()
-            f()
-            updateAllHtml()
+    const addOnKey = (keys, f) => {
+        for (const key of keys.split("|")) {
+            if (event.key == key) {
+                event.preventDefault()
+                f()
+                updateAllHtml()
+            }
         }
     }
 
@@ -478,10 +482,22 @@ addEventListener("keydown", event => {
 
     if (event.shiftKey) {
         if (editingState.focusedObject.resizable) {
-            addOnKey("ArrowDown", () => editingState.focusedObject.size.iadd(new Vector2d(0, -40)))
-            addOnKey("ArrowUp", () => editingState.focusedObject.size.iadd(new Vector2d(0, 40)))
-            addOnKey("ArrowLeft", () => editingState.focusedObject.size.iadd(new Vector2d(-40, 0)))
-            addOnKey("ArrowRight", () => editingState.focusedObject.size.iadd(new Vector2d(40, 0)))
+            addOnKey("ArrowDown", () => {
+                editingState.focusedObject.size.iadd(new Vector2d(0, 20))
+                editingState.focusedObject.pos.iadd(new Vector2d(0, 10))
+            })
+            addOnKey("ArrowUp", () => {
+                editingState.focusedObject.size.iadd(new Vector2d(0, -20))
+                editingState.focusedObject.pos.iadd(new Vector2d(0, -10))
+            })
+            addOnKey("ArrowLeft", () => {
+                editingState.focusedObject.size.iadd(new Vector2d(-20, 0))
+                editingState.focusedObject.pos.iadd(new Vector2d(-10, 0))
+            })
+            addOnKey("ArrowRight", () => {
+                editingState.focusedObject.size.iadd(new Vector2d(20, 0))
+                editingState.focusedObject.pos.iadd(new Vector2d(10, 0))
+            })
         }
         addOnKey("Tab", () => changeSelectionIndex(-1))
     } else if (event.ctrlKey) {
@@ -492,6 +508,10 @@ addEventListener("keydown", event => {
         addOnKey("ArrowUp", () => editingState.focusedObject.pos.iadd(new Vector2d(0, -20)))
         addOnKey("ArrowLeft", () => editingState.focusedObject.pos.iadd(new Vector2d(-20, 0)))
         addOnKey("ArrowRight", () => editingState.focusedObject.pos.iadd(new Vector2d(20, 0)))
+        addOnKey("ArrowUp|ArrowDown|ArrowLeft|ArrowRight", () => {
+            clampObjectPos(editingState.focusedObject)
+        })
+
         addOnKey("Tab", () => changeSelectionIndex(1))
     }
 })

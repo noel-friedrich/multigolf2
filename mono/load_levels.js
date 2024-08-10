@@ -124,6 +124,14 @@ function makeLevelPackHtml(levelPackConfig) {
 async function updateHtmlLevels() {
     const levelPackConfigs = await loadLevelData("level-data/all-packs.json")
 
+    const difficultyMap = {
+        "easy": 1, "medium": 2, "hard": 3
+    }
+
+    levelPackConfigs.sort((a, b) => {
+        return difficultyMap[a.difficulty] - difficultyMap[b.difficulty]
+    })
+
     for (const levelPackConfig of levelPackConfigs) {
         const levelPackContainer = makeLevelPackHtml(levelPackConfig)
         levelpacksContainer.appendChild(levelPackContainer)

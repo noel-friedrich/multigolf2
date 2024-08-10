@@ -1,3 +1,5 @@
+const GRID_BLOCK_SIZE = 20
+
 class Renderer {
 
     static spriteImgMap = {}
@@ -82,7 +84,7 @@ class Renderer {
             context.moveTo(startPos.x, startPos.y)
             context.lineTo(endPos.x, endPos.y)
             
-            context.lineWidth = 20 / gameState.combinedScalingFactor
+            context.lineWidth = GRID_BLOCK_SIZE / gameState.combinedScalingFactor
             context.strokeStyle = line.color
             context.lineCap = "round"
             context.stroke()
@@ -122,9 +124,7 @@ class Renderer {
     }
 
     static drawObjectOutline(gameState, context, object) {
-        const screenCorners = object.relativeCorners
-            .map(c => c.scale(1.2))
-            .map(c => c.add(object.pos))
+        const screenCorners = object.getInnerCorners(-10)
             .map(c => gameState.boardPosToScreenPos(c))
 
         context.beginPath()
@@ -140,24 +140,30 @@ class Renderer {
         context.stroke()
 
         this.drawSprite(context, gameState.boardPosToScreenPos(object.dragCorner),
-            new Vector2d(20, 20), Sprite.ZoomIcon, {imageSmoothing: true})
+            new Vector2d(GRID_BLOCK_SIZE, GRID_BLOCK_SIZE), Sprite.ZoomIcon, {imageSmoothing: true})
     }
 
-    static drawCustomWall(gameState, context, corners) {
+    static fillShape(context, corners, color) {
         context.beginPath()
         context.moveTo(corners[0].x, corners[0].y)
         for (let i = 0; i < corners.length; i++) {
             const index = (i + 1) % corners.length
             context.lineTo(corners[index].x, corners[index].y)
         }
-
-        context.strokeStyle = "black"
-        context.fillStyle = "white"
-        context.lineWidth = 3 / gameState.combinedScalingFactor
-        context.lineCap = "round"
-
+        context.fillStyle = color
         context.fill()
-        context.stroke()
+    }
+
+    static drawCustomWall(gameState, context, object) {
+        const innerCorners = object.getInnerCorners(GRID_BLOCK_SIZE / 4 * Math.sqrt(2))
+        
+        const screenCorners = object.corners.map(corner => {
+            return gameState.boardPosToScreenPos(corner)})
+        const screenInnerCorners = innerCorners.map(corner => {
+            return gameState.boardPosToScreenPos(corner)})
+
+        this.fillShape(context, screenCorners, gameState.board.styling.customWallOuter)
+        this.fillShape(context, screenInnerCorners, gameState.board.styling.customWallInner)
     }
 
     static drawGravityArrow(context, pos, direction) {
@@ -204,9 +210,10 @@ class Renderer {
         drawConnectionLines = false,
     }={}) {
         context.canvas.style.display = "block"
-        const backgroundSizePx = 160 / gameState.combinedScalingFactor
+        const backgroundSizePx = GRID_BLOCK_SIZE * 8 / gameState.combinedScalingFactor
         const backgroundSizePercent = Math.max(backgroundSizePx / context.canvas.width * 100, 1)
         context.canvas.style.backgroundSize = `${backgroundSizePercent}%`
+        context.canvas.style.backgroundImage = `url(${gameState.board.styling.gridSprite})`
 
         if (drawConnectionLines) {
             this.renderConnectionLines(gameState, context, touchInfo)
@@ -218,9 +225,7 @@ class Renderer {
 
         for (const object of gameState.board.objects) {
             if (object.type == golfObjectType.CustomWall) {
-                const screenCorners = object.corners.map(corner => {
-                    return gameState.boardPosToScreenPos(corner)})
-                this.drawCustomWall(gameState, context, screenCorners)
+                this.drawCustomWall(gameState, context, object)
             } else {
                 const screenPos = gameState.boardPosToScreenPos(object.pos)
                 this.drawSprite(context, screenPos,
@@ -283,7 +288,7 @@ class Renderer {
         context.beginPath()
         context.moveTo(ballScreenPos.x, ballScreenPos.y)
         context.lineTo(touchInfo.currPos.x, touchInfo.currPos.y)
-        context.strokeStyle = "rgba(0, 0, 0, 0.5)"
+        context.strokeStyle = gameState.board.styling.pullColor
         context.lineWidth = touchInfo.focusedBall.radius / gameState.scalingFactor
         context.lineCap = "round"
         context.stroke()

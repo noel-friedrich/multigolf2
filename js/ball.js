@@ -256,7 +256,7 @@ class Ball {
     }
 
     updatePhysics(board) {
-        const stepCount = Math.max(Math.ceil(this.vel.length / 10), 1)
+        const stepCount = Math.max(Math.ceil(this.vel.length / 5), 1)
         let isUnderAcceleration = false
 
         // add gravity from current phone
@@ -291,6 +291,7 @@ class Ball {
         let isActivelyMoving = false
         this.vel.iscale(0.97)
         this.vel.iscale(1 / stepCount)
+        this._objectInteractedFlag = false
         for (let i = 0; i < stepCount; i++) {
             if (this.physicsStep(board)) {
                 isActivelyMoving = true
@@ -398,7 +399,7 @@ class Ball {
         }
 
         // rotation of cannon
-        this.rotationAngle += 0.02244
+        this.rotationAngle += Math.PI / 140
 
         this.pos.iinterpolate(desiredPos, Math.min(cannonProgress / 50, 1))
         this.vel.iscale(0)
@@ -458,12 +459,21 @@ class Ball {
     }
 
     interactStepWithObject(board, object) {
+        // if the object has already interacted with an object in this
+        // physics Update, then don't interact again in the same update.
+        // (the flag is reset at every physics update to be `false`)
+        if (this._objectInteractedFlag) {
+            return
+        }
+
+        this._objectInteractedFlag = true
         switch(object.type) {
             case golfObjectType.Lava:
                 return this.interactWithLava(board, object)
             case golfObjectType.Cannon:
                 return this.interactWithCannon(board, object)
         }
+        this._objectInteractedFlag = false
     }
 
     physicsStep(board) {

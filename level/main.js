@@ -243,7 +243,25 @@ function loadLevel(id) {
     gameState.board.physicsTime = Date.now()
     gameState.board.particlesEnabled = true
 
-    ball = gameState.board.spawnBall({spriteUrl: "random"})
+    let ballSprite = "random"
+    if (levelConfig && levelConfig.styling) {
+        if (levelConfig.styling.grid) 
+            gameState.board.styling.gridSprite = URL_BASE_PATH + levelConfig.styling.grid
+        if (levelConfig.styling.ball)
+            ballSprite = URL_BASE_PATH + levelConfig.styling.ball
+
+        if (levelConfig.styling.colors) {
+            const colors = levelConfig.styling.colors
+            if (colors.customWallInner)
+                gameState.board.styling.customWallInner = colors.customWallInner
+            if (colors.customWallOuter)
+                gameState.board.styling.customWallOuter = colors.customWallOuter
+            if (colors.pullColor)
+                gameState.board.styling.pullColor = colors.pullColor
+        }
+    }
+
+    ball = gameState.board.spawnBall({spriteUrl: ballSprite})
 
     const url = new URL(window.location.href)
     url.searchParams.set("id", levelId)

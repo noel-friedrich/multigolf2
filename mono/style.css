@@ -80,6 +80,10 @@ html[lang="de"] .level-pack .author::before {
     background-color: rgb(193, 255, 203);
 }
 
+.levels-container .level[data-difficulty="medium"] {
+    background-color: rgb(246, 255, 193);
+}
+
 .levels-container .level[data-difficulty="hard"] {
     background-color: rgb(255, 193, 193);
 }

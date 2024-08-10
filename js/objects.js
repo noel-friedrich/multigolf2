@@ -91,8 +91,24 @@ class GolfObject {
         ]
     }
 
+    getInnerCorners(innerCornerDistance) {
+        const corners = this.corners
+        const innerCorners = []
+        for (let i = 0; i < corners.length; i++) {
+            const prevCorner = corners[i > 0 ? i - 1 : corners.length - 1]
+            const currCorner = corners[i]
+            const nextCorner = corners[(i + 1) % corners.length]
+            const prevDelta = prevCorner.sub(currCorner).normalized
+            const nextDelta = nextCorner.sub(currCorner).normalized
+            const innerNormDelta = prevDelta.add(nextDelta).normalized
+            const innerPoint = currCorner.add(innerNormDelta.scale(innerCornerDistance))
+            innerCorners.push(innerPoint)
+        }
+        return innerCorners
+    }
+
     get dragCorner() {
-        return this.pos.sub(this.size.scale(0.6).rotate(this.angle))
+        return this.getInnerCorners(-10)[0]
     }
 
     intersects(point) {

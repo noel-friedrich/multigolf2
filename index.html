@@ -166,42 +166,43 @@
                 </span>
             </p>
 
-            <div class="middle-container">
-                <img src="assets/pics/ws-zs-pic.png" class="smaller middle" alt="Image depicting Multiple Devices playing Multigolf together">
+            <div class="pic-link-grid">
+                <a class="pic-link" href="host/">
+                    <div class="pic-container">
+                        <img src="assets/pics/ws-zs-pic.jpeg" alt="Image depicting Multiple Devices playing Multigolf together">
+                        <div class="pic-text">
+                            <span lang="en">Play Multigolf</span>
+                            <span lang="de">Spiel Multigolf</span>
+                        </div>
+                    </div>
+                    <div class="pic-description">
+                        <span lang="en">
+                            Start and Host a round of Multigolf to play with your friends. Click to start!
+                        </span>
+                        <span lang="de">
+                            Tippe hier, um ein Multigolf-Spiel mit deinen Freunden zu Spielen. 
+                        </span>
+                    </div>
+                </a>
+                <a class="pic-link" href="mono/">
+                    <div class="pic-container">
+                        <img src="assets/pics/monogolf-example.jpg" alt="A screenshot of a multigolf game in action">
+                        <div class="pic-text">
+                            <span lang="en">Play Monogolf</span>
+                            <span lang="de">Spiel Monogolf</span>
+                        </div>
+                    </div>
+                    <div class="pic-description">
+                        <span lang="en">
+                            Monogolf is the single-player version of Multigolf. Click to Play!
+                        </span>
+                        <span lang="de">
+                            Monogolf ist die Single-Player Variante von Multigolf. Tippe hier, um Monogolf zu Spielen!
+                        </span>
+                    </div>
+                </a>
             </div>
-            <h2>
-                <span lang="en">How does it work?</span>
-                <span lang="de">Wie funktionierts?</span>
-            </h2>
-            <p>
-                <span lang="en">
-                    By creating a game, your device becomes the server.
-                    This server won't display the course but will act as
-                    a control center and guide you through the process.
-                    After configuring the game (choosing the game mode,
-                    entering everyone's names, etc.), you'll begin
-                    designing your course. Once set up, the game is
-                    afoot! Some game modes require multiple people
-                    to design their own unique courses.
-                </span>
-                <span lang="de">
-                    Wenn du das Spiel startest, wird dein Gerät zum Spielserver. Dein Gerät
-                    wird zwar nicht Teil des Kurses, dafür aber als Kontrollzentrum
-                    fungieren, mit dem das Spiel geleitet und konfiguriert wird. 
-                    Nach dem Spielaufbau geht es damit los, einen Kurs zu bauen! Du kannst
-                    Geräte miteinander verbinden und Hindernisse platzieren, um einen 
-                    möglichst coolen/schwierigen Kurs zu bauen. Es gibt außerdem
-                    verschiedene Spielmodi, dein Multigolf-Erlebnis wird also nie langweilig :)
-                </span>
-            </p>
-            <a href="host/" class="linkbutton">
-                <span lang="en">
-                    Start a Game
-                </span>
-                <span lang="de">
-                    Starte ein Spiel
-                </span>
-            </a>
+
             <hr>
             <h1>
                 <span lang="en">FAQ and Help</span>
@@ -431,6 +432,8 @@
 
         <!-- BEGIN default_js -->
         <script>
+            const URL_BASE_PATH = ""
+        
             {
                 // update theme
                 if (localStorage.getItem("style") == null) {

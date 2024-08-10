@@ -1,0 +1,17 @@
+{
+    "id": "stack",
+    "name": {
+        "en": "Stacking",
+        "de": "Stapeln"
+    },
+    "description": {
+        "en": "It just keeps getting harder and harder...",
+        "de": "Es wird einfach immer schlimmer..."
+    },
+    "author": "Noel Friedrich",
+    "difficulty": "hard",
+    "difficulty-name": {
+        "en": "Hard",
+        "de": "Schwer"
+    }
+}
