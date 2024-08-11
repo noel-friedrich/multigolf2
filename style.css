@@ -215,7 +215,7 @@ header .logo-container .logo-text {
 header .link-island {
     margin-left: auto;
     display: flex;
-    gap: .5rem;
+    gap: .2rem;
 }
 
 header .link-island a {

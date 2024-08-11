@@ -56,14 +56,12 @@ function onEventUp(event) {
     touchInfo.lastUpPos = Vector2d.fromTouchEvent(event, levelCanvas)
     touchInfo.lastUpTime = Date.now()
 
-    if (!touchInfo.focusedBall || !touchInfo.lastDownPos || !touchInfo.lastUpPos || !gameState
-        || touchInfo.lastDownPos.distance(touchInfo.lastUpPos) < 10
-    ) {
+    if (!touchInfo.focusedBall || !touchInfo.lastDownPos || !touchInfo.lastUpPos || !gameState) {
         return
     }
 
     const lastUpScreenPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
-    const strength = Math.min(touchInfo.focusedBall.pos.distance(lastUpScreenPos) * 0.3 / gameState.combinedScalingFactor, 70)
+    const strength = Math.min(touchInfo.focusedBall.pos.distance(lastUpScreenPos) * 0.2, 50)
     const touchUpBoardPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
     const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
 
@@ -192,9 +190,11 @@ setInterval(() => {
 async function gameLoop() {
     gameState.update()
 
-    Renderer.render(gameState, levelContext, touchInfo,
-        challengeMode ? {challengeBalls: challengeKicks} : {}
-    )
+    const challengeBalls = challengeMode ? challengeKicks : undefined
+
+    Renderer.render(gameState, levelContext, touchInfo, {
+        challengeBalls,
+    }) 
 
     if (ball && ball.inHole && ball.radius == 0) {
         unlockLevel(packId, level.id + 1)

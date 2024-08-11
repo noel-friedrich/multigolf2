@@ -19,6 +19,26 @@ const Sprite = {
     Cannon:        "../assets/compressed/objects/cannon.png",
     GravityBox:    "../assets/compressed/objects/gravity-box.png",
 
+    // NON PIXELATED SPRITES:
+    /* BallBlue:      "../assets/objects/balls/blue.svg",
+    BallCyan:      "../assets/objects/balls/cyan.svg",
+    BallLightblue: "../assets/objects/balls/light_blue.svg",
+    BallOrange:    "../assets/objects/balls/orange.svg",
+    BallPink:      "../assets/objects/balls/pink.svg",
+    BallRed:       "../assets/objects/balls/red.svg",
+    BallViolet:    "../assets/objects/balls/violet.svg",
+    BallWhite:     "../assets/objects/balls/white.svg",
+    BallYellow:    "../assets/objects/balls/yellow.svg",
+    BallRainbow:   "../assets/objects/balls/rainbow.svg",
+    Grid:          "../assets/objects/grid.svg",
+    Hole:          "../assets/objects/hole.svg",
+    Start:         "../assets/objects/start.svg",
+    DuellHole1:    "../assets/objects/duellHole1.svg",
+    DuellHole2:    "../assets/objects/duellHole2.svg",
+    Lava:          "../assets/objects/lava.svg",
+    Cannon:        "../assets/objects/cannon.svg",
+    GravityBox:    "../assets/objects/gravity-box.svg", */
+
     Eraser:        "../assets/objects/eraser.svg",
     ZoomIcon:      "../assets/zoom-icon.svg",
     CustomWall:    "../assets/objects/wall.svg",

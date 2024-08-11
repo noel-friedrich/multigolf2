@@ -59,7 +59,9 @@ mainElement.onclick = event => {
 }
 
 function updateLevelCanvas() {
-    Renderer.render(gameState, levelContext, editingState, {preventScrolling: false})
+    Renderer.render(gameState, levelContext, editingState, {
+        preventScrolling: false,
+    })
 }
 
 function updateObjectSelection() {

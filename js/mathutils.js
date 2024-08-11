@@ -231,7 +231,7 @@ class Vector2d {
         )
     }
 
-    static fromTouchEvent(event, element) {
+    static fromTouchEvent(event, element, {scaleToCanvasSize = true}={}) {
         let x = 0, y = 0
 
         if (event.touches && event.touches[0]) {
@@ -249,7 +249,14 @@ class Vector2d {
         }
 
         const rect = element.getBoundingClientRect()
-        return new Vector2d(x - rect.left, y - rect.top)
+        const vec = new Vector2d(x - rect.left, y - rect.top)
+
+        if (scaleToCanvasSize && element.tagName == "CANVAS" && element.width && element.height) {
+            vec.iscaleX(element.width / element.clientWidth)
+            vec.iscaleY(element.height / element.clientHeight)
+        }
+
+        return vec
     }
 
     static fromEvent(event, element) {

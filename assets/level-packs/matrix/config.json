@@ -15,12 +15,7 @@
         "de": "Einfach"
     },
     "styling": {
-        "grid":  "assets/compressed/objects/dark-grid.png",
-        "ball": "assets/compressed/objects/balls/rainbow.png",
-        "colors": {
-            "customWallOuter": "black",
-            "customWallInner": "#595959",
-            "pullColor": "rgba(255, 255, 255, 0.5)"
-        }
+        "grid":  "assets/compressed/objects/crazy-grid.png",
+        "ball": "assets/objects/balls/rainbow.svg"
     }
 }

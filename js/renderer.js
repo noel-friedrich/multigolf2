@@ -23,9 +23,14 @@ class Renderer {
     static startSize = new Vector2d(40, 40)
     static endSize = new Vector2d(50, 50)
 
-    static updateCanvasSize(context) {
-        context.canvas.width = context.canvas.clientWidth
-        context.canvas.height = context.canvas.clientHeight
+    static updateCanvasSize(context, resolution) {
+        if (resolution) {
+            context.canvas.width = resolution.x
+            context.canvas.height = resolution.y
+        } else {
+            context.canvas.width = context.canvas.clientWidth
+            context.canvas.height = context.canvas.clientHeight
+        }
     }
 
     static drawSprite(context, centerPos, size, sprite, {
@@ -135,12 +140,13 @@ class Renderer {
         }
 
         context.strokeStyle = "blue"
-        context.lineWidth = 3
+        context.lineWidth = 3 / gameState.combinedScalingFactor
         context.lineCap = "round"
         context.stroke()
 
+        const dragCornerSize = new Vector2d(GRID_BLOCK_SIZE, GRID_BLOCK_SIZE).scale(2 / gameState.combinedScalingFactor)
         this.drawSprite(context, gameState.boardPosToScreenPos(object.dragCorner),
-            new Vector2d(GRID_BLOCK_SIZE, GRID_BLOCK_SIZE), Sprite.ZoomIcon, {imageSmoothing: true})
+            dragCornerSize, Sprite.ZoomIcon, {imageSmoothing: true})
     }
 
     static fillShape(context, corners, color) {
@@ -273,7 +279,8 @@ class Renderer {
                 context.globalAlpha = particle.opacity
                 const screenPos = gameState.boardPosToScreenPos(particle.pos)
                 context.fillStyle = particle.color
-                context.fillRect(screenPos.x, screenPos.y, particle.radius, particle.radius)
+                const size = particle.radius / gameState.combinedScalingFactor
+                context.fillRect(screenPos.x, screenPos.y, size, size)
             }
             context.globalAlpha = 1.0
         }
@@ -289,7 +296,7 @@ class Renderer {
         context.moveTo(ballScreenPos.x, ballScreenPos.y)
         context.lineTo(touchInfo.currPos.x, touchInfo.currPos.y)
         context.strokeStyle = gameState.board.styling.pullColor
-        context.lineWidth = touchInfo.focusedBall.radius / gameState.scalingFactor
+        context.lineWidth = touchInfo.focusedBall.radius / gameState.combinedScalingFactor
         context.lineCap = "round"
         context.stroke()
     }
@@ -320,9 +327,10 @@ class Renderer {
 
     static render(gameState, context, touchInfo, {
         preventScrolling = true,
-        challengeBalls = undefined
+        challengeBalls = undefined,
+        resolution = undefined
     }={}) {
-        this.updateCanvasSize(context)
+        this.updateCanvasSize(context, resolution)
 
         if (preventScrolling) {
             document.body.style.overflow = "hidden"
