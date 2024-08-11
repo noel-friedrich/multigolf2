@@ -61,7 +61,7 @@ function onEventUp(event) {
     }
 
     const lastUpScreenPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
-    const strength = Math.min(touchInfo.focusedBall.pos.distance(lastUpScreenPos) * 0.3, 70)
+    const strength = Math.min(touchInfo.focusedBall.pos.distance(lastUpScreenPos) * 0.25, 60)
     const touchUpBoardPos = gameState.screenPosToBoardPos(touchInfo.lastUpPos)
     const direction = touchInfo.focusedBall.pos.sub(touchUpBoardPos).normalized.scale(-strength)
 
