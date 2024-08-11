@@ -1,12 +1,12 @@
 {
     "id": "matrix",
     "name": {
-        "en": "Matrix Arena",
-        "de": "Matrix Arena"
+        "en": "Fun Arena",
+        "de": "Spaß-Arena"
     },
     "description": {
-        "en": "Super cool and flashy levels for beginners.",
-        "de": "Super coole und dunkle Level für Anfänger."
+        "en": "Super cool and fun levels for beginners.",
+        "de": "Super coole und spaßige Level für Anfänger."
     },
     "author": "Noel Friedrich",
     "difficulty": "easy",
@@ -16,6 +16,6 @@
     },
     "styling": {
         "grid":  "assets/compressed/objects/crazy-grid.png",
-        "ball": "assets/objects/balls/rainbow.svg"
+        "ball": "assets/compressed/objects/balls/rainbow.png"
     }
 }
