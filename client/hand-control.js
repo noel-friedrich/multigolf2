@@ -241,5 +241,5 @@ class HandControls {
 
 }
 
-const handControls = new HandControls(0)
+const handControls = new HandControls(150)
 window.handControls = handControls
