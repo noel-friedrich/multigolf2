@@ -32,6 +32,12 @@ function updateHtmlSection(phase) {
     fillPlaceholders("duell-active-name", gameState.duellActivePlayer?.name)
     fillPlaceholders("duell-inactive-name", gameState.duellInactivePlayer?.name)
     fillPlaceholders("duell-winner-name", gameState.duellWinner?.name)
+
+    if (gameState.cameraControlsActive) {
+        fillPlaceholders("toggle-camera-controls", Text.DeactivateCameraControls)
+    } else {
+        fillPlaceholders("toggle-camera-controls", Text.ActivateCameraControls)
+    }
 }
 
 async function generateScoreboard() {

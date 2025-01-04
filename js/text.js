@@ -303,7 +303,15 @@ const Text = {
     YourPackHighscore: (packName, score) => ({
         [Lang.EN]: `At your best attempt at ${packName}, you had ${score} kicks left.`,
         [Lang.DE]: `Beim besten Versuch bei diesem Pack hattest du ${score} Schläge übrig.`
-    })
+    }),
+    ActivateCameraControls: {
+        [Lang.EN]: "Start Camera Controls",
+        [Lang.DE]: "Starte Kamera-Steuerung"
+    },
+    DeactivateCameraControls: {
+        [Lang.EN]: "Stop Camera Controls",
+        [Lang.DE]: "Beende Kamera-Steuerung"
+    }
 }
 
 function getLangText(textObject) {

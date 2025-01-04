@@ -542,7 +542,6 @@ main .pic-link .pic-container::after {
 
 main .yt-video-wrapper {
     position: relative;
-    width: 100%;
     padding-bottom: 56.25%;
 }
 

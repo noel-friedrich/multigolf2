@@ -60,8 +60,9 @@ def make_js_imports(js_imports, file_dict):
     out = ""
     version = file_dict["js_version"] if "js_version" in file_dict else 0
     base = file_dict["base-path"]
+    module_str = " type=\"module\"" if "js_module" in file_dict and file_dict["js_module"] == "true" else ""
     for js_import in js_imports:
-        out += f"<script src=\"{base}{js_import}?v{version}\"></script>\n"
+        out += f"<script{module_str} src=\"{base}{js_import}?v{version}\"></script>\n"
     return out[:-1]
 
 SET_regex = r"^[\s\t]*<!--\s*SET\s+([a-zA-Z0-9_\.]+)\s*=\s*([a-zA-Z0-9_\-\s\|\.\:\;\/\\\!\?]+?)\s*-->[\s\t]*$"
@@ -107,7 +108,8 @@ def handle_file(file_path: str):
                     if "js_minify" in file_dict and file_dict["js_minify"] == "true":
                         minified_file = make_minified_file(js_imports, file_dict)
                         js_version = file_dict["js_version"] if "js_version" in file_dict else 0
-                        template_lines = [f"<script src=\"{minified_file}?v{js_version}\"></script>"]
+                        js_module_str = 'type="module" ' if "js_module" in file_dict and file_dict["js_module"] == "true" else ""
+                        template_lines = [f"<script {js_module_str}src=\"{minified_file}?v{js_version}\"></script>"]
                         new_lines.extend([indent + l for l in template_lines])
                     else:
                         template_lines = make_js_imports(js_imports, file_dict).split("\n")

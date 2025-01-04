@@ -348,3 +348,9 @@ function back() {
             }
     }
 }
+
+function toggleCameraControls() {
+    gameState.cameraControlsActive = !gameState.cameraControlsActive
+    updateHtmlSection(gameState.phase)
+    syncGamestate()
+}

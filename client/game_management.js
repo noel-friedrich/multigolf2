@@ -16,9 +16,9 @@ function clampToEdges(pos) {
               .clampY([0, fullscreenCanvas.height], 100)
 }
 
-fullscreenCanvas.addEventListener("touchstart", event => {
+function onTouchStart(pos) {
     touchInfo.isDown = true
-    touchInfo.currPos = Vector2d.fromTouchEvent(event, fullscreenCanvas)
+    touchInfo.currPos = pos
     touchInfo.lastDownPos = touchInfo.currPos.copy()
     touchInfo.lastDownTime = Date.now()
 
@@ -30,22 +30,22 @@ fullscreenCanvas.addEventListener("touchstart", event => {
     } else if (gameState.phase == gamePhase.Placing) {
         onObjectDown(touchInfo)
     }
-})
+}
 
-fullscreenCanvas.addEventListener("touchmove", event => {
-    touchInfo.currPos = Vector2d.fromTouchEvent(event, fullscreenCanvas)
+function onTouchMove(pos) {
+    touchInfo.currPos = pos
 
     if (gameState.phase == gamePhase.ConstructionCustom) {
         touchInfo.currPos = clampToEdges(touchInfo.currPos)
     } else if (gameState.phase == gamePhase.Placing) {
         onPlaceTouchMove(touchInfo)
     }
-})
+}
 
-fullscreenCanvas.addEventListener("touchend", event => {
+function onTouchEnd(pos) {
     touchInfo.isDown = false
     touchInfo.currPos = null
-    touchInfo.lastUpPos = Vector2d.fromTouchEvent(event, fullscreenCanvas)
+    touchInfo.lastUpPos = pos
     touchInfo.lastUpTime = Date.now()
 
     if (gameState.phase == gamePhase.ConstructionCustom) {
@@ -59,6 +59,77 @@ fullscreenCanvas.addEventListener("touchend", event => {
 
     touchInfo.focusedBall = null
     touchInfo.draggingObject = false
+}
+
+fullscreenCanvas.addEventListener("touchstart", event => {
+    onTouchStart(Vector2d.fromTouchEvent(event, fullscreenCanvas))
+})
+
+fullscreenCanvas.addEventListener("touchmove", event => {
+    onTouchMove(Vector2d.fromTouchEvent(event, fullscreenCanvas))
+})
+
+fullscreenCanvas.addEventListener("touchend", event => {
+    onTouchEnd(Vector2d.fromTouchEvent(event, fullscreenCanvas))
+})
+
+let currHandDraggingBall = null
+let currHandDraggingStartPos = null
+let currHandDraggingPos = null
+
+handControls.onDragStart(pos => {
+    // only let it start if gamemode is sandbox and it's the first device (to prevent multiple triggers)
+    if (gameState.mode == gameMode.Sandbox && gamePhase.isPlaying(gameState.phase) && gameState.deviceIndex == 1) {
+        if (gameState.board.balls.length == 0) {
+            return
+        }
+
+        currHandDraggingBall = gameState.board.balls[0]
+        currHandDraggingStartPos = pos.copy()
+        currHandDraggingPos = currHandDraggingStartPos.copy()
+        const ballScreenPos = gameState.boardPosToScreenPos(currHandDraggingBall.pos)
+        onTouchStart(ballScreenPos)
+    }
+
+    // only let it start if gamemode is tournament and if the current ball is in this screen
+    if (gameState.mode == gameMode.Tournament && gamePhase.isPlaying(gameState.phase)) {
+        if (!gameState.tournamentBall) {
+            return
+        }
+
+        if (!gameState.thisPhone.containsPos(gameState.tournamentBall.pos)) {
+            return
+        }
+
+        currHandDraggingBall = gameState.tournamentBall
+        currHandDraggingStartPos = pos.copy()
+        currHandDraggingPos = currHandDraggingStartPos.copy()
+        const ballScreenPos = gameState.boardPosToScreenPos(currHandDraggingBall.pos)
+        onTouchStart(ballScreenPos)
+    }
+})
+
+handControls.onDragMove(pos => {
+    if (currHandDraggingBall === null) {
+        return
+    }
+
+    const ballScreenPos = gameState.boardPosToScreenPos(currHandDraggingBall.pos)
+    const relativePos = pos.sub(currHandDraggingStartPos).scale(2).add(ballScreenPos)
+    currHandDraggingPos = relativePos.copy()
+    onTouchMove(relativePos)
+})
+
+handControls.onDragEnd(() => {
+    if (currHandDraggingBall === null) {
+        return
+    }
+
+    onTouchEnd(currHandDraggingPos)
+
+    currHandDraggingBall = null
+    currHandDraggingStartPos = null
+    currHandDraggingPos = null
 })
 
 function renderLoop() {
@@ -87,6 +158,7 @@ function renderLoop() {
 let startedOrientationInterval = false
 async function startGame() {
     gameState = new GameState(gamePhase.Connecting, gameMode.None, new Board())
+    window.gameState = gameState
     renderLoop()
 
     if (!startedOrientationInterval) {
@@ -282,6 +354,16 @@ async function onConstructionTouchEvent(touchInfo) {
         {line: constructionLine.toObject(), phone: phoneCoords.toObject()}))
 }
 
+function updateHandControlState() {
+    if (gameState.cameraControlsActive && !handControls.cameraActive) {
+        handControls.startCamera()
+    }
+
+    if (!gameState.cameraControlsActive && handControls.cameraActive) {
+        handControls.stopCamera()
+    }
+}
+
 async function onDataMessage(dataMessage) {
     if (dataMessage.type == dataMessageType.PING) {
         // send ping back with displaysize and get deviceindex from ping
@@ -296,6 +378,7 @@ async function onDataMessage(dataMessage) {
 
     } else if (dataMessage.type == dataMessageType.GAMESTATE) {
         gameState = GameState.fromObject(dataMessage.data)
+        window.gameState = gameState
 
         if (dataMessage.hostTime) {
             hostTimeOffset = dataMessage.hostTime - Date.now()
@@ -305,6 +388,7 @@ async function onDataMessage(dataMessage) {
             gameState.board.updateObject(touchInfo.focusedObject)
         }
 
+        updateHandControlState()
     } else if (dataMessage.type == dataMessageType.REQUEST_DIMENSIONS) {
         const course = new Course([PhoneCoordinates.fromWidthHeight(window.innerWidth, window.innerHeight)])
         rtc.sendMessage(new DataMessage(dataMessageType.SEND_DIMENSIONS, {course: course.toObject()}))

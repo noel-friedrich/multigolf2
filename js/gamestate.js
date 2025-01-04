@@ -95,14 +95,17 @@ class Player {
 
 class GameState {
 
-    constructor(phase, mode, board, players=[], deviceIndex=null,
+    constructor(phase, mode, board, cameraControlsActive=false, players=[], deviceIndex=null,
         placingObjectType=golfObjectType.Start,
         tournamentBuilderIndex=0, tournamentBallIndex=0,
         duellActivePlayerIndex=0, duellWinnerIndex=null,
         tournamentMaxKicks=10) {
+
         this.phase = phase
         this.mode = mode
         this.board = board
+
+        this.cameraControlsActive = cameraControlsActive
         this.players = players
         this.deviceIndex = deviceIndex
         
@@ -207,6 +210,7 @@ class GameState {
             phase: this.phase,
             mode: this.mode,
             board: this.board.toObject(),
+            cameraControlsActive: this.cameraControlsActive,
             players: this.players.map(p => p.toObject()),
             index: deviceIndex ?? this.deviceIndex,
             placingObjectType: this.placingObjectType,
@@ -222,6 +226,7 @@ class GameState {
         return new GameState(
             obj.phase, obj.mode,
             Board.fromObject(obj.board),
+            obj.cameraControlsActive,
             obj.players.map(p => Player.fromObject(p)),
             obj.index,
             obj.placingObjectType,
