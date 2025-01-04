@@ -1,3 +1,7 @@
+const darkGreenColorHex = "#00b250"
+const midGreenColorHex = "#00e668"
+const lightGreenColorHex = "#1dff83"
+
 class BoardRenderer {
 
     static spriteImgMap = {}
@@ -32,6 +36,7 @@ class BoardRenderer {
         context.save()
         context.translate(centerPos.x, centerPos.y)
         context.rotate(angle)
+        context.globalAlpha = 0.8
         context.drawImage(img, -size.x / 2, -size.y / 2, size.x, size.y)
         context.restore()
     }
@@ -51,6 +56,29 @@ class BoardRenderer {
 
         context.fill()
         context.stroke()
+    }
+
+    static strokeRoundedRect(context, corners, cornerRadius) {
+        const lineDeltas = corners.map((c, i) => {
+            return corners[(i + 1) % corners.length].sub(c).normalized.scale(cornerRadius)
+        })
+
+        const beforeCorners = corners.map((c, i) => c.sub(lineDeltas[(i - 1 + lineDeltas.length) % lineDeltas.length]))
+        const afterCorners = corners.map((c, i) => c.add(lineDeltas[i]))
+
+        for (let i = 0; i < corners.length; i++) {
+            if (i == 0) {
+                context.moveTo(afterCorners[i].x, afterCorners[i].y)
+            } else {
+                context.lineTo(afterCorners[i].x, afterCorners[i].y)
+            }
+            const nextBefore = beforeCorners[(i + 1) % corners.length]
+            const nextAfter = afterCorners[(i + 1) % corners.length]
+            const nextCorner = corners[(i + 1) % corners.length]
+
+            context.lineTo(nextBefore.x, nextBefore.y)
+            context.quadraticCurveTo(nextCorner.x, nextCorner.y, nextAfter.x, nextAfter.y)
+        }
     }
 
     static render(board, context, {drawConnectionLines = false, drawBalls = true}={}) {
@@ -97,23 +125,21 @@ class BoardRenderer {
         const overlaps = screenBoard.course.getOverlaps()
         screenBoard.course.phones.push(...overlaps)
 
+        const phoneCornerRadius = 10
+
         for (let i = 0; i < screenBoard.course.phones.length; i++) {
             context.beginPath()
             const phone = screenBoard.course.phones[i]
-            context.moveTo(phone.points[0].x, phone.points[0].y)
-            for (let point of phone.points.slice(1)) {
-                context.lineTo(point.x, point.y)
-            }
-            context.lineTo(phone.points[0].x, phone.points[0].y)
+
+            this.strokeRoundedRect(context, phone.points, phoneCornerRadius)
             
-            context.strokeStyle = "black"
-            context.lineWidth = 2
-            context.lineCap = "round"
+            context.strokeStyle = darkGreenColorHex
+            context.lineWidth = 1
 
             if (i >= minOverlapIndex) {
                 context.fillStyle = "rgba(255, 0, 0, 1)"
             } else {
-                context.fillStyle = "#79ffb6"
+                context.fillStyle = lightGreenColorHex
             }
 
             context.fill()
@@ -123,14 +149,14 @@ class BoardRenderer {
         for (let i = 0; i < minOverlapIndex; i++) {
             const phone = screenBoard.course.phones[i]
             const averagePos = calcAveragePos(phone.points)
-            context.font = `${Math.min(phone.size.x, phone.size.y) * 0.4}px Arial`
+            context.font = `bold ${Math.min(phone.size.x, phone.size.y) * 0.4}px Arial`
             context.textBaseline = "middle"
             context.textAlign = "center"
-            context.fillStyle = "black"
+            context.fillStyle = midGreenColorHex
             context.save()
             context.translate(averagePos.x, averagePos.y)
             context.rotate(phone.angle)
-            context.fillText((i + 1).toString() + ".", 0, 0)
+            context.fillText((i + 1).toString(), 0, 0)
             context.restore()
         }
 

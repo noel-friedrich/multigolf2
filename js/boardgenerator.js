@@ -203,6 +203,11 @@ class BoardGenerator {
                 throw new Error("Couldn't generate course [too many tries]")
             }
         }
+
+        for (const line of course.lines) {
+            line.color = line.getRandomColor()
+        }
+
         return course
     }
 
@@ -320,6 +325,9 @@ class BoardGenerator {
                 addedObjectUids.push(randomLava.uid)
             }
 
+            return true
+            
+            // the following was old, board simulation was just annoying...
             if (await testWithBalls()) {
                 return true
             } else {

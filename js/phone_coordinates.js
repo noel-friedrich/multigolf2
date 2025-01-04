@@ -287,6 +287,7 @@ class PhoneCoordinates {
 
 }
 
+let previousHue = null
 class PhoneConnectionLine {
 
     getRandomColor() {
@@ -296,6 +297,13 @@ class PhoneConnectionLine {
         if (hue > 65 && hue < 185) {
             return this.getRandomColor()
         }
+
+        const hueDiff = (a, b) => Math.abs((a - b + 540) % 360 - 180)
+        if (previousHue !== null && hueDiff(hue, previousHue) < 60) {
+            return this.getRandomColor()
+        }
+
+        previousHue = hue
 
         return `hsl(${hue}deg 100% 50%)`
     }

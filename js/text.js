@@ -305,12 +305,12 @@ const Text = {
         [Lang.DE]: `Beim besten Versuch bei diesem Pack hattest du ${score} Schläge übrig.`
     }),
     ActivateCameraControls: {
-        [Lang.EN]: "Start Camera Controls",
-        [Lang.DE]: "Starte Kamera-Steuerung"
+        [Lang.EN]: "Activate Gesture Controls",
+        [Lang.DE]: "Aktiviere Gestensteuerung"
     },
     DeactivateCameraControls: {
-        [Lang.EN]: "Stop Camera Controls",
-        [Lang.DE]: "Beende Kamera-Steuerung"
+        [Lang.EN]: "Stop Gesture Controls",
+        [Lang.DE]: "Beende Gestensteuerung"
     }
 }
 

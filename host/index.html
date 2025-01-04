@@ -739,7 +739,6 @@
                     </span>
                 </h2>
                 <img class="scoreboard">
-                <button data-fill="toggle-camera-controls" onclick="toggleCameraControls()"></button>
                 <p>
                     <span lang="en">
                         You're currently playing the course built by
@@ -756,6 +755,27 @@
                         nicht im Loch seid, bekommt ihr 2 Strafpunkte.
                     </span>
                 </p>
+                <fieldset>
+                    <legend>
+                        <span lang="en">Gesture Controls</span>
+                        <span lang="de">Gestensteuerung</span>
+                    </legend>
+                    <p>
+                        <span lang="en">
+                            <span style="color: red">Experimental feature:</span>
+                            when active, you may kick balls with hand-gestures. The gestures
+                            are captured using the phone the ball is currently on. 
+                        </span>
+                        <span lang="de">
+                            <span style="color: red">Experimentelles Feature:</span>
+                            mit der Kamera-Kontrolle können Bälle mittels Hand-Gesten gezogen werden.
+                            Die Gesten werden mit der jeweiligen Handykamera erkannt. 
+                        </span>
+                    </p>
+                    <img src="../assets/gifs/camera-control.gif" alt="GIF explaining camera control"
+                        style="margin-top: -1em; margin-bottom: -1em;">
+                    <button class="smaller" data-fill="toggle-camera-controls" onclick="toggleCameraControls()"></button>
+                </fieldset>
             </section>
 
             <section data-phase="playing-duell">
@@ -785,12 +805,32 @@
                     <span lang="en">Spawn a new Ball</span>
                     <span lang="de">Ball hinzufügen</span>
                 </button>
-                <button data-fill="toggle-camera-controls" onclick="toggleCameraControls()"></button>
                 <hr>
                 <button onclick="playNewGame()">
                     <span lang="en">Play a new Gamemode</span>
                     <span lang="de">Spielmodus wechseln</span>
                 </button>
+                <fieldset>
+                    <legend>
+                        <span lang="en">Gesture Controls</span>
+                        <span lang="de">Gestensteuerung</span>
+                    </legend>
+                    <p>
+                        <span lang="en">
+                            <span style="color: red">Experimental feature:</span>
+                            when active, you may kick balls with hand-gestures. The gestures
+                            are captured using the phone the ball is currently on. 
+                        </span>
+                        <span lang="de">
+                            <span style="color: red">Experimentelles Feature:</span>
+                            mit der Kamera-Kontrolle können Bälle mittels Hand-Gesten gezogen werden.
+                            Die Gesten werden mit der jeweiligen Handykamera erkannt. 
+                        </span>
+                    </p>
+                    <img src="../assets/gifs/camera-control.gif" alt="GIF explaining camera control"
+                        style="margin-top: -1em; margin-bottom: -1em;">
+                    <button class="smaller" data-fill="toggle-camera-controls" onclick="toggleCameraControls()"></button>
+                </fieldset>
             </section>
 
             <section data-phase="showing-results-of-tournament">
@@ -1236,7 +1276,7 @@
         <!-- JS_IMPORT host/feedback.js -->
 
         <!-- BEGIN js_imports -->
-        <script src="../js/minified/jf97ed6d78d2f1031.min.js?v36"></script>
+        <script src="../js/minified/jc8858694183c1b10.min.js?v36"></script>
         <!-- END -->
     </body>
 

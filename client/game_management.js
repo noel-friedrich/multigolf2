@@ -77,6 +77,23 @@ let currHandDraggingBall = null
 let currHandDraggingStartPos = null
 let currHandDraggingPos = null
 
+const isThereABallToHandControl = () => {
+    if (gameState.mode == gameMode.Sandbox && gamePhase.isPlaying(gameState.phase) && gameState.deviceIndex == 1) {
+        return gameState.board.balls.filter(b => !b.inHole).length > 0
+    }
+
+    if (gameState.mode == gameMode.Tournament && gamePhase.isPlaying(gameState.phase)) {
+        return (
+            gameState.tournamentBall &&
+            !gameState.tournamentBall.isInMovement() &&
+            !gameState.tournamentBall.inHole &&
+            gameState.thisPhone.containsPos(gameState.tournamentBall.pos)
+        )
+    }
+}
+
+window.isThereABallToHandControl = isThereABallToHandControl
+
 handControls.onDragStart(pos => {
     // only let it start if gamemode is sandbox and it's the first device (to prevent multiple triggers)
     if (gameState.mode == gameMode.Sandbox && gamePhase.isPlaying(gameState.phase) && gameState.deviceIndex == 1) {
@@ -93,7 +110,7 @@ handControls.onDragStart(pos => {
 
     // only let it start if gamemode is tournament and if the current ball is in this screen
     if (gameState.mode == gameMode.Tournament && gamePhase.isPlaying(gameState.phase)) {
-        if (!gameState.tournamentBall) {
+        if (!gameState.tournamentBall || gameState.tournamentBall.isInMovement()) {
             return
         }
 
@@ -132,6 +149,42 @@ handControls.onDragEnd(() => {
     currHandDraggingPos = null
 })
 
+// called when the gesture leaves the camera window
+// (when the hand goes too far for the camera to see)
+handControls.onDragCancel(() => {
+    if (currHandDraggingBall === null) {
+        return
+    }
+
+    // move cursor back to the ball to prevent a shot from happening
+    const ballScreenPos = gameState.boardPosToScreenPos(currHandDraggingBall.pos)
+    onTouchEnd(ballScreenPos)
+
+    currHandDraggingBall = null
+    currHandDraggingStartPos = null
+    currHandDraggingPos = null
+})
+
+// animate currPos a little
+let renderCurrPos = null
+function getRenderTouchInfo(touchInfo) {
+    if (renderCurrPos === null && (touchInfo.currPos instanceof Vector2d)) {
+        renderCurrPos = touchInfo.currPos.copy()
+    }
+
+    window.renderCurrPos = renderCurrPos
+    window.touchInfo = touchInfo
+    
+    if ((renderCurrPos instanceof Vector2d) && (touchInfo.currPos instanceof Vector2d)) {
+        const touchInfoCopy = {...touchInfo}
+        renderCurrPos = renderCurrPos.lerp(touchInfo.currPos, 0.3)
+        touchInfoCopy.currPos = renderCurrPos.copy()
+        return touchInfoCopy
+    }
+    
+    return touchInfo
+}
+
 function renderLoop() {
     if (rtc) {
         try {
@@ -139,11 +192,12 @@ function renderLoop() {
         } catch (physicsError) {
             logToUser(`[p] ${physicsError}`)
         }
-    
+
         try {
             if (rtc && rtc.getStatus().color == "green") {
+                const renderTouchInfo = getRenderTouchInfo(touchInfo)
                 fullscreenCanvas.style.display = "block"
-                Renderer.render(gameState, context, touchInfo)
+                Renderer.render(gameState, context, renderTouchInfo)
             } else {
                 fullscreenCanvas.style.display = "none"
             }
@@ -156,6 +210,7 @@ function renderLoop() {
 }
 
 let startedOrientationInterval = false
+let startedHandControlInterval = false
 async function startGame() {
     gameState = new GameState(gamePhase.Connecting, gameMode.None, new Board())
     window.gameState = gameState
@@ -172,6 +227,13 @@ async function startGame() {
                 deviceTilt.hasChangedFlag = false
             }
         }, 3000)
+    }
+
+    if (!startedHandControlInterval) {
+        startedHandControlInterval = true
+        setInterval(() => {
+            updateHandControlState()
+        }, 333)
     }
 }
 
@@ -229,7 +291,7 @@ async function onBallDown(touchInfo) {
     let closestBall = null
 
     for (const ball of gameState.board.balls) {
-        if (ball.isInMovement() || !ball.active) {
+        if (ball.isInMovement() || !ball.active || ball.inHole) {
             continue
         }
 
@@ -355,8 +417,14 @@ async function onConstructionTouchEvent(touchInfo) {
 }
 
 function updateHandControlState() {
-    if (gameState.cameraControlsActive && !handControls.cameraActive) {
-        handControls.startCamera()
+    if (gameState.cameraControlsActive) {
+        if (isThereABallToHandControl()) {
+            if (!handControls.cameraActive) {
+                handControls.startCamera()
+            }
+        } else {
+            handControls.stopCamera()
+        }
     }
 
     if (!gameState.cameraControlsActive && handControls.cameraActive) {
@@ -388,7 +456,6 @@ async function onDataMessage(dataMessage) {
             gameState.board.updateObject(touchInfo.focusedObject)
         }
 
-        updateHandControlState()
     } else if (dataMessage.type == dataMessageType.REQUEST_DIMENSIONS) {
         const course = new Course([PhoneCoordinates.fromWidthHeight(window.innerWidth, window.innerHeight)])
         rtc.sendMessage(new DataMessage(dataMessageType.SEND_DIMENSIONS, {course: course.toObject()}))

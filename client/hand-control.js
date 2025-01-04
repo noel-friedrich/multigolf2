@@ -1,14 +1,13 @@
 import {
     HandLandmarker,
     FilesetResolver
-} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
-
-let handLandmarker = null
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0"
 
 class HandControls {
 
-    constructor(minimumImageDelay) {
+    constructor({minimumImageDelay=0, volatilityResistance=5}={}) {
         this.videoElement = null
+
         this.landmarker = null
         this.cameraActive = false
         this.lastVideoTime = null
@@ -22,16 +21,19 @@ class HandControls {
 
         // number of pictures to confirm before
         // a drag event is started/ended
-        this.volatilityResistance = 5
+        this.volatilityResistance = volatilityResistance
 
         this.onNonDragMoves = []
         this.onDragStarts = []
         this.onDragMoves = []
         this.onDragEnds = []
+        this.onDragCancels = []
         this.onClicks = []
 
+        this.currOpenResolve = null
+
         this.lastImageTime = 0
-        this.minimumImageDelay = minimumImageDelay ?? 0
+        this.minimumImageDelay = minimumImageDelay
     }
 
     initVideoElement() {
@@ -114,6 +116,10 @@ class HandControls {
         this.onDragEnds.push(listener)
     }
 
+    onDragCancel(listener) {
+        this.onDragCancels.push(listener)
+    }
+
     triggerEvent(listeners, ...args) {
         for (const listener of listeners) {
             listener(...args)
@@ -164,7 +170,7 @@ class HandControls {
     
                     const cursorPos = this.getAverage3dPos(indexFingerTip, thumbTip)
                     const handScreenPos = new Vector2d(1 - cursorPos.x, cursorPos.y)
-                        .scaleX(window.innerWidth).scaleY(window.innerHeight)
+                        .scaleX(this.videoElement.videoWidth).scaleY(this.videoElement.videoHeight)
     
                     if (lastPosition !== null && handIsClosed && !isClosed) {
                         this.triggerEvent(this.onClicks, handScreenPos)
@@ -208,7 +214,7 @@ class HandControls {
     
                     if (this.isDragging && this.notSeenCount >= this.volatilityResistance) {
                         this.isDragging = false
-                        this.triggerEvent(this.onDragEnds, null)
+                        this.triggerEvent(this.onDragCancels)
                     }
                 }
     
@@ -224,6 +230,10 @@ class HandControls {
                 } else {
                     videoStream.getTracks().forEach(t => t.stop())
                 }
+            }
+
+            if (!this.cameraActive) {
+                return
             }
             
             const videoStream = await navigator.mediaDevices.getUserMedia({
@@ -241,5 +251,8 @@ class HandControls {
 
 }
 
-const handControls = new HandControls(150)
+const handControls = new HandControls({
+    volatilityResistance: 3,
+    minimumImageDelay: 200
+})
 window.handControls = handControls
