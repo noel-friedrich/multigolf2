@@ -88,6 +88,11 @@ function fillPlaceholders(attr, value) {
 let deviceIndex = null
 
 function updateDeviceIndex(newIndex) {
+    newIndex = parseInt(newIndex)
+    if (Number.isNaN(newIndex)) {
+        newIndex = null
+    }
+
     deviceIndex = newIndex
     fillPlaceholders("device-index", deviceIndex != null ? deviceIndex : "?")
     localStorage.setItem("multigolf-deviceIndex", deviceIndex)
@@ -128,7 +133,7 @@ async function main() {
     
     if (localStorage.getItem("multigolf-poolUid") == rtc.poolUid) {
         if (localStorage.getItem("multigolf-deviceIndex") != null) {
-            updateDeviceIndex(parseInt(localStorage.getItem("multigolf-deviceIndex")))
+            updateDeviceIndex(localStorage.getItem("multigolf-deviceIndex"))
         }
     } else {
         localStorage.setItem("multigolf-poolUid", rtc.poolUid)

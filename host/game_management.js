@@ -11,7 +11,7 @@ function syncGamestate(rtcs) {
         rtc.sendMessage(message)
     }
 }
-
+    
 function physicsLoop() {
     if (gameState.update()) {
         syncGamestate()
