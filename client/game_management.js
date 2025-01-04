@@ -24,6 +24,8 @@ function clampToEdges(pos) {
 function onTouchStart(pos) {
     touchInfo.isDown = true
     touchInfo.currPos = pos
+    renderCurrPos = null
+    
     touchInfo.lastDownPos = touchInfo.currPos.copy()
     touchInfo.lastDownTime = Date.now()
 
@@ -117,6 +119,10 @@ handControls.onDragStart(pos => {
         currHandDraggingStartPos = pos.copy()
         currHandDraggingPos = currHandDraggingStartPos.copy()
         const ballScreenPos = gameState.boardPosToScreenPos(currHandDraggingBall.pos)
+
+        touchInfo.gestureHoverPos = ballScreenPos
+        touchInfo.gestureHoverPosTime = Date.now()
+
         onTouchStart(ballScreenPos)
     }
 
@@ -134,6 +140,10 @@ handControls.onDragStart(pos => {
         currHandDraggingStartPos = pos.copy()
         currHandDraggingPos = currHandDraggingStartPos.copy()
         const ballScreenPos = gameState.boardPosToScreenPos(currHandDraggingBall.pos)
+
+        touchInfo.gestureHoverPos = ballScreenPos
+        touchInfo.gestureHoverPosTime = Date.now()
+
         onTouchStart(ballScreenPos)
     }
 })
