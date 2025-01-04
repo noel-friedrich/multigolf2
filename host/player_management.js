@@ -119,7 +119,8 @@ function startConnectionProcess() {
             onDataMessage: (message, connection) => {
                 onDataMessage(message, connection)
             },
-            allowConnectionOverride: () => gameState.phase == gamePhase.Connecting
+            allowConnectionOverride: () => gameState.phase == gamePhase.Connecting,
+            allowNewConnections: () => gameState.phase == gamePhase.Connecting
         })
         rtc.start()
 

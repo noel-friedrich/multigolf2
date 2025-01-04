@@ -128,10 +128,11 @@ async function main() {
     
     if (localStorage.getItem("multigolf-poolUid") == rtc.poolUid) {
         if (localStorage.getItem("multigolf-deviceIndex") != null) {
-            updateDeviceIndex(localStorage.getItem("multigolf-deviceIndex"))
+            updateDeviceIndex(parseInt(localStorage.getItem("multigolf-deviceIndex")))
         }
     } else {
         localStorage.setItem("multigolf-poolUid", rtc.poolUid)
+        updateDeviceIndex(null)
     }
 
     await Renderer.load()

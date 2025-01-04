@@ -531,7 +531,8 @@ class RtcHostManager {
         logFunction = () => {},
         onDataMessage = () => {},
         onClientUrlAvailable = () => {},
-        allowConnectionOverride = () => true
+        allowConnectionOverride = () => true,
+        allowNewConnections = () => true,
     }={}) {
         this.gameState = gameState
 
@@ -539,6 +540,7 @@ class RtcHostManager {
         this.onDataMessage = onDataMessage
         this.onClientUrlAvailable = onClientUrlAvailable
         this.allowConnectionOverride = allowConnectionOverride
+        this.allowNewConnections = allowNewConnections
 
         this.poolUid = null
         this.connections = []
@@ -559,11 +561,15 @@ class RtcHostManager {
             poolUid: this.poolUid
         })
 
+        console.log({deviceIndex, c: this.connections})
+
         if (deviceIndex != null && deviceIndex <= this.connections.length) {
             this.connections[deviceIndex - 1].die()
             this.connections[deviceIndex - 1] = connection
-        } else {
+        } else if (this.allowNewConnections()) {
             this.connections.push(connection)
+        } else {
+            return null
         }
 
         this.sortConnections()
@@ -614,7 +620,11 @@ class RtcHostManager {
         while (this.polling) {
             const updates = await this.baseConnection.getFromServer(rtcDataType.joinPool)
             for (let update of updates) {
-                let deviceIndex = update.data.deviceIndex
+                let deviceIndex = parseInt(update.data.deviceIndex)
+                if (Number.isNaN(deviceIndex)) {
+                    deviceIndex = null
+                }
+
                 const signalingUid = update.data.signalingUid
 
                 // check if there is already a connection with that deviceIndex.
@@ -630,9 +640,11 @@ class RtcHostManager {
 
                 const connection = this.makeConnection(deviceIndex)
 
-                connection.start(signalingUid).then(() => {
-                    connection.startPinging()
-                })
+                if (connection !== null) {
+                    connection.start(signalingUid).then(() => {
+                        connection.startPinging()
+                    })
+                }
             }
 
             await new Promise(resolve => setTimeout(resolve, RtcHostManager.checkForJoinsPeriod))
