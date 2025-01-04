@@ -8,8 +8,13 @@ const touchInfo = {
     lastUpTime: null,
     focusedBall: null,
     focusedObject: null,
-    draggingObject: false
+    draggingObject: false,
+
+    gestureHoverPos: null,
+    gestureHoverPosTime: null
 }
+
+window.touchInfo = touchInfo
 
 function clampToEdges(pos) {
     return pos.clampX([0, fullscreenCanvas.width], 100)
@@ -94,6 +99,13 @@ const isThereABallToHandControl = () => {
 
 window.isThereABallToHandControl = isThereABallToHandControl
 
+handControls.onNonDragMove((_, normalPos) => {
+    touchInfo.gestureHoverPos = normalPos
+        .scaleX(window.innerWidth)
+        .scaleY(window.innerHeight)
+    touchInfo.gestureHoverPosTime = Date.now()
+})
+
 handControls.onDragStart(pos => {
     // only let it start if gamemode is sandbox and it's the first device (to prevent multiple triggers)
     if (gameState.mode == gameMode.Sandbox && gamePhase.isPlaying(gameState.phase) && gameState.deviceIndex == 1) {
@@ -165,24 +177,31 @@ handControls.onDragCancel(() => {
     currHandDraggingPos = null
 })
 
-// animate currPos a little
+// animate currPos and gestureHoverPos a little
 let renderCurrPos = null
+let renderHoverPos = null
 function getRenderTouchInfo(touchInfo) {
     if (renderCurrPos === null && (touchInfo.currPos instanceof Vector2d)) {
         renderCurrPos = touchInfo.currPos.copy()
     }
 
-    window.renderCurrPos = renderCurrPos
-    window.touchInfo = touchInfo
-    
-    if ((renderCurrPos instanceof Vector2d) && (touchInfo.currPos instanceof Vector2d)) {
-        const touchInfoCopy = {...touchInfo}
-        renderCurrPos = renderCurrPos.lerp(touchInfo.currPos, 0.3)
-        touchInfoCopy.currPos = renderCurrPos.copy()
-        return touchInfoCopy
+    if (renderHoverPos === null && (touchInfo.gestureHoverPos instanceof Vector2d)) {
+        renderHoverPos = touchInfo.gestureHoverPos.copy()
     }
     
-    return touchInfo
+    const touchInfoCopy = {...touchInfo}
+
+    if ((renderCurrPos instanceof Vector2d) && (touchInfo.currPos instanceof Vector2d)) {
+        renderCurrPos = renderCurrPos.lerp(touchInfo.currPos, 0.3)
+        touchInfoCopy.currPos = renderCurrPos.copy()
+    }
+
+    if ((renderHoverPos instanceof Vector2d) && (touchInfo.gestureHoverPos instanceof Vector2d)) {
+        renderHoverPos = renderHoverPos.lerp(touchInfo.gestureHoverPos, 0.3)
+        touchInfoCopy.gestureHoverPos = renderHoverPos.copy()
+    }
+    
+    return touchInfoCopy
 }
 
 function renderLoop() {

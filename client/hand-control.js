@@ -169,16 +169,18 @@ class HandControls {
                     const handIsClosed = thumbIndexDist < handSizeDist * 0.33
     
                     const cursorPos = this.getAverage3dPos(indexFingerTip, thumbTip)
-                    const handScreenPos = new Vector2d(1 - cursorPos.x, cursorPos.y)
-                        .scaleX(this.videoElement.videoWidth).scaleY(this.videoElement.videoHeight)
+                    const normalizedHandScreenPos = new Vector2d(1 - cursorPos.x, cursorPos.y)
+                    const handScreenPos = normalizedHandScreenPos
+                        .scaleX(this.videoElement.videoWidth)
+                        .scaleY(this.videoElement.videoHeight)
     
                     if (lastPosition !== null && handIsClosed && !isClosed) {
-                        this.triggerEvent(this.onClicks, handScreenPos)
+                        this.triggerEvent(this.onClicks, handScreenPos, normalizedHandScreenPos)
                     }
     
                     if (this.isDragging) {
                         if (handIsClosed) {
-                            this.triggerEvent(this.onDragMoves, handScreenPos)
+                            this.triggerEvent(this.onDragMoves, handScreenPos, normalizedHandScreenPos)
                             this.dragEndCount = 0
                         } else {
                             this.dragEndCount++
@@ -186,10 +188,10 @@ class HandControls {
     
                         if (this.dragEndCount >= this.volatilityResistance) {
                             this.isDragging = false
-                            this.triggerEvent(this.onDragEnds, handScreenPos)
+                            this.triggerEvent(this.onDragEnds, handScreenPos, normalizedHandScreenPos)
                         }
                     } else {
-                        this.triggerEvent(this.onNonDragMoves, handScreenPos)
+                        this.triggerEvent(this.onNonDragMoves, handScreenPos, normalizedHandScreenPos)
     
                         if (handIsClosed) {
                             this.dragPrepareCount++
@@ -199,7 +201,7 @@ class HandControls {
     
                         if (this.dragPrepareCount >= this.volatilityResistance) {
                             this.isDragging = true
-                            this.triggerEvent(this.onDragStarts, handScreenPos)
+                            this.triggerEvent(this.onDragStarts, handScreenPos, normalizedHandScreenPos)
                         }
                     }
     
@@ -252,7 +254,8 @@ class HandControls {
 }
 
 const handControls = new HandControls({
-    volatilityResistance: 3,
-    minimumImageDelay: 200
+    volatilityResistance: 4,
+    minimumImageDelay: 100
 })
+
 window.handControls = handControls
