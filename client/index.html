@@ -126,15 +126,8 @@
                     </span>
                 </p>
                 <div class="credit-card-container">
-                    <div class="button-grid">
-                        <button id="cc-bigger-button">(+)
-                            <span lang="en">Larger</span>
-                            <span lang="de">Größer</span>
-                        </button>
-                        <button id="cc-smaller-button">(-)
-                            <span lang="en">Smaller</span>
-                            <span lang="de">Kleiner</span>
-                        </button>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="1000" value="500" id="cc-range">
                     </div>
                     <canvas id="credit-card-canvas"></canvas>
                 </div>
@@ -143,6 +136,10 @@
                     <span lang="de">Bestätigen</span>
                 </button>
             </section>
+
+            <style>
+
+            </style>
 
             <section data-phase="connecting">
                 <h2 id="status-title">
@@ -167,7 +164,7 @@
                         <input name="fullscreen-check" id="fullscreen-checkbox" type="checkbox" checked>
                         <label for="fullscreen-check">
                             <span lang="en">Request fullscreen when clicking on the Multigolf course</span>
-                            <span lang="de">Versuche, den vollen Bildschirm beim Clicken auf den Kurs zu aktivieren</span>
+                            <span lang="de">Vollbildmodus beim Clicken aktivieren</span>
                         </label>
                     </div>
                     <p>
@@ -281,7 +278,7 @@
         <!-- JS_IMPORT client/game_management.js -->
 
         <!-- BEGIN js_imports -->
-        <script type="module" src="../js/minified/jede0a3499912aa9d.min.js?v37"></script>
+        <script type="module" src="../js/minified/j9c43894450b78f07.min.js?v37"></script>
         <!-- END -->
 
         <style>
