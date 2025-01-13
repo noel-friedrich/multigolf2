@@ -3,6 +3,7 @@
 
     <!-- SET title=Client | Multigolf -->
     <!-- SET description=Participant's page to play a multi.golf page that turns your device into a minigolf board -->
+    <!-- INCLUDE_CSS -->
     <!-- BEGIN default_head -->
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,29 +18,16 @@
     <!-- END -->
 
     <body>
-        <!-- BEGIN default_header -->
         <header class="at-top">
             <div class="header-content">
-                <a href="../" class="logo-container">
+                <a class="logo-container">
                     <img src="../assets/logo/logo.svg" class="logo" alt="Multigolf Logo" />
                     <div class="logo-text" href="../">multigolf</div>
                 </a>
                 <div class="link-island">
-                    <a href="../host/">
-                        <span lang="en">Start Game</span>
-                        <span lang="de">Spiel Starten</span>
-                    </a>
-                    <a href="../join/">
-                        <span lang="en">Join Game</span>
-                        <span lang="de">Spiel Beitreten</span>
-                    </a>
-                    <a href="../mono/">
-                        <span lang="en">Mono</span>
-                        <span lang="de">Mono</span>
-                    </a>
-                    <a href="../about/">
-                        <span lang="en">About</span>
-                        <span lang="de">Info</span>
+                    <a onclick="onHeaderClick('credit-card')" style="cursor: pointer;">
+                        <span lang="en">Credit Card</span>
+                        <span lang="de">Kreditkarte</span>
                     </a>
         
                     <a class="change-lang-button"></a>
@@ -51,17 +39,10 @@
                 </div>
             </div>
             <div class="header-drop-menu">
-                <a lang="en" href="../host/">Start a Game</a>
-                <a lang="en" href="../join/">Join a Game</a>
-                <a lang="en" href="../mono/">Monogolf</a>
-                <a lang="en" href="../about/">What is Multigolf?</a>
-                <a lang="en" href="../contact/">Contact</a>
-        
-                <a lang="de" href="../host/">Spiel Starten</a>
-                <a lang="de" href="../join/">Spiel Beitreten</a>
-                <a lang="de" href="../mono/">Monogolf</a>
-                <a lang="de" href="../about/">Was ist Multigolf?</a>
-                <a lang="de" href="../contact/">Kontakt</a>
+                <a onclick="onHeaderClick('credit-card')" style="cursor: pointer;">
+                    <span lang="en">Credit Card</span>
+                    <span lang="de">Kreditkarte</span>
+                </a>
         
                 <a class="change-lang-button"></a>
             </div>
@@ -124,85 +105,85 @@
                 })
             }
         </script>
-        <!-- END -->
         
         <main id="active-main">
             <h2 id="loading-indicator">
                 <span lang="en">Loading...</span>
                 <span lang="de">Wird geladen...</span>
             </h2>
-            <p>
-                <span lang="en">
-                    Please resize the credit card to be the same size as 
-                    a credit card, ID card or gift-card in real life,
-                    so that the game knows how large this device is.
-                </span>
-                <span lang="de">
-                    Passe die Größe solange an, bis die Größe der Multigolf-Karte
-                    der Größe einer echten Kredit- Geschenk- oder Ausweis-Karte
-                    entspricht, damit das Spiel weiß, wie groß dieser Display ist.
-                </span>
-            </p>
-            <div class="credit-card-container">
-                <canvas id="credit-card-canvas"></canvas>
-                <div class="button-grid">
-                    <button id="cc-bigger-button">(+)
-                        <span lang="en">Larger</span>
-                        <span lang="de">Größer</span>
-                    </button>
-                    <button id="cc-smaller-button">(-)
-                        <span lang="en">Smaller</span>
-                        <span lang="de">Kleiner</span>
-                    </button>
-                </div>
-            </div>
-            <h2 id="status-title">
-                <span lang="en">Connecting to Host...</span>
-                <span lang="de">Verbinde mit Server...</span>
-            </h2>
-            <p>
-                <span lang="en">While the game is running, please try to keep this device alive.</span>
-                <span lang="de">Bitte versuche dieses Gerät während des Spiels am Leben zu halten.</span>
-            </p>
-            <p>
-                <span lang="en">This is Device</span><span lang="de">Dieses Gerät hat Nummer </span>#<span data-fill="device-index">?</span>.
-            </p>
-            <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left;"></p>
-            <fieldset>
-                <legend>
-                    <span lang="en">Fullscreen Options</span>
-                    <span lang="de">Vollbildschirm Optionen</span>
-                </legend>
-                <div class="checkbox-container">
-                    <input name="fullscreen-check" id="fullscreen-checkbox" type="checkbox" checked>
-                    <label for="fullscreen-check">
-                        <span lang="en">Request fullscreen when clicking on the Multigolf course</span>
-                        <span lang="de">Versuche, den vollen Bildschirm beim Clicken auf den Kurs zu aktivieren</span>
-                    </label>
-                </div>
+
+            <section data-phase="credit-card">
                 <p>
                     <span lang="en">
-                        When the game starts, click on the board to enable fullscreen mode. This won't
-                        work on most iPhones and will break the game on most iPads. If you experience problems
-                        when playing the game, (un)check the box above.
+                        Please resize the credit card to be the same size as 
+                        a credit card, ID card or gift-card in real life,
+                        so that the game knows how large this device is.
                     </span>
                     <span lang="de">
-                        Wenn das Spiel startet solltest du auf jedem Handy einmal clicken, um den Vollbildschirm
-                        zu aktivieren. Bei Apple-Geräten funktioniert das oft nicht, bei iPads macht es oft
-                        das Spiel kapput. Deaktiviere die Option bitte, wenn du ein iPad verwendest.
-                    </span>    
+                        Passe die Größe solange an, bis die Größe der Multigolf-Karte
+                        der Größe einer echten Kredit- Geschenk- oder Ausweis-Karte
+                        entspricht, damit das Spiel weiß, wie groß dieser Display ist.
+                    </span>
                 </p>
-            </fieldset>
+                <div class="credit-card-container">
+                    <div class="button-grid">
+                        <button id="cc-bigger-button">(+)
+                            <span lang="en">Larger</span>
+                            <span lang="de">Größer</span>
+                        </button>
+                        <button id="cc-smaller-button">(-)
+                            <span lang="en">Smaller</span>
+                            <span lang="de">Kleiner</span>
+                        </button>
+                    </div>
+                    <canvas id="credit-card-canvas"></canvas>
+                </div>
+                <button onclick="updateHtmlSection('connecting')">
+                    <span lang="en">Confirm</span>
+                    <span lang="de">Bestätigen</span>
+                </button>
+            </section>
 
-            <script>
-                document.body.addEventListener("load", () => {
-                    if (navigator.platform == "iPad") {
-                        setTimeout(() => {
-                            document.querySelector("#fullscreen-checkbox").click()
-                        }, 100)
-                    }
-                })
-            </script>
+            <section data-phase="connecting">
+                <h2 id="status-title">
+                    <span lang="en">Connecting to Host...</span>
+                    <span lang="de">Verbinde mit Server...</span>
+                </h2>
+                <p>
+                    <span lang="en">While the game is running, please try to keep this device alive.</span>
+                    <span lang="de">Bitte versuche dieses Gerät während des Spiels am Leben zu halten.</span>
+                </p>
+                <p>
+                    <span lang="en">This is Device</span><span lang="de">Dieses Gerät hat Nummer </span>#<span data-fill="device-index">?</span>.
+                </p>
+                <p id="log-output" style="font-family: monospace; white-space: pre-wrap; text-align: left;"></p>
+
+                <fieldset>
+                    <legend>
+                        <span lang="en">Fullscreen Options</span>
+                        <span lang="de">Vollbildschirm Optionen</span>
+                    </legend>
+                    <div class="checkbox-container">
+                        <input name="fullscreen-check" id="fullscreen-checkbox" type="checkbox" checked>
+                        <label for="fullscreen-check">
+                            <span lang="en">Request fullscreen when clicking on the Multigolf course</span>
+                            <span lang="de">Versuche, den vollen Bildschirm beim Clicken auf den Kurs zu aktivieren</span>
+                        </label>
+                    </div>
+                    <p>
+                        <span lang="en">
+                            When the game starts, click on the board to enable fullscreen mode. This won't
+                            work on most iPhones and will break the game on most iPads. If you experience problems
+                            when playing the game, (un)check the box above.
+                        </span>
+                        <span lang="de">
+                            Wenn das Spiel startet solltest du auf jedem Handy einmal clicken, um den Vollbildschirm
+                            zu aktivieren. Bei Apple-Geräten funktioniert das oft nicht, bei iPads macht es oft
+                            das Spiel kapput. Deaktiviere die Option bitte, wenn du ein iPad verwendest.
+                        </span>    
+                    </p>
+                </fieldset>
+            </section>
         </main>
 
         <canvas style="display: none;" id="fullscreen-canvas"></canvas>
@@ -293,14 +274,27 @@
         <!-- JS_IMPORT js/renderer.js -->
         <!-- JS_IMPORT js/rtc.js -->
         <!-- JS_IMPORT js/objects.js -->
+        <!-- JS_IMPORT client/html-sections.js -->
         <!-- JS_IMPORT client/credit_card.js -->
         <!-- JS_IMPORT client/connection_management.js -->
         <!-- JS_IMPORT client/hand-control.js -->
         <!-- JS_IMPORT client/game_management.js -->
 
         <!-- BEGIN js_imports -->
-        <script type="module" src="../js/minified/jf13d1c4d839d2a43.min.js?v37"></script>
+        <script type="module" src="../js/minified/jede0a3499912aa9d.min.js?v37"></script>
         <!-- END -->
+
+        <style>
+            main {
+                border: none;
+                background-color: transparent;
+            }
+
+            body {
+                --background: white;
+                --header-background: white;
+            }
+        </style>
     </body>
 
 </html>

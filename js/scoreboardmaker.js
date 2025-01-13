@@ -1,7 +1,5 @@
 class ScoreboardMaker {
 
-    static scoreboardHeaderImgSrc = "../assets/scoreboard-header.png"
-
     static async getImg(src) {
         return new Promise(resolve => {
             const img = new Image()
@@ -23,15 +21,12 @@ class ScoreboardMaker {
         const canvas = document.createElement("canvas")
         const context = canvas.getContext("2d")
 
-        const headerImg = await this.getImg(this.scoreboardHeaderImgSrc)
         const fontFamily = "Arial"
         const fontSize = 40
         context.font = `${fontSize}px ${fontFamily}`
 
-        const imagePadding = 20
         const tablePadding = 20
-        const tableOffset = new Vector2d(0, 0)
-        const headerImgPadding = 40
+        const tableTopOffset = 25
         const rowHeight = 30
         
         const minNameWidth = context.measureText("00").width
@@ -42,18 +37,16 @@ class ScoreboardMaker {
         let sum = 0
 
         for (let i = 0; i < columnWidths.length; i++) {
-            columnXs.push(sum + tablePadding + tableOffset.x + imagePadding)
+            columnXs.push(sum + tablePadding)
             sum += columnWidths[i] + tablePadding * 2
         }
 
         const columnWidthSum = columnWidths.reduce((p, c) => p + c, 0)
-        const imgWidth = imagePadding * 2 + columnWidthSum + columnWidths.length * 2 * tablePadding
-        const headerImgWidth = Math.min(imgWidth - imagePadding * 2, 400)
-        const headerImgHeight = headerImgWidth * (headerImg.naturalHeight / headerImg.naturalWidth)
-        const imgHeight = imagePadding * 2 + headerImgHeight + headerImgPadding + (columnWidths.length + 1) * (rowHeight + tablePadding * 2)
+        const imgWidth = columnWidthSum + columnWidths.length * 2 * tablePadding
+        const imgHeight = (columnWidths.length + 1) * (rowHeight + tablePadding * 2)
 
         for (let i = 0; i < columnWidths.length + 1; i++) {
-            rowYs.push(i * (rowHeight + tablePadding * 2) + tablePadding + imagePadding + headerImgHeight + headerImgPadding)
+            rowYs.push(i * (rowHeight + tablePadding * 2) + tablePadding + tableTopOffset)
         }
 
         canvas.width = imgWidth
@@ -62,7 +55,6 @@ class ScoreboardMaker {
         context.font = `${fontSize}px ${fontFamily}`
         context.fillStyle = "white"
         context.fillRect(0, 0, canvas.width, canvas.height)
-        context.drawImage(headerImg, imagePadding, imagePadding, headerImgWidth, headerImgHeight)
         
         const tableContent = Array.from({length: rowYs.length})
             .map(() => Array.from({length: columnXs.length}, () => ""))
@@ -78,8 +70,9 @@ class ScoreboardMaker {
                 tableContent[r + 1][i + 1] = score.toString()
             }
         }
-
+        
         const tablePos = (r, c) => new Vector2d(columnXs[c], rowYs[r])
+        window.tablePos = tablePos
 
         context.fillStyle = "black"
         for (let colIndex = 0; colIndex < columnXs.length; colIndex++) {

@@ -9,6 +9,7 @@ body {
        since 100vh is too tall on mobile browsers that
        include the address bar in the 100vh */
     --full-height: 100vh;
+    --header-height: 4.6rem;
 
     --huge-text-size: 5rem;
     --subtitle-huge-text-size: 1.5rem;
@@ -218,6 +219,18 @@ header .link-island {
     gap: .2rem;
 }
 
+header .three-dots-button {
+    font-size: 1.5em;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    content: '\2807';
+}
+
+header .three-dots-button::after {
+    content: '\2807';
+}
+
 header .link-island a {
     display: block;
     padding: .3em;
@@ -375,7 +388,7 @@ header .hamburger-icon.x .bar:nth-child(3) {
         display: grid;
     }
 
-    header .link-island {
+    header .link-island:not(.always-visible) {
         display: none;
     }
 
@@ -431,7 +444,7 @@ main {
 
 .header-placeholder {
     width: 100%;
-    height: 4.6rem;
+    height: var(--header-height);
 }
 
 body:not(.sticky-header) .header-placeholder {
@@ -1099,12 +1112,15 @@ main .object-selection-container .title {
     border-right: var(--button-border);
 }
 
+main .scoreboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 main .scoreboard {
-    border-radius: .8em;
-    border: var(--button-border);
-    width: auto !important;
-    max-width: 100%;
-    max-height: 25em;
+    object-fit: contain;
+    max-height: 13em;
 }
 
 main .object-selection-container .description {
@@ -1148,14 +1164,11 @@ main .layout-choice button {
     border: var(--button-border);
     border-radius: 1rem;
     padding: .5rem;
-    margin-left: -1rem;
-    margin-right: -1rem;
 }
 
 .credit-card-container canvas {
     background: transparent;
     width: 100%;
-    margin-bottom: .5rem;
     transition: 300ms;
 }
 
@@ -1163,6 +1176,7 @@ main .layout-choice button {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: .5rem;
+    margin-bottom: .5rem;
 }
 
 .credit-card-container .button-grid button {

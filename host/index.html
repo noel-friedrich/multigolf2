@@ -730,6 +730,9 @@
             </section>
 
             <section data-phase="playing-tournament">
+                <div class="scoreboard-container">
+                    <img class="scoreboard">
+                </div>
                 <h2>
                     <span lang="en">
                         <span data-fill="tournament-active-name">NAME</span>'s Turn
@@ -738,19 +741,18 @@
                         <span data-fill="tournament-active-name">NAME</span>'s Zug
                     </span>
                 </h2>
-                <img class="scoreboard">
                 <p>
                     <span lang="en">
                         You're currently playing the course built by
                         <span data-fill="tournament-builder-name">NAME</span>.
                         Currently, it's <span data-fill="tournament-active-name">NAME</span>'s
-                        turn to kick the ball. 
+                        turn to kick the ball.
                         You can make a maximum of <span data-fill="tournament-max-kicks">#</span> kicks,
                         after which the round will be over.
                     </span>
                     <span lang="de">
                         Ihr spielt gerade den Kurs von <span data-fill="tournament-builder-name">NAME</span>.
-                        Es ist gerade <span data-fill="tournament-active-name">NAME</span>'s Zug den Ball 
+                        <span data-fill="tournament-active-name">NAME</span> ist am Zug, den Ball
                         zu schießen. Wenn ihr nach <span data-fill="tournament-max-kicks">#</span> Schlägen
                         nicht im Loch seid, bekommt ihr 2 Strafpunkte.
                     </span>
@@ -838,7 +840,9 @@
                     <span lang="en">Tournament Results</span>
                     <span lang="de">Turnier Resultate</span>
                 </h2>
-                <img class="scoreboard">
+                <div class="scoreboard-container">
+                    <img class="scoreboard">
+                </div>
                 <button onclick="shareScoreboard()">
                     <span lang="en">🎈 Share Scores</span>
                     <span lang="de">🎈 Ergebnisse teilen</span>
@@ -1195,6 +1199,10 @@
                 cursor: pointer;
             }
         
+            .custom-alert-container .button-container button:hover {
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            }
+        
             .custom-alert-container .button-container.confirm button {
                 width: 100%;
             }
@@ -1275,7 +1283,7 @@
         <!-- JS_IMPORT host/feedback.js -->
 
         <!-- BEGIN js_imports -->
-        <script src="../js/minified/j5867f16858532ba8.min.js?v36"></script>
+        <script src="../js/minified/j221e67e610f93ac6.min.js?v36"></script>
         <!-- END -->
     </body>
 
